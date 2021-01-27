@@ -22,6 +22,24 @@
             <a href="home?command=main-page" class="w3-bar-item w3-button w3-hover-teal">
                 <fmt:message key="button.home"/>
             </a>
+            <c:if test="${sessionScope.user.role == 'admin'}">
+                <div class="w3-dropdown-hover">
+                    <button class="w3-button w3-black w3-hover-teal" type="button">
+                        <fmt:message key="button.admin.actions"/>
+                    </button>
+                    <div class="w3-dropdown-content w3-bar-block w3-card-4 w3-black">
+                        <a href="home?command=user-actions" class="w3-bar-item w3-button w3-hover-teal">
+                            <fmt:message key="button.user.work"/>
+                        </a>
+                        <a href="home?command=product-actions" class="w3-bar-item w3-button w3-hover-teal">
+                            <fmt:message key="button.products.work"/>
+                        </a>
+                        <a href="home?command=quote-operations" class="w3-bar-item w3-button w3-hover-teal">
+                            <fmt:message key="button.quote.work"/>
+                        </a>
+                    </div>
+                </div>
+            </c:if>
             <c:if test="${sessionScope.user == null}">
                 <a href="home?command=sign-in-form" class="w3-bar-item w3-button w3-hover-teal">
                     <fmt:message key="button.singin"/>
@@ -39,26 +57,8 @@
                         <a href="home?command=show-user-reviews" class="w3-bar-item w3-button w3-hover-teal">
                             <fmt:message key="button.my.reviews"/>
                         </a>
-                        <a href="#" class="w3-bar-item w3-button w3-hover-teal">
+                        <a href="home?command=sign-out" class="w3-bar-item w3-button w3-hover-teal">
                             <fmt:message key="button.signout"/>
-                        </a>
-                    </div>
-                </div>
-            </c:if>
-            <c:if test="${sessionScope.user.role == 'admin'}">
-                <div class="w3-dropdown-hover">
-                    <button class="w3-button w3-black w3-hover-teal" type="button">
-                        <fmt:message key="button.admin.actions"/>
-                    </button>
-                    <div class="w3-dropdown-content w3-bar-block w3-card-4 w3-black">
-                        <a href="home?command=user-actions" class="w3-bar-item w3-button w3-hover-teal">
-                            <fmt:message key="button.user.work"/>
-                        </a>
-                        <a href="home?command=product-actions" class="w3-bar-item w3-button w3-hover-teal">
-                            <fmt:message key="button.products.work"/>
-                        </a>
-                        <a href="home?command=quote-operations" class="w3-bar-item w3-button w3-hover-teal">
-                            <fmt:message key="button.quote.work"/>
                         </a>
                     </div>
                 </div>

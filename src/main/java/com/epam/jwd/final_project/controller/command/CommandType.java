@@ -5,12 +5,17 @@ public enum CommandType {
     TO_MAIN_PAGE("main-page"),
     TO_SIGN_IN_FORM("sign-in-form"),
     SIGN_IN("sign-in"),
+    SIGN_OUT("sign-out"),
     TO_DB_ERROR_PAGE("db-error"),
     SHOW_ACCOUNT_INFO("account-info"),
     TO_NEW_ACCOUNT_FORM("new-account-form"),
     CREATE_NEW_ACCOUNT("create-account"),
     TO_LOGIN_RESULT("login-result"),
-    TO_QUOTE_ERROR("quote-error");
+    TO_VALIDATION_ERROR("validation-error"),
+    SHOW_USER_REVIEWS("show-user-reviews"),
+    UPDATE_REVIEW_MARKS("update-marks"),
+    SEARCH("search"),
+    TO_SEARCH_RESULT("search-result");
 
     private String commandName;
 

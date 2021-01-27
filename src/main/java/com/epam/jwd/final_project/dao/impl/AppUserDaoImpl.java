@@ -50,6 +50,8 @@ public class AppUserDaoImpl implements AppUserDao {
 
 
 
+
+
     private static final String SQL_INSERT_INTO_APP_USER =
             "INSERT INTO app_user(first_name, last_name, nickname, date_of_birth, " +
                     "email, password, role_id) VALUE (?, ?, ?, ?, ?, ?, ?)";
@@ -226,16 +228,10 @@ public class AppUserDaoImpl implements AppUserDao {
         try {
             statement = connection.prepareStatement(SQL_REVIEW_POSITIVE);
             statement.setLong(1, user.getId());
-            ResultSet set = statement.executeQuery();
-            while (set.next()) {
-                positiveMarks.add(set.getInt("review_positive_marks"));
-            }
+            positiveMarks.addAll(getMarksFromResultSet(statement.executeQuery(), "review_positive_marks"));
             statement = connection.prepareStatement(SQL_HISTORY_REVIEW_POSITIVE);
             statement.setLong(1, user.getId());
-            set = statement.executeQuery();
-            while (set.next()) {
-                positiveMarks.add(set.getInt("review_positive_marks"));
-            }
+            positiveMarks.addAll(getMarksFromResultSet(statement.executeQuery(), "review_positive_marks"));
         } catch (SQLException e) {
             throw new DatabaseInteractionException(e);
         } finally {
@@ -243,7 +239,7 @@ public class AppUserDaoImpl implements AppUserDao {
             closeConnection(connection);
         }
 
-        return null;
+        return positiveMarks;
     }
 
     private static final String SQL_REVIEW_NEGATIVE =
@@ -253,22 +249,16 @@ public class AppUserDaoImpl implements AppUserDao {
     @Override
     public List<Integer> getNegativeMarks(AppUser user, Connection connection)
             throws DatabaseInteractionException {
-        List<Integer> positiveMarks = new ArrayList<>();
+        List<Integer> negativeMarks = new ArrayList<>();
         PreparedStatement statement = null;
 
         try {
             statement = connection.prepareStatement(SQL_REVIEW_NEGATIVE);
             statement.setLong(1, user.getId());
-            ResultSet set = statement.executeQuery();
-            while (set.next()) {
-                positiveMarks.add(set.getInt("review_negative_marks"));
-            }
+            negativeMarks.addAll(getMarksFromResultSet(statement.executeQuery(), "review_negative_marks"));
             statement = connection.prepareStatement(SQL_HISTORY_REVIEW_NEGATIVE);
             statement.setLong(1, user.getId());
-            set = statement.executeQuery();
-            while (set.next()) {
-                positiveMarks.add(set.getInt("review_negative_marks"));
-            }
+            negativeMarks.addAll(getMarksFromResultSet(statement.executeQuery(), "review_negative_marks"));
         } catch (SQLException e) {
             throw new DatabaseInteractionException(e);
         } finally {
@@ -276,7 +266,38 @@ public class AppUserDaoImpl implements AppUserDao {
             closeConnection(connection);
         }
 
-        return null;
+        return negativeMarks;
+    }
+
+    private static final String SQL_UPDATE_STATUS =
+            "UPDATE app_user SET status_id=? WHERE id=?";
+    @Override
+    public boolean updateStatus(AppUser user, Status status, Connection connection)
+            throws DatabaseInteractionException {
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(SQL_UPDATE_STATUS);
+            statement.setLong(1, status.getId());
+            statement.setLong(2, user.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DatabaseInteractionException(e);
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
+        }
+
+        return false;
+    }
+
+    private List<Integer> getMarksFromResultSet(ResultSet set, String columnName) throws SQLException {
+        List<Integer> marks = new ArrayList<>();
+        while (set.next()) {
+            marks.add(set.getInt(columnName));
+        }
+
+        return marks;
     }
 
     public void updateUserGenres(Long id, List<Genre> newGenres,

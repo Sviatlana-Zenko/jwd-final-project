@@ -195,10 +195,7 @@ body{
 
 .sign-in-error{
     width: 270px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin: 5px auto;
     padding: 5px 0 5px 0;
 }
 
@@ -267,7 +264,6 @@ body{
     text-align: center;
     font-size: 30px;
     padding: 5px 0 0 0;
-
 }
 
 .section{
@@ -309,6 +305,20 @@ body{
     text-align: center;
 }
 
+/*user reviews*/
+
+.user-reviews-container{
+    width: 600px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.user-reviews-container table{
+    color: white;
+}
+
+
+
 /**/
 
 .new-quote-container{
@@ -321,8 +331,61 @@ body{
     border-radius: 5px;
 }
 
-/**/
+#mark-ttl{
+    padding: 7px 0 7px 0;
+    font-family: Arial, serif;
+    font-weight: normal;
+    font-size: 23px;
+    color: teal;
+}
 
+#rew-summary{
+    padding-bottom: 7px;
+    font-family: Arial, serif;
+    font-weight: normal;
+    font-size: 19px;
+}
+
+.user-reviews td{
+    border-bottom: 2px solid gray;
+    padding-bottom: 15px;
+}
+
+#rew-marks{
+    font-family: Arial, serif;
+    font-weight: normal;
+    font-size: small;
+    color: teal;
+    padding-top: 7px;
+}
+
+#edit-rew-btn{
+    padding-top: 7px;
+}
+
+#edit-rew-btn button{
+    width: 120px;
+    font-size: small;
+}
+
+/*search-result*/
+
+.was-found{
+    width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.was-found p{
+    color: teal;
+    font-family: Arial, serif;
+    font-weight: normal;
+    font-size: 20px;
+    padding: 10px 0 10px 0;
+    text-align: center;
+}
+
+/**/
 
 
 .product-view{

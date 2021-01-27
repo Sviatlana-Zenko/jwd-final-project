@@ -154,7 +154,7 @@ public class CinemaProductDaoImpl implements CinemaProductDao {
             }
 
             product.setReviews(ReviewDaoImpl.getInstance().findAllForParticularCinemaProduct(id));
-            product.setGenres(GenreDaoImpl.getInstance().findCinemaProductGenres(id));
+//            product.setGenres(GenreDaoImpl.getInstance().findCinemaProductGenres(id));
             connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -197,7 +197,7 @@ public class CinemaProductDaoImpl implements CinemaProductDao {
                         set.getInt("box_office"));
 
                 product.setReviews(ReviewDaoImpl.getInstance().findAllForParticularCinemaProduct(product.getId()));
-                product.setGenres(GenreDaoImpl.getInstance().findCinemaProductGenres(product.getId()));
+//                product.setGenres(GenreDaoImpl.getInstance().findCinemaProductGenres(product.getId()));
                 products.add(product);
             }
 
@@ -219,7 +219,7 @@ public class CinemaProductDaoImpl implements CinemaProductDao {
                         set.getBoolean("is_finished"));
 
                 product.setReviews(ReviewDaoImpl.getInstance().findAllForParticularCinemaProduct(product.getId()));
-                product.setGenres(GenreDaoImpl.getInstance().findCinemaProductGenres(product.getId()));
+//                product.setGenres(GenreDaoImpl.getInstance().findCinemaProductGenres(product.getId()));
                 products.add(product);
             }
 
@@ -299,7 +299,7 @@ public class CinemaProductDaoImpl implements CinemaProductDao {
                 statement = connection.prepareStatement(SQL_DELETE_CINEMA_PRODUCT_GENRES);
                 statement.setLong(1, cinemaProduct.getId());
                 statement.executeUpdate();
-                GenreDaoImpl.getInstance().createCinemaProductGenres(cinemaProduct.getId(), newGenres);
+//                GenreDaoImpl.getInstance().createCinemaProductGenres(cinemaProduct.getId(), newGenres);
             }
             connection.commit();
         } catch (SQLException e) {
@@ -364,7 +364,7 @@ public class CinemaProductDaoImpl implements CinemaProductDao {
                             set.getBoolean("is_finished"));
                 }
                 product.setReviews(ReviewDaoImpl.getInstance().findAllForParticularCinemaProduct(product.getId()));
-                product.setGenres(GenreDaoImpl.getInstance().findCinemaProductGenres(product.getId()));
+//                product.setGenres(GenreDaoImpl.getInstance().findCinemaProductGenres(product.getId()));
                 products.add(product);
             }
 
@@ -548,7 +548,7 @@ public class CinemaProductDaoImpl implements CinemaProductDao {
                         set.getInt("box_office"));
 
                 movie.setReviews(ReviewDaoImpl.getInstance().findAllForParticularCinemaProduct(movie.getId()));
-                movie.setGenres(GenreDaoImpl.getInstance().findCinemaProductGenres(movie.getId()));
+//                movie.setGenres(GenreDaoImpl.getInstance().findCinemaProductGenres(movie.getId()));
                 movies.add(movie);
             }
         } catch (SQLException e) {
@@ -582,7 +582,7 @@ public class CinemaProductDaoImpl implements CinemaProductDao {
                         set.getBoolean("is_finished"));
 
                 tvSeriesEpisode.setReviews(ReviewDaoImpl.getInstance().findAllForParticularCinemaProduct(tvSeriesEpisode.getId()));
-                tvSeriesEpisode.setGenres(GenreDaoImpl.getInstance().findCinemaProductGenres(tvSeriesEpisode.getId()));
+//                tvSeriesEpisode.setGenres(GenreDaoImpl.getInstance().findCinemaProductGenres(tvSeriesEpisode.getId()));
                 tvSeries.add(tvSeriesEpisode);
             }
         } catch (SQLException e) {

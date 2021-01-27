@@ -1,12 +1,8 @@
 package com.epam.jwd.final_project.util;
 
 import com.epam.jwd.final_project.criteria.AppUserCriteria;
-import com.epam.jwd.final_project.criteria.Criteria;
 import com.epam.jwd.final_project.criteria.QuoteCriteria;
-import com.epam.jwd.final_project.domain.AppUser;
-import com.epam.jwd.final_project.domain.Quote;
-import com.epam.jwd.final_project.domain.Role;
-import com.epam.jwd.final_project.domain.Status;
+import com.epam.jwd.final_project.domain.*;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -97,7 +93,11 @@ public final class SqlUpdateBuilderUtil {
         criteriaValues.put("nickname", criteria.getNickname());
         criteriaValues.put("dateOfBirth", criteria.getDateOfBirth());
         criteriaValues.put("email", criteria.getEmail());
-        criteriaValues.put("password", PasswordHasherUtil.generatePasswordHash(criteria.getPassword()));
+        if (criteria.getPassword() == null) {
+            criteriaValues.put("password", criteria.getPassword());
+        } else {
+            criteriaValues.put("password", PasswordHasherUtil.generatePasswordHash(criteria.getPassword()));
+        }
         criteriaValues.put("role", criteria.getRole());
         criteriaValues.put("status", criteria.getStatus());
         criteriaValues.put("isBanned", criteria.getBanned());

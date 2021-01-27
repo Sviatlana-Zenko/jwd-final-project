@@ -6,6 +6,7 @@ import com.epam.jwd.final_project.criteria.Criteria;
 import com.epam.jwd.final_project.dao.impl.AppUserDaoImpl;
 import com.epam.jwd.final_project.domain.AppUser;
 import com.epam.jwd.final_project.domain.Review;
+import com.epam.jwd.final_project.domain.Status;
 import com.epam.jwd.final_project.exception.DatabaseInteractionException;
 import com.epam.jwd.final_project.exception.ValidationException;
 import com.epam.jwd.final_project.pool.ConnectionPool;
@@ -84,11 +85,56 @@ public class AppUserServiceImpl implements UserService {
     }
 
     @Override
+    public Status updateUserStatus(AppUser user) throws DatabaseInteractionException {
+        List<Integer> positiveMarks = AppUserDaoImpl.getInstance().getPositiveMarks(user,
+                ConnectionPool.INSTANCE.getAvailableConnection());
+        List<Integer> negativeMarks = AppUserDaoImpl.getInstance().getNegativeMarks(user,
+                ConnectionPool.INSTANCE.getAvailableConnection());
+
+        int numberOfPositiveMarks = positiveMarks.stream()
+                .mapToInt((s) -> Integer.parseInt(String.valueOf(s)))
+                .sum();
+        int numberOfNegativeMarks = negativeMarks.stream()
+                .mapToInt((s) -> Integer.parseInt(String.valueOf(s)))
+                .sum();
+
+        int totalResult = numberOfPositiveMarks - numberOfNegativeMarks;
+        Status status;
+
+        if (totalResult <= 25) {
+            status = Status.NEWBIE;
+        } else if (totalResult > 26 && totalResult <= 50) {
+            status = Status.REVIEWER;
+        } else if (totalResult > 51 && totalResult <= 75) {
+            status = Status.EXPERIENCED_REVIEWER;
+        } else if (totalResult > 76 && totalResult <= 100) {
+            status = Status.ADVANCED_REVIEWER;
+        } else {
+            status = Status.EXPERT;
+        }
+
+        AppUserDaoImpl.getInstance().updateStatus(user, status, ConnectionPool.INSTANCE.getAvailableConnection());
+        RatingContext.INSTANCE.reinit(AppUser.class);
+
+//        AppUserCriteria criteria = new AppUserCriteria.AppUserCriteriaBuilder() {{
+//            status(status);
+//        }}.build();
+//
+//        AppUserServiceImpl.getInstance().updateByCriteria(user, criteria);
+
+        return null;
+    }
+
+    @Override
     public AppUser updateByCriteria(AppUser appUser, AppUserCriteria appUserCriteria)
             throws ValidationException, DatabaseInteractionException {
         ValidationChain<AppUser> chain = ValidationChainFactory.INSTANCE.
                 createValidationChain(appUser);
+
+        System.out.println("appUserCriteria + " + appUserCriteria);
         List<String> validationErrors = chain.getValidationReport(appUser, ValidationType.UPDATE_OBJECT);
+
+        System.out.println("validationErrors + " + validationErrors);
 
         if (validationErrors.size() == 0) {
             appUser = AppUserDaoImpl.getInstance().updateByCriteria(appUser, appUserCriteria,
@@ -101,22 +147,20 @@ public class AppUserServiceImpl implements UserService {
         return appUser;
     }
 
-    private Optional<AppUser> findUserInCacheByEmail(String email){
+    private Optional<AppUser> findUserInCacheByEmail(String email) {
         return RatingContext.INSTANCE.retrieveList(AppUser.class).stream()
                 .filter(user -> user.getEmail().equalsIgnoreCase(email))
                 .findFirst();
     }
 
-    private Optional<AppUser> findUserInCacheById(Long id){
+    private Optional<AppUser> findUserInCacheById(Long id) {
         return RatingContext.INSTANCE.retrieveList(AppUser.class).stream()
                 .filter(user -> user.getId().equals(id))
                 .findFirst();
     }
 
 
-
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 
 
     @Override
@@ -140,9 +184,4 @@ public class AppUserServiceImpl implements UserService {
         return wasCreated;
     }
 
-    @Override
-    public AppUser updateByCriteria(Criteria<AppUser> criteria, AppUser appUser) {
-//        return AppUserDaoImpl.getInstance().updateByCriteria(criteria, appUser);
-        return null;
-    }
 }

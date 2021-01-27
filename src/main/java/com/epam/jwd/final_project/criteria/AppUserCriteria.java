@@ -136,4 +136,19 @@ public class AppUserCriteria extends Criteria<AppUser> {
         }
     }
 
+    @Override
+    public String toString() {
+        return "AppUserCriteria{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                ", status=" + status +
+                ", isBanned=" + isBanned +
+                ", favouriteGenres=" + favouriteGenres +
+                "} " + super.toString();
+    }
 }

@@ -6,6 +6,7 @@ import com.epam.jwd.final_project.controller.command.ResponseContext;
 import com.epam.jwd.final_project.converter.impl.UserSessionInfoConverter;
 import com.epam.jwd.final_project.domain.AppUser;
 import com.epam.jwd.final_project.exception.DatabaseInteractionException;
+import com.epam.jwd.final_project.exception.ValidationException;
 import com.epam.jwd.final_project.service.impl.AppUserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,7 @@ public class SignInCommand implements Command {
             AppUser foundUser = AppUserServiceImpl.getInstance().findByEmail(email).get();
             if (foundUser != null &&
                     AppUserServiceImpl.getInstance().checkPassword(foundUser, password)) {
+                AppUserServiceImpl.getInstance().updateUserStatus(foundUser);
                 long startOfUse = req.getSession().getCreationTime();
                 req.getSession().setAttribute("start", startOfUse);
                 req.getSession().setAttribute("user", UserSessionInfoConverter.INSTANCE.toDto(foundUser));

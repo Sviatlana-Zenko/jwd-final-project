@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib uri="jwdTags" prefix="ct" %>
 <fmt:setLocale value="${sessionScope.lang}" />
 <fmt:setBundle basename="pagecontent"/>
 <html>
@@ -28,7 +28,7 @@
                         <a href="home?command=tvseries-info&id=${product.id}">${product.title}</a>
                     </p>
                     <p>
-                        <fmt:message key="label.release.date"/>${product.releaseDate}
+                        <fmt:message key="label.release.date"/><ct:dateTag date="${product.releaseDate}"/>
                     </p>
                     <p>
                         <fmt:message key="label.country"/>${product.country}

@@ -64,7 +64,7 @@ public class RatingContext implements ApplicationContext {
         } else if (tClass.getSimpleName().equals(CinemaProduct.class.getSimpleName())) {
             recommended = CinemaProductServiceImpl.INSTANCE.findRecommendations();
         } else {
-//            appUsers =
+            appUsers = AppUserServiceImpl.getInstance().findAll();
         }
 
     }

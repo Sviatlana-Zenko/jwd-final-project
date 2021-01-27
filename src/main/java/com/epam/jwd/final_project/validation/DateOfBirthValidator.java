@@ -14,7 +14,7 @@ public class DateOfBirthValidator extends Validator<AppUser> {
 
         if (dateOfBirth == null || dateOfBirth.toString().length() == 0) {
             if (type == ValidationType.CREATE_OBJECT) {
-                validationErrors.add("'date of birth' field is not filled");
+                validationErrors.add("'date of birth' field is not filled or has wrong format");
             }
         } else {
             if (!dateOfBirth.toString().matches(DATE_REGEX)) {

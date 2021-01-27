@@ -13,6 +13,8 @@ public class CommandFactory {
         switch (CommandType.getEnumByCommandName(commandName)) {
             case TO_MAIN_PAGE:
                 return new ToMainPageCommand();
+            case TO_SEARCH_RESULT:
+                return new ToSearchResultCommand();
             case TO_SIGN_IN_FORM:
                 return new ToSignInFormCommand();
             case TO_DB_ERROR_PAGE:
@@ -21,14 +23,22 @@ public class CommandFactory {
                 return new ToNewAccountFormCommand();
             case TO_LOGIN_RESULT:
                 return new ToLoginResultCommand();
-            case TO_QUOTE_ERROR:
-                return new ToQuoteErrorPageCommand();
+            case TO_VALIDATION_ERROR:
+                return new ToValidationErrorPageCommand();
             case SIGN_IN:
                 return new SignInCommand();
+            case SIGN_OUT:
+                return new SignOutCommand();
             case SHOW_ACCOUNT_INFO:
                 return new ShowAccountInfoCommand();
             case CREATE_NEW_ACCOUNT:
                 return new NewAccountCommand();
+            case SHOW_USER_REVIEWS:
+                return new ShowUserReviewsCommand();
+            case UPDATE_REVIEW_MARKS:
+                return new UpdateReviewMarksCommand();
+            case SEARCH:
+                return new SearchCommand();
             default:
                 return new ToMainPageCommand();
         }

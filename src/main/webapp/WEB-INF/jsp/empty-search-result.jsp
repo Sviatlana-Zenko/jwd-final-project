@@ -8,11 +8,11 @@
 <head>
     <title>Search result</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="<c:url value="../../../css/app-style.css"/>">
+    <link rel="stylesheet" href="<c:url value="../../css/app-style.css"/>">
     <script src="https://kit.fontawesome.com/93c41a9677.js" crossorigin="anonymous"></script>
 </head>
 <body>
-<c:import url="../header.jsp"/>
+<c:import url="header.jsp"/>
 <div class="empty-search">
     <div class="search-img">
         <i class="fas fa-search-minus fa-6x"></i>

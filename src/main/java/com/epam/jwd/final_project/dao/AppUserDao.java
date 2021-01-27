@@ -2,6 +2,7 @@ package com.epam.jwd.final_project.dao;
 
 import com.epam.jwd.final_project.criteria.AppUserCriteria;
 import com.epam.jwd.final_project.domain.AppUser;
+import com.epam.jwd.final_project.domain.Status;
 import com.epam.jwd.final_project.exception.DatabaseInteractionException;
 import java.sql.Connection;
 import java.util.List;
@@ -15,18 +16,17 @@ public interface AppUserDao extends EntityDao<AppUser, AppUserCriteria> {
 
     List<Integer> getNegativeMarks(AppUser user, Connection connection) throws DatabaseInteractionException;
 
+    boolean updateStatus(AppUser user, Status status, Connection connection) throws DatabaseInteractionException;
+
+    boolean checkIfNickNameExists(String nickname) throws DatabaseInteractionException;
+
+    boolean checkIfEmailExists(String email) throws DatabaseInteractionException;
 
 
 
-//    AppUser updateByCriteria(Criteria<AppUser> criteria, AppUser appUser);
 
-    boolean checkIfNickNameExists(String nickname);
 
-    boolean checkIfEmailExists(String email);
 
-//    List<Long> getReviewedProducts();
-//
-//    Map<Long, Boolean> getRatedReviews();
 
     boolean addRatedReview(Long userId, Long reviewId, boolean isPositiveMark);
 

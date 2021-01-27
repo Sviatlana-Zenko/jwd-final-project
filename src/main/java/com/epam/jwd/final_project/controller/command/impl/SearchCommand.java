@@ -1,4 +1,4 @@
-package com.epam.jwd.final_project.controller.command.impl.temp;
+package com.epam.jwd.final_project.controller.command.impl;
 
 import com.epam.jwd.final_project.controller.command.Command;
 import com.epam.jwd.final_project.controller.command.RequestContext;

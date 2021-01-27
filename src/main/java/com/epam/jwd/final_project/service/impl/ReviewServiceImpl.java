@@ -2,10 +2,8 @@ package com.epam.jwd.final_project.service.impl;
 
 import com.epam.jwd.final_project.criteria.Criteria;
 import com.epam.jwd.final_project.dao.impl.ReviewDaoImpl;
-import com.epam.jwd.final_project.domain.AppEntity;
 import com.epam.jwd.final_project.domain.Review;
 import com.epam.jwd.final_project.service.ReviewService;
-
 import java.util.List;
 import java.util.Optional;
 

@@ -18,11 +18,11 @@
     <form class="info">
         <p><fmt:message key="label.about.account"/></p>
         <ul>
-            <li><fmt:message key="label.firstname"/>${userFullInfo.firstName}</li>
-            <li><fmt:message key="label.lastname"/>${userFullInfo.lastName}</li>
-            <li><fmt:message key="label.nickname"/>${userFullInfo.nickname}</li>
-            <li><fmt:message key="label.birthdate"/><ct:dateTag date="${userFullInfo.dateOfBirth}"/></li>
-            <li><fmt:message key="label.email"/>${userFullInfo.email}</li>
+            <li><fmt:message key="label.firstname"/>: ${userFullInfo.firstName}</li>
+            <li><fmt:message key="label.lastname"/>: ${userFullInfo.lastName}</li>
+            <li><fmt:message key="label.nickname"/>: ${userFullInfo.nickname}</li>
+            <li><fmt:message key="label.birthdate"/>: <ct:dateTag date="${userFullInfo.dateOfBirth}"/></li>
+            <li><fmt:message key="label.email"/>: ${userFullInfo.email}</li>
             <li><fmt:message key="label.status"/>${userFullInfo.status}</li>
             <li id="user-genres"><fmt:message key="label.user.genres"/>
                 <c:forEach var="genre" items="${userFullInfo.favouriteGenres}">

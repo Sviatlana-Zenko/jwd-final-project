@@ -1,5 +1,6 @@
 package com.epam.jwd.final_project.controller.command.impl;
 
+import com.epam.jwd.final_project.context.impl.RatingContext;
 import com.epam.jwd.final_project.controller.command.Command;
 import com.epam.jwd.final_project.controller.command.RequestContext;
 import com.epam.jwd.final_project.controller.command.ResponseContext;
@@ -53,11 +54,11 @@ public class NewAccountCommand implements Command {
 
         try {
             AppUserServiceImpl.getInstance().create(user);
-            ((ResponseContextImpl) responseContext).setPage("/home?command=quote-operations");
+            ((ResponseContextImpl) responseContext).setPage("/home?command=login-result");
         } catch (ValidationException e) {
             LOGGER.error(e.getMessage());
             requestContext.getSession().setAttribute("errors", e.getValidationErrors());
-            ((ResponseContextImpl) responseContext).setPage("/home?command=quote-error");
+            ((ResponseContextImpl) responseContext).setPage("/home?command=creation-error");
         } catch (DatabaseInteractionException e) {
             LOGGER.error(e.getMessage());
             ((ResponseContextImpl) responseContext).setPage("/home?command=db-error");
