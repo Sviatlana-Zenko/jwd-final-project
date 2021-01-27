@@ -1,0 +1,897 @@
+*{
+    font-family: Arial, serif;
+    margin: 0;
+    padding: 0;
+}
+
+/*header*/
+
+.branding{
+    font-size: 30px;
+}
+
+.w3-right{
+    padding: 10px;
+}
+
+.fa-globe{
+    padding-top: 4px;
+}
+
+#search-request{
+    width: 210px;
+}
+
+#go-button{
+    width: 80px;
+}
+
+body{
+    background-image: url('../resources/background.PNG');
+    background-attachment: fixed;
+}
+
+/*main-page*/
+
+.main{
+    width: 51%;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: black;
+}
+
+.recommendation table{
+    border-collapse: separate;
+    border-spacing: 10px;
+}
+
+#to-rate{
+    color: teal;
+    font-weight: normal;
+    font-size: 28px;
+    padding: 0 0 0 20px;
+}
+
+.recommendation th{
+    width: 150px;
+    vertical-align: top;
+}
+
+.recommendation img{
+    width: 150px;
+}
+
+.recommendation p{
+    color: white;
+    font-weight: normal;
+    font-size: 15px;
+    padding: 15px 0 15px 0;
+}
+
+.recommendation .fa-star{
+    color: orange;
+}
+
+.recommendation a{
+    text-decoration: none;
+}
+
+.random-quote .fa-quote-right{
+    color: white;
+}
+
+.random-quote p{
+    color: teal;
+    font-weight: normal;
+    font-size: 28px;
+    padding: 0 0 0 20px;
+}
+
+.random-quote img{
+    width: 120px;
+}
+
+#q-img{
+    width: 120px;
+    horiz-align: center;
+    padding-left: 20px;
+}
+
+#q-body{
+    width: 330px;
+    text-align: left;
+    border-right: 2px solid gray;
+    border-top: 2px solid gray;
+    border-bottom: 2px solid gray;
+    padding: 0 10px 0 5px;
+}
+
+#q-description{
+    width: 320px;
+    text-align: left;
+}
+
+#q-description p{
+    color: white;
+    font-weight: normal;
+    font-size: 17px;
+    padding: 0 10px 0 20px;
+    vertical-align: center;
+    line-height: 1.4;
+}
+
+#q-txt{
+    color: white;
+    font-weight: normal;
+    font-size: 25px;
+    padding: 0 0 0 10px;
+}
+
+#q-title{
+    color: white;
+    font-weight: normal;
+    font-size: 17px;
+    padding: 0 0 0 10px;
+}
+
+/*footer*/
+
+.footer{
+    color: teal;
+    font-size: small;
+    height: 30px;
+}
+
+/*sign-in form*/
+
+.sign-in-container{
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 120px;
+    width: 310px;
+    height: auto;
+    background: black;
+    border-radius: 5px;
+}
+
+.sign-in-container .w3-bar-item{
+    margin-top: 6px;
+    margin-bottom: 11px;
+    margin-left: 115px;
+}
+
+.sign-in-container .form-title{
+    color: teal;
+    width: 200px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 30px;
+    padding-top: 7px;
+}
+
+.form-info{
+    width: 260px;
+    text-align: center;
+    color: white;
+    font-size: small;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 7px;
+}
+
+.sign-in-form .input{
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+.input-field{
+    margin-left: 20px;
+    width: 270px;
+    font-size: medium;
+    border: 2px solid;
+}
+
+.sign-in-error{
+    width: 270px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 5px 0 5px 0;
+}
+
+.sign-in-error p{
+    color: firebrick;
+    text-align: center;
+    font-size: small;
+}
+
+/*account info*/
+
+.account-info-container{
+    width: 580px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.info p{
+    color: teal;
+    font-weight: normal;
+    font-size: 28px;
+    padding: 15px 0 0 0;
+}
+
+.info ul{
+    list-style-type:none;
+}
+
+.info li{
+    font-family: Arial, serif;
+    font-weight: normal;
+    font-size: 16px;
+    color: white;
+}
+
+#user-genres{
+    text-transform: lowercase;
+}
+
+.account-actions{
+    padding: 10px 0 5px 0;
+}
+
+.account-actions button{
+    width: 145px;
+    font-size: small;
+}
+
+/*new account page*/
+
+.new-account-container{
+    width: 490px;
+    height: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: black;
+    margin-top: 100px;
+    border-radius: 5px;
+}
+
+.new-account-container .title{
+    color: teal;
+    width: 220px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-size: 30px;
+    padding: 5px 0 0 0;
+
+}
+
+.section{
+    padding-left: 15px;
+}
+
+.section .input-field{
+    margin: 7px 0 7px 10px;
+}
+
+.rule{
+    color: white;
+    font-size: small;
+    margin: 5px 0 5px 10px;
+}
+
+.section label{
+    color: white;
+    font-size: small;
+}
+
+.account-table{
+    border-collapse: separate;
+    border-spacing: 10px;
+    width: 470px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.account-table td:first-child{
+    width: 270px;
+    vertical-align: center;
+}
+
+.create-btn{
+    width: 90px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+/**/
+
+.new-quote-container{
+    width: 620px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: black;
+    margin-top: 100px;
+    border-radius: 5px;
+}
+
+/**/
+
+
+
+.product-view{
+    margin-left: auto;
+    margin-right: auto;
+    width: 650px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid teal;
+}
+
+.product-view th{
+    vertical-align: center;
+    horiz-align: left;
+    text-align: left;
+}
+
+.product-view th:first-child{
+    width: 130px;
+    vertical-align: top;
+    horiz-align: right;
+}
+
+.product-view img{
+    width: 100%;
+    max-width: 105px;
+}
+
+.product-view .fa-star{
+    color: #fd4;
+}
+
+.product-view span{
+    font-size: 20px;
+}
+
+.product-info{
+    color: white;
+    line-height: 30px;
+}
+
+.product-info p{
+    font-family: Arial, serif;
+    font-weight: normal;
+    font-size: 15px;
+    color: white;
+    padding-bottom: 7px;
+}
+
+.product-info .title{
+    font-family: Arial, serif;
+    font-weight: normal;
+    font-size: 20px;
+    color: white;
+    padding-bottom: 7px;
+}
+
+.pagination{
+    height: 38px;
+    margin-left: 627px;
+    position: static;
+    bottom: 0px;
+
+}
+
+.pagination a{
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+.fa-search-minus{
+    color: teal;
+}
+
+.empty-search .search-img{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 150px;
+    height: 90px;
+    width: 90px;
+}
+
+.empty-search .search-result{
+    margin-left: auto;
+    margin-right: auto;
+    width: 520px;
+    margin-top: 20px;
+}
+
+.empty-search .description{
+    color: teal;
+    font-size: 28px;
+    font-weight: normal;
+    text-align: center;
+}
+
+.empty-search p{
+    color: white;
+    font-size: 17px;
+    font-weight: normal;
+    text-align: center;
+}
+
+
+#user-status{
+    display: none;
+}
+
+
+/*new quote page*/
+
+.new-quote-container .form-title{
+    color: teal;
+    text-align: left;
+    font-size: 30px;
+    padding-top: 10px;
+    padding-left: 35px;
+}
+
+.new-quote-form{
+    width: 550px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.quote-instr{
+    width: 550px;
+    padding-bottom: 5px;
+}
+
+.quote-instr .instr-button{
+    float: right;
+    height: 20px;
+    width: 20px;
+    padding: 0!important;
+    border-radius: 50%;
+    margin-bottom: 7px;
+}
+
+.quote-instr .help-info{
+    display: none;
+}
+
+.quote-instr p{
+    color: white;
+    font-size: small;
+}
+
+.quote-field{
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.quote-field textarea{
+    resize: none;
+    width: 550px;
+    height: 50px;
+}
+
+.save-quote-button{
+    padding-top: 5px;
+    padding-bottom: 15px;
+    width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+/*work with quotes page*/
+
+.quote-options{
+    width: 685px;
+    height: 66px;
+    margin-left: auto;
+    margin-right: auto;
+    border-bottom: 4px solid teal;
+    color: white;
+    padding-top: 18px;
+}
+
+.select {
+    background-color: teal;
+    font-weight: normal;
+    font-size: 15px;
+    height: 30px;
+    width: 285px;
+    color:white;
+    border: none;
+}
+
+.quote-view {
+    width: 675px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.quote-options a{
+    text-decoration: none;
+    color: teal;
+    padding-left: 30px;
+    font-size: 15px;
+}
+
+#quote-table{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse:collapse;
+    color: white;
+}
+
+#quote-table tr{
+    border-bottom: 2px solid grey;
+}
+
+#txt {
+    font-size: 20px;
+    font-weight: normal;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    color: white;
+}
+
+#ttl {
+    font-size: 14px;
+    font-weight: normal;
+    padding-bottom: 15px;
+    color: white;
+}
+
+#col-one{
+    padding:7px;
+    text-align:left;
+    width: 70px;
+}
+
+#col-two{
+    padding-left: 10px;
+    padding:7px;
+    text-align:left;
+}
+
+#edit-btn, #delete-btn{
+    width: 35px;
+    text-align: right;
+    vertical-align: top;
+    padding-top: 15px;
+}
+
+#no-quotes{
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    color: white;
+    font-size: 17px;
+    font-weight: normal;
+    text-align: center;
+}
+
+/*creation errors page*/
+
+.creation-errors{
+    width: 590px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+}
+
+.creation-errors p, li{
+    color: white;
+    font-size: 17px;
+    font-weight: normal;
+    text-align: left;
+    margin-bottom: 8px;
+}
+
+.creation-errors li {
+    color: white;
+    font-size: 15px;
+    font-weight: normal;
+    margin-bottom: 8px;
+    margin-left: 15px;
+}
+
+#again-btn{
+    margin-top: 15px;
+    width: 180px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#again-btn button{
+    width: 180px;
+
+}
+
+/*database error page*/
+
+.db-error{
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 150px;
+}
+
+.db-error p{
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    color: black;
+    font-size: 26px;
+    font-weight: normal;
+    text-align: center;
+}
+#exclamation-mark{
+    width: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
+
+#back-btn{
+    margin-top: 15px;
+    width: 180px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.confirm-quote, .quote-to-delete{
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
+}
+
+.confirm-quote{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.confirm-quote p{
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.confirm-btn{
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.confirm-btn button{
+    width: 85px;
+}
+
+.quote-to-delete th:first-child{
+    width: 150px;
+    horiz-align: center;
+    vertical-align: top;
+    padding: 7px;
+}
+
+.quote-to-delete th{
+    width: 450px;
+    text-align: left;
+}
+
+.quote-to-delete table{
+    border: 2px solid grey;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*#HeadRow{*/
+/*    background:teal;*/
+/*    color:white;*/
+/*    font-weight:bold;*/
+/*}*/
+/*#myTable td{*/
+/*    padding:5px;*/
+/*    border:1px solid black;*/
+/*    text-align:left;*/
+/*}*/
+
+/*.optionsDiv {*/
+/*    padding-bottom:10px;*/
+/*    font-weight:bold;*/
+/*}*/
+
+/*#selectField{*/
+/*    font-weight: normal;*/
+/*    !*border-radius: 5px;*!*/
+/*    border: 1px solid black;*/
+/*    font-size: 15px;*/
+/*    height: 30px;*/
+/*    width: 300px;*/
+/*    color:white;*/
+/*    background-color: teal;*/
+/*}*/
+
+
+
+
+
+
+
+
+/*.movies, .movie-info{*/
+/*    width: 750px;*/
+/*    background-color: black;*/
+/*    margin: auto;*/
+/*}*/
+
+
+
+
+
+
+/*#review-txt{*/
+/*    display: none;*/
+/*}*/
+
+
+
+
+
+
+
+
+
+
+
+
+/*.new-account-image{*/
+/* padding-top: 12px;*/
+/* padding-left: 43px;*/
+/*}*/
+
+
+
+
+
+/*.rule{*/
+/* color: white;*/
+/* font-size: small;*/
+/* margin-left: 20px;*/
+/*}*/
+
+/*.section{*/
+/* color: white;*/
+/* font-size: medium;*/
+/* margin-left: 20px;*/
+/*}*/
+
+/*.genres label{*/
+/* color: white;*/
+/* font-size: small;*/
+/*}*/
+
+/*li{*/
+/* margin-top: 15px;*/
+/* color: white;*/
+/*}*/
+
+/*!*.info{*!*/
+/*!* margin-right: auto;*!*/
+/*!* margin-left: auto;*!*/
+/*!* margin-top: 150px;*!*/
+/*!* width: 560px;*!*/
+/*!* height: auto;*!*/
+/*!* background: #000000;*!*/
+/*!* border-radius: 5px;*!*/
+/*!*}*!*/
+
+
+
+/*!*.outer{*!*/
+/*!* margin: auto;*!*/
+/*!* !*border-collapse: collapse;*!*!*/
+/*!* background-color: black;*!*/
+/*!* color: white;*!*/
+/*!*}*!*/
+
+
+/*!*.more-product-info{*!*/
+/*!* display: none;*!*/
+/*!*}*!*/
+
+
+/*!*.inner, .inner-review th{*!*/
+/*!* color: white;*!*/
+/*!* border-collapse: collapse;*!*/
+/*!* !*font-family: "Comic Sans MS";*!*!*/
+
+/*!*}*!*/
+
+/*!*.inner th, .inner-review th, p{*!*/
+/*!* !*font-weight: bold; !* same as 700 *!*!*!*/
+/*!* font-weight: normal; !* same as 400 *!*!*/
+/*!* !*font-weight: lighter; !* relative to the parent element *!*!*!*/
+/*!*}*!*/
+
+/*!*.inner th:first-child{*!*/
+/*!* width: 120px;*!*/
+/*!* vertical-align: top;*!*/
+/*!*}*!*/
+
+/*!*table{*!*/
+/*!* border-spacing: 20px;*!*/
+/*!* border: 1px solid #69c;*!*/
+/*!*}*!*/
+
+/*tbody{*/
+/* vertical-align: top;*/
+/*}*/
+
+/*!*.inner-review th:first-child{*!*/
+/*!* width: 600px;*!*/
+/*!* vertical-align: top;*!*/
+/*!*}*!*/
+
+/*.cont{*/
+/* width: 600px;*/
+/* background: #111;*/
+/* padding: 20px 30px;*/
+/* border: 1px solid #444;*/
+/* border-radius: 5px;*/
+/* display: flex;*/
+/* align-items: center;*/
+/* justify-content: center;*/
+/* flex-direction: column;*/
+/*}*/
+
+/*.cont .star-widget input{*/
+/* display: none;*/
+/*}*/
+
+/*.star-widget label{*/
+/* font-size: 15px;*/
+/* color: #444;*/
+/* padding: 5px;*/
+/* float: right;*/
+/* transition: all 0.2s ease;*/
+/*}*/
+
+/*input:not(:checked) ~ label:hover,*/
+/*input:not(:checked) ~ label:hover ~ label{*/
+/* color: #fd4;*/
+/*}*/
+
+/*input:checked ~ label{*/
+/* color: #fd4;*/
+/*}*/
+
+/*input#rate-10:checked ~ label{*/
+/* color: #fe7;*/
+/* text-shadow: 0 0 20px #952;*/
+/*}*/
