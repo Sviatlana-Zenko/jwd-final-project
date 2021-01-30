@@ -981,7 +981,7 @@ input#rate-10:checked ~ label{
 }
 
 .user-operations{
-    width: 660px;
+    width: 685px;
     border-bottom: 2px solid teal;
     margin-right: auto;
     margin-left: auto;
@@ -995,16 +995,51 @@ input#rate-10:checked ~ label{
 }
 
 .users{
-    width: 675px;
+    width: 685px;
     margin-left: auto;
     margin-right: auto;
     border-bottom: 2px solid teal;
+    border-collapse: collapse;
 }
 
-#user-info{
-    font-size: small;
+.users tr:first-child{
+    color: teal;
+    font-size: medium;
+}
+
+.users tr:first-child th{
+    height: 40px;
+}
+
+.users th:first-child{
+    width: 40px;
+    text-align: center;
+}
+.users th{
+    text-align: left;
+    word-break: break-all;
+    padding-left: 7px;
+    font-weight: normal;
+}
+
+#user-info button{
+    font-weight: normal;
+    width: 99px;
+}
+
+#user-info a{
+    text-decoration: none;
+}
+
+.continue{
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
     color: white;
     font-weight: normal;
+    font-size: medium;
+    padding: 25px;
+    text-align: center;
 }
 
 

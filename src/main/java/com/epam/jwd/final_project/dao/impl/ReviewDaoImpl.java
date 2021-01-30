@@ -5,17 +5,13 @@ import com.epam.jwd.final_project.dao.ReleaseResources;
 import com.epam.jwd.final_project.dao.ReviewDao;
 import com.epam.jwd.final_project.domain.*;
 import com.epam.jwd.final_project.exception.DatabaseInteractionException;
-import com.epam.jwd.final_project.pool.ConnectionPool;
-import com.epam.jwd.final_project.util.DateConverterUtil;
 import com.epam.jwd.final_project.util.PasswordHasherUtil;
-import com.mysql.cj.jdbc.PreparedStatementWrapper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ReviewDaoImpl implements ReviewDao, ReleaseResources {
 
@@ -90,6 +86,33 @@ public class ReviewDaoImpl implements ReviewDao, ReleaseResources {
         return reviews;
     }
 
+    private static final String SQL_SELECT_USER_REVIEWS =
+    "SELECT review.*, cinema_product.title, app_user.nickname FROM review " +
+            "INNER JOIN cinema_product ON review.cinema_product_id = cinema_product.id " +
+            "INNER JOIN app_user ON review.user_id = app_user.id " +
+            "WHERE app_user.id=?";
+    @Override
+    public List<Review> findAllForConcreteUserInReview(Long id, Connection connection)
+            throws DatabaseInteractionException {
+        List<Review> reviews = new ArrayList<>();
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(SQL_SELECT_USER_REVIEWS);
+            statement.setLong(1, id);
+            reviews.addAll(getReviewsFromResultSet(statement.executeQuery()));
+        } catch (SQLException e) {
+            throw new DatabaseInteractionException(e);
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
+        }
+
+        reviews.sort(Comparator.comparing(Review::getId).reversed());
+
+        return reviews;
+    }
+
     private static final String SQL_CHECK_REVIEW =
             "SELECT COUNT(*) AS number FROM review where review_id=?";
     private static final String SQL_UPDATE_MARKS = "UPDATE review SET review_positive_marks=?, " +
@@ -123,6 +146,77 @@ public class ReviewDaoImpl implements ReviewDao, ReleaseResources {
             closeConnection(connection);
         }
         return null;
+    }
+
+        private static final String SQL_INSERT_INTO_REVIEW_HISTORY =
+            "INSERT INTO review_history(review_id, cinema_product_id, user_id, title, nickname, " +
+                    "cinema_product_mark, review_summary, review_text, review_positive_marks, " +
+                            "review_negative_marks, has_spoilers) VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    @Override
+    public boolean transferInHistoryTable(List<Review> reviews, Connection connection)
+            throws DatabaseInteractionException {
+        boolean wasTransferred = false;
+        PreparedStatement statement = null;
+
+        try {
+            connection.setAutoCommit(false);
+            for (int i = 0; i < reviews.size(); i++) {
+                statement = connection.prepareStatement(SQL_INSERT_INTO_REVIEW_HISTORY);
+                statement.setLong(1, reviews.get(i).getId());
+                statement.setLong(2, reviews.get(i).getCinemaProductId());
+                statement.setLong(3, reviews.get(i).getUserId());
+                statement.setString(4, reviews.get(i).getProductTitle());
+                statement.setString(5, reviews.get(i).getUserNickname());
+                statement.setByte(6, reviews.get(i).getCinemaProductMark());
+                statement.setString(7, reviews.get(i).getReviewSummary());
+                statement.setString(8, reviews.get(i).getReviewText());
+                statement.setInt(9, reviews.get(i).getReviewPositiveMarks());
+                statement.setInt(10, reviews.get(i).getReviewNegativeMarks());
+                statement.setBoolean(11, reviews.get(i).getHasSpoilers());
+                statement.executeUpdate();
+            }
+            connection.commit();
+            wasTransferred = true;
+        } catch (SQLException e) {
+            rollback(connection);
+            throw new DatabaseInteractionException(e);
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
+        }
+
+        return wasTransferred;
+
+    }
+
+    @Override
+    public boolean fullDelete(Review review, Connection connection) throws DatabaseInteractionException {
+//        boolean wasDeleted = true;
+//        Connection connection = null;
+//        PreparedStatement statement = null;
+//
+//        try {
+//            connection.setAutoCommit(false);
+//            statement = connection.prepareStatement(SQL_DELETE_REVIEW);
+//            statement.setLong(1, review.getId());
+//            statement.execute();
+//            statement = connection.prepareStatement(SQL_DELETE_HISTORY_REVIEW);
+//            statement.setLong(1, review.getId());
+//            statement.execute();
+//            connection.commit();
+//        } catch (SQLException e) {
+//            wasDeleted = false;
+//            e.printStackTrace();
+//            //log
+//            rollback(connection);
+//        } finally {
+//            closeStatement(statement);
+//            closeConnection(connection);
+//        }
+//
+//        return wasDeleted;
+
+        return false;
     }
 
     private boolean checkIfContainsReview(ResultSet set) throws SQLException {

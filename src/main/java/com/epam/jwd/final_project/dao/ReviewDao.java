@@ -15,7 +15,16 @@ public interface ReviewDao {
     List<Review> findAllForConcreteProduct(Long id, Connection connection)
             throws DatabaseInteractionException;
 
+    List<Review> findAllForConcreteUserInReview(Long id, Connection connection)
+            throws DatabaseInteractionException;
+
     Review updateReviewMarks(Review review, Connection connection)
+            throws DatabaseInteractionException;
+
+    boolean transferInHistoryTable(List<Review> reviews, Connection connection)
+            throws DatabaseInteractionException;
+
+    boolean fullDelete(Review review,  Connection connection)
             throws DatabaseInteractionException;
 
 

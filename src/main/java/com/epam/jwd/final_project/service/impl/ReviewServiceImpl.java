@@ -48,6 +48,16 @@ public class ReviewServiceImpl implements ReviewService {
                 review, ConnectionPool.INSTANCE.getAvailableConnection());
     }
 
+    @Override
+    public List<Review> findAllForConcreteUserInReview(Long id) throws DatabaseInteractionException {
+        return ReviewDaoImpl.getInstance().findAllForConcreteUserInReview(id, ConnectionPool.INSTANCE.getAvailableConnection());
+    }
+
+    @Override
+    public boolean transferInHistoryTable(List<Review> reviews) throws DatabaseInteractionException {
+        return ReviewDaoImpl.getInstance().transferInHistoryTable(reviews, ConnectionPool.INSTANCE.getAvailableConnection());
+    }
+
 //    @Override
 //    public boolean create(Review review) {
 ////        return ReviewDaoImpl.getInstance().create(review);

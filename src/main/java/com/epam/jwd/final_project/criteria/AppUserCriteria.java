@@ -16,14 +16,14 @@ public class AppUserCriteria extends Criteria<AppUser> {
     private LocalDate dateOfBirth;
     private String email;
     private String password;
-    private Role role;
-    private Status status;
-    private Boolean isBanned;
+//    private Role role;
+//    private Status status;
+//    private Boolean isBanned;
     private List<Genre> favouriteGenres;
 
     public AppUserCriteria(Long id, String firstName, String lastName, String nickname,
-                           LocalDate dateOfBirth, String email, String password, Role role,
-                           Status status, Boolean isBanned, List<Genre> favouriteGenres) {
+                           LocalDate dateOfBirth, String email, String password, /*Role role,
+                           Status status, Boolean isBanned,*/ List<Genre> favouriteGenres) {
         super(id);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -31,9 +31,9 @@ public class AppUserCriteria extends Criteria<AppUser> {
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.password = password;
-        this.role = role;
-        this.status = status;
-        this.isBanned = isBanned;
+//        this.role = role;
+//        this.status = status;
+//        this.isBanned = isBanned;
         this.favouriteGenres = favouriteGenres;
     }
 
@@ -61,17 +61,17 @@ public class AppUserCriteria extends Criteria<AppUser> {
         return password;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public Boolean getBanned() {
-        return isBanned;
-    }
+//    public Role getRole() {
+//        return role;
+//    }
+//
+//    public Status getStatus() {
+//        return status;
+//    }
+//
+//    public Boolean getBanned() {
+//        return isBanned;
+//    }
 
     public List<Genre> getFavouriteGenres() {
         return favouriteGenres;
@@ -84,9 +84,9 @@ public class AppUserCriteria extends Criteria<AppUser> {
         private LocalDate dateOfBirth;
         private String email;
         private String password;
-        private Role role;
-        private Status status;
-        private Boolean isBanned;
+//        private Role role;
+//        private Status status;
+//        private Boolean isBanned;
         private List<Genre> favouriteGenres;
 
         public void firstName(String firstName) {
@@ -113,17 +113,17 @@ public class AppUserCriteria extends Criteria<AppUser> {
             this.password = password;
         }
 
-        public void role(Role role) {
-            this.role = role;
-        }
-
-        public void status(Status status) {
-            this.status = status;
-        }
-
-        public void isBanned(Boolean isBanned) {
-            this.isBanned = isBanned;
-        }
+//        public void role(Role role) {
+//            this.role = role;
+//        }
+//
+//        public void status(Status status) {
+//            this.status = status;
+//        }
+//
+//        public void isBanned(Boolean isBanned) {
+//            this.isBanned = isBanned;
+//        }
 
         public void favouriteGenres(List<Genre> favouriteGenres) {
             this.favouriteGenres = favouriteGenres;
@@ -132,7 +132,7 @@ public class AppUserCriteria extends Criteria<AppUser> {
 
         public AppUserCriteria build() {
             return new AppUserCriteria(id, firstName, lastName, nickname, dateOfBirth,
-                                       email, password, role, status, isBanned, favouriteGenres);
+                                       email, password, /*role, status, isBanned,*/ favouriteGenres);
         }
     }
 
@@ -145,9 +145,9 @@ public class AppUserCriteria extends Criteria<AppUser> {
                 ", dateOfBirth=" + dateOfBirth +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", role=" + role +
-                ", status=" + status +
-                ", isBanned=" + isBanned +
+//                ", role=" + role +
+//                ", status=" + status +
+//                ", isBanned=" + isBanned +
                 ", favouriteGenres=" + favouriteGenres +
                 "} " + super.toString();
     }

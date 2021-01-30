@@ -17,7 +17,7 @@
 <div>
     <table class="users">
         <tbody style="color: white">
-        <tr style="border-bottom: 2px solid teal; padding-top: 10px">
+        <tr id="heading">
             <th>id</th>
             <th><fmt:message key="label.nickname"/></th>
             <th><fmt:message key="label.email"/></th>
@@ -28,32 +28,32 @@
                 <th>
                     ${user.id}
                 </th>
-                <th>
+                <th style="width: 153px">
                     ${user.nickname}
                 </th>
-                <th>
+                <th style="width: 275px">
                     ${user.email}
                 </th>
-                <th>
+                <th style="width: 215px">
                     <c:choose>
                         <c:when test="${user.banned == false}">
                             <a href="home?command=change-block-status&status=block&id=${user.id}">
                                 <button class="w3-bar-item w3-button w3-teal">
-                                    block user
+                                    <fmt:message key="button.block"/>
                                 </button>
                             </a>
                         </c:when>
                         <c:otherwise>
                             <a href="home?command=change-block-status&status=unblock&id=${user.id}">
                                 <button class="w3-bar-item w3-button w3-teal">
-                                    unblock user
+                                    <fmt:message key="button.unblock"/>
                                 </button>
                             </a>
                         </c:otherwise>
                     </c:choose>
                     <a href="home?command=#">
                         <button class="w3-bar-item w3-button w3-teal">
-                            delete
+                            <fmt:message key="button.delete"/>
                         </button>
                     </a>
                 </th>

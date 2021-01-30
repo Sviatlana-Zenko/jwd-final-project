@@ -24,6 +24,12 @@ public interface AppUserDao extends EntityDao<AppUser, AppUserCriteria> {
     boolean addRatedReview(Long userId, Long reviewId, boolean isPositiveMark, Connection connection)
             throws DatabaseInteractionException;
 
+    boolean updateBan(Long userId, Boolean isBanned, Connection connection)
+            throws DatabaseInteractionException;
+
+
+
+
 
 
     boolean checkIfNickNameExists(String nickname) throws DatabaseInteractionException;

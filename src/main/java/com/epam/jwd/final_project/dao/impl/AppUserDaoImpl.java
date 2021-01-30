@@ -34,8 +34,7 @@ public class AppUserDaoImpl implements AppUserDao, ReleaseResources {
             "SELECT * FROM rated_reviews ORDER BY user_id";
     private static final String SQL_SELECT_USER_BY_NICKNAME =
             "SELECT * FROM app_user LEFT JOIN user_genre ug ON app_user.id = ug.user_id WHERE nickname=?";
-    private static final String SQL_DELETE_USER =
-            "DELETE FROM app_user WHERE id=?";
+
     private static final String SQL_CHECK_NICKNAME_PRESENCE =
             "SELECT COUNT(*) AS number FROM app_user where nickname=?";
     private static final String SQL_CHECK_EMAIL_PRESENCE =
@@ -87,6 +86,28 @@ public class AppUserDaoImpl implements AppUserDao, ReleaseResources {
         }
 
         return wasCreated;
+    }
+
+    private static final String SQL_DELETE_USER =
+            "DELETE FROM app_user WHERE id=?";
+    @Override
+    public boolean delete(AppUser appUser, Connection connection) throws DatabaseInteractionException {
+        boolean wasDeleted = true;
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(SQL_DELETE_USER);
+            statement.setLong(1, appUser.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            wasDeleted = false;
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
+        }
+
+        return wasDeleted;
     }
 
     private static final String SQL_SELECT_USERS =
@@ -271,6 +292,7 @@ public class AppUserDaoImpl implements AppUserDao, ReleaseResources {
     @Override
     public boolean updateStatus(AppUser user, Status status, Connection connection)
             throws DatabaseInteractionException {
+        boolean wasUpdated = false;
         PreparedStatement statement = null;
 
         try {
@@ -278,6 +300,7 @@ public class AppUserDaoImpl implements AppUserDao, ReleaseResources {
             statement.setLong(1, status.getId());
             statement.setLong(2, user.getId());
             statement.executeUpdate();
+            wasUpdated = true;
         } catch (SQLException e) {
             throw new DatabaseInteractionException(e);
         } finally {
@@ -285,7 +308,31 @@ public class AppUserDaoImpl implements AppUserDao, ReleaseResources {
             closeConnection(connection);
         }
 
-        return false;
+        return wasUpdated;
+    }
+
+    private static final String SQL_UPDATE_BAN =
+            "UPDATE app_user SET is_banned=? WHERE id=?";
+    @Override
+    public boolean updateBan(Long userId, Boolean isBanned, Connection connection)
+            throws DatabaseInteractionException {
+        boolean wasUpdated = false;
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(SQL_UPDATE_BAN);
+            statement.setBoolean(1, isBanned);
+            statement.setLong(2, userId);
+            statement.executeUpdate();
+            wasUpdated = true;
+        } catch (SQLException e) {
+            throw new DatabaseInteractionException(e);
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
+        }
+
+        return wasUpdated;
     }
 
     private List<Integer> getMarksFromResultSet(ResultSet set, String columnName) throws SQLException {
@@ -424,14 +471,11 @@ public class AppUserDaoImpl implements AppUserDao, ReleaseResources {
     }
 
 
+
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 
-    @Override
-    public boolean delete(AppUser appUser, Connection connection) throws DatabaseInteractionException {
-        return false;
-    }
 
 
     public List<AppUser> findConcreteAmount(Long start, Long number) {

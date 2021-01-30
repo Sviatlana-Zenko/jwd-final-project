@@ -14,5 +14,10 @@
 <body>
 <c:import url="header.jsp"/>
 <c:import url="user-operation-btn.jsp"/>
+<div class="continue">
+    <p>
+        <fmt:message key="label.next.operation"/>
+    </p>
+</div>
 </body>
 </html>

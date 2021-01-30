@@ -18,6 +18,7 @@ import com.epam.jwd.final_project.validation.ValidationChainFactory;
 import com.epam.jwd.final_project.validation.ValidationType;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class AppUserServiceImpl implements UserService {
 
@@ -50,6 +51,24 @@ public class AppUserServiceImpl implements UserService {
         }
 
         return wasCreated;
+    }
+
+    @Override
+    public boolean delete(AppUser appUser) throws DatabaseInteractionException {
+        boolean wasDeleted = false;
+
+        List<Review> toTransfer = ReviewServiceImpl.INSTANCE.findAllForConcreteUserInReview(appUser.getId());
+        if (toTransfer.size() > 0) {
+            toTransfer = toTransfer.stream()
+                    .peek(review -> review.setUserNickname("deleted user"))
+                    .collect(Collectors.toList());
+            if (ReviewServiceImpl.INSTANCE.transferInHistoryTable(toTransfer)) {
+                wasDeleted = AppUserDaoImpl.getInstance().delete(appUser, ConnectionPool.INSTANCE.getAvailableConnection());
+                RatingContext.INSTANCE.reinit(AppUser.class);
+            }
+        }
+
+        return wasDeleted;
     }
 
     @Override
@@ -133,15 +152,22 @@ public class AppUserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean updateBan(Long userId, Boolean isBanned) throws DatabaseInteractionException {
+        boolean wasUpdated = AppUserDaoImpl.getInstance().updateBan(
+                userId, isBanned, ConnectionPool.INSTANCE.getAvailableConnection());
+        if (wasUpdated) {
+            RatingContext.INSTANCE.reinit(AppUser.class);
+        }
+
+        return wasUpdated;
+    }
+
+    @Override
     public AppUser updateByCriteria(AppUser appUser, AppUserCriteria appUserCriteria)
             throws ValidationException, DatabaseInteractionException {
         ValidationChain<AppUser> chain = ValidationChainFactory.INSTANCE.
                 createValidationChain(appUser);
-
-        System.out.println("appUserCriteria + " + appUserCriteria);
         List<String> validationErrors = chain.getValidationReport(appUser, ValidationType.UPDATE_OBJECT);
-
-        System.out.println("validationErrors + " + validationErrors);
 
         if (validationErrors.size() == 0) {
             appUser = AppUserDaoImpl.getInstance().updateByCriteria(appUser, appUserCriteria,
@@ -169,11 +195,6 @@ public class AppUserServiceImpl implements UserService {
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-
-    @Override
-    public boolean delete(AppUser appUser) {
-        return false;
-    }
 
 
     @Override

@@ -65,6 +65,8 @@ public class CommandFactory {
                 return new DeleteQuoteCommand();
             case CONFIRM_QUOTE_DELETING:
                 return new ConfirmQuoteDeletingCommand();
+            case CHANGE_BLOCK_STATUS:
+                return new ChangeBlockStatusCommand();
             case SHOW_USERS:
                 return new ShowUsersCommand();
             default:

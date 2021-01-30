@@ -101,9 +101,9 @@ public final class SqlUpdateBuilderUtil {
         } else {
             criteriaValues.put("password", PasswordHasherUtil.generatePasswordHash(criteria.getPassword()));
         }
-        criteriaValues.put("role", criteria.getRole());
-        criteriaValues.put("status", criteria.getStatus());
-        criteriaValues.put("isBanned", criteria.getBanned());
+//        criteriaValues.put("role", criteria.getRole());
+//        criteriaValues.put("status", criteria.getStatus());
+//        criteriaValues.put("isBanned", criteria.getBanned());
 
         return criteriaValues;
     }

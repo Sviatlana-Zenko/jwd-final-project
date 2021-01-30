@@ -29,6 +29,7 @@ public enum CommandType {
     DELETE_QUOTE("delete-quote"),
     CONFIRM_QUOTE_DELETING("confirm-quote-deleting"),
     SHOW_USERS("users"),
+    CHANGE_BLOCK_STATUS("change-block-status"),
     SHOW_REVIEWS("show-reviews");
 
     private String commandName;
