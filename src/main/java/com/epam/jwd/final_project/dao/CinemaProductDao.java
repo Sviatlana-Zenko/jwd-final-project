@@ -9,17 +9,21 @@ import java.sql.Connection;
 import java.util.List;
 
 
-public interface CinemaProductDao extends AppEntityDao<CinemaProduct, CinemaProductCriteria> {
+public interface CinemaProductDao extends EntityDao<CinemaProduct, CinemaProductCriteria> {
 
-    List<CinemaProduct> findAllByType(ProductType productType);
+    List<CinemaProduct> findAllByType(ProductType productType, Connection connection)
+            throws DatabaseInteractionException;
 
     CinemaProduct updateByCriteria(CinemaProductCriteria criteria, CinemaProduct cinemaProduct);
 
-    List<CinemaProduct> findConcreteAmount(ProductType type, Long start, Long number);
+    List<CinemaProduct> findConcreteAmountByType(ProductType type, long startIndex,
+            int number, Connection connection) throws DatabaseInteractionException;
 
-    Long getNumberOfElements(ProductType productType);
+    int getNumberOfProducts(ProductType productType, Connection connection)
+            throws DatabaseInteractionException;
 
-    List<CinemaProduct> findBySearchRequest(String searchRequest);
+    List<CinemaProduct> findBySearchRequest(String searchRequest, Connection connection)
+            throws DatabaseInteractionException;
 
     List<CinemaProduct> findRecommendations(Connection connection) throws DatabaseInteractionException;
 

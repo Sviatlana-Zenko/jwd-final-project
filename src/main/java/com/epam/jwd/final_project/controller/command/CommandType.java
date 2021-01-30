@@ -12,10 +12,24 @@ public enum CommandType {
     CREATE_NEW_ACCOUNT("create-account"),
     TO_LOGIN_RESULT("login-result"),
     TO_VALIDATION_ERROR("validation-error"),
+    TO_REVIEW_FORM("review-form"),
     SHOW_USER_REVIEWS("show-user-reviews"),
-    UPDATE_REVIEW_MARKS("update-marks"),
+    EDIT_REVIEW_MARKS("edit-marks"),
     SEARCH("search"),
-    TO_SEARCH_RESULT("search-result");
+    TO_SEARCH_RESULT("search-result"),
+    SHOW_PRODUCTS("show-products"),
+    SHOW_PRODUCT_INFO("product-info"),
+    CREATE_REVIEW("create-review"),
+    QUOTE_OPERATIONS("quote-operations"),
+    USER_OPERATIONS("user-operations"),
+    TO_NEW_QUOTE_FORM("new-quote-form"),
+    CREATE_QUOTE("create-quote"),
+    EDIT_QUOTE("edit-quote"),
+    TO_EDIT_QUOTE_FORM("edit-quote-form"),
+    DELETE_QUOTE("delete-quote"),
+    CONFIRM_QUOTE_DELETING("confirm-quote-deleting"),
+    SHOW_USERS("users"),
+    SHOW_REVIEWS("show-reviews");
 
     private String commandName;
 

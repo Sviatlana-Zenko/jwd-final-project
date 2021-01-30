@@ -385,8 +385,7 @@ body{
     text-align: center;
 }
 
-/**/
-
+/*products*/
 
 .product-view{
     margin-left: auto;
@@ -415,7 +414,7 @@ body{
 }
 
 .product-view .fa-star{
-    color: #fd4;
+    color: orange;
 }
 
 .product-view span{
@@ -448,7 +447,6 @@ body{
     margin-left: 627px;
     position: static;
     bottom: 0px;
-
 }
 
 .pagination a{
@@ -456,6 +454,11 @@ body{
     padding: 8px 16px;
     text-decoration: none;
 }
+
+
+
+
+
 
 .fa-search-minus{
     color: teal;
@@ -733,6 +736,22 @@ body{
     text-align: center;
     margin-top: 20px;
     margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.quote-to-delete p{
+    padding-left: 20px;
+}
+
+.confirm-quote a{
+    text-decoration: none;
+}
+
+.confirm-quote div{
+    width: 250px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .confirm-btn{
@@ -753,7 +772,7 @@ body{
 }
 
 .quote-to-delete th{
-    width: 450px;
+    width: 460px;
     text-align: left;
 }
 
@@ -761,6 +780,232 @@ body{
     border: 2px solid grey;
 }
 
+/*movie-info*/
+
+.prod-info{
+    width: 690px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.prod-info table{
+    padding-top: 10px;
+    padding-left: 20px;
+    border-collapse: separate;
+    border-spacing: 10px;
+}
+
+#poster{
+    vertical-align: top;
+}
+
+#poster img{
+    padding-bottom: 20px;
+}
+
+#product-genres{
+    text-transform: lowercase;
+}
+
+.info-inner{
+    border-collapse: collapse;
+    font-weight: normal;
+    color: white;
+    text-align: left;
+}
+
+.info-inner th:first-child{
+    font-size: 15px;
+    font-weight: normal;
+    width: 140px;
+}
+
+.info-inner th{
+    font-size: 16px;
+    font-weight: normal;
+    vertical-align: top;
+    line-height: 1.5
+}
+
+#story-line{
+    text-align: justify;
+    font-size: 16px;
+    font-weight: normal;
+    padding-left: 30px;
+    color: white;
+    line-height: 1.6
+}
+
+.field-name{
+    line-height: 1.4;
+}
+
+/*reviews*/
+
+.review-container{
+    width: 675px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.review-container p{
+    font-size: 16px;
+    font-weight: normal;
+    color: white;
+    text-align: justify;
+}
+
+.thumbs{
+    font-weight: normal;
+    width: 65px;
+}
+
+.review-info{
+    padding: 10px 0;
+    border-bottom: 2px solid teal;
+}
+
+.review-info div{
+    padding-top: 5px;
+}
+
+#rew-ttl{
+    font-size: 20px;
+    font-weight: normal;
+    color: teal;
+}
+
+#rew-nick{
+    font-size: 15px;
+    font-weight: normal;
+    color: white;
+    padding-bottom: 5px;
+}
+
+#spoiler{
+    color: firebrick;
+    font-size: 15px;
+    padding-bottom: 15px;
+    font-weight: normal;
+}
+
+#none-reviews{
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    text-align: center;
+    color: teal;
+    font-size: 21px;
+    font-weight: normal;
+}
+
+.read{
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    color: white;
+    cursor: pointer;
+}
+
+.more{
+    display: none;
+}
+
+/*review-form*/
+
+.container{
+    width: 390px;
+    height: 430px;
+    margin-right: auto;
+    margin-left: auto;
+    background-color: black;
+    margin-top: 100px;
+}
+
+.container p{
+    color: teal;
+    font-weight: normal;
+    font-size: 28px;
+    padding: 10px 0 0 25px;
+}
+
+.review-form{
+    width: 350px;
+    height: 352px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#summary{
+    width: 350px;
+    margin: 5px 0 5px 0;
+}
+
+.container .star-widget input{
+    display: none;
+}
+
+.star-widget{
+    float: left;
+}
+
+.container .star-widget input{
+    display: none;
+}
+
+.star-widget label{
+    font-size: 15px;
+    color: #444;
+    padding: 6px;
+    float: right;
+    transition: all 0.2s ease;
+}
+
+input:not(:checked) ~ label:hover,
+input:not(:checked) ~ label:hover ~ label{
+    color: orange;
+}
+
+input:checked ~ label{
+    color: orange;
+}
+
+input#rate-10:checked ~ label{
+    color: orange;
+    text-shadow: 0 0 20px #952;
+}
+
+.review-form div{
+    padding: 10px 0 10px 0;
+}
+
+.user-operations{
+    width: 660px;
+    border-bottom: 2px solid teal;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    padding: 8px 0 8px 0;
+}
+
+.user-operations button{
+    font-weight: normal;
+    width: 175px;
+}
+
+.users{
+    width: 675px;
+    margin-left: auto;
+    margin-right: auto;
+    border-bottom: 2px solid teal;
+}
+
+#user-info{
+    font-size: small;
+    color: white;
+    font-weight: normal;
+}
 
 
 
@@ -773,54 +1018,6 @@ body{
 
 
 
-/*#HeadRow{*/
-/*    background:teal;*/
-/*    color:white;*/
-/*    font-weight:bold;*/
-/*}*/
-/*#myTable td{*/
-/*    padding:5px;*/
-/*    border:1px solid black;*/
-/*    text-align:left;*/
-/*}*/
-
-/*.optionsDiv {*/
-/*    padding-bottom:10px;*/
-/*    font-weight:bold;*/
-/*}*/
-
-/*#selectField{*/
-/*    font-weight: normal;*/
-/*    !*border-radius: 5px;*!*/
-/*    border: 1px solid black;*/
-/*    font-size: 15px;*/
-/*    height: 30px;*/
-/*    width: 300px;*/
-/*    color:white;*/
-/*    background-color: teal;*/
-/*}*/
-
-
-
-
-
-
-
-
-/*.movies, .movie-info{*/
-/*    width: 750px;*/
-/*    background-color: black;*/
-/*    margin: auto;*/
-/*}*/
-
-
-
-
-
-
-/*#review-txt{*/
-/*    display: none;*/
-/*}*/
 
 
 
@@ -831,12 +1028,6 @@ body{
 
 
 
-
-
-/*.new-account-image{*/
-/* padding-top: 12px;*/
-/* padding-left: 43px;*/
-/*}*/
 
 
 
@@ -921,40 +1112,4 @@ body{
 /*!* vertical-align: top;*!*/
 /*!*}*!*/
 
-/*.cont{*/
-/* width: 600px;*/
-/* background: #111;*/
-/* padding: 20px 30px;*/
-/* border: 1px solid #444;*/
-/* border-radius: 5px;*/
-/* display: flex;*/
-/* align-items: center;*/
-/* justify-content: center;*/
-/* flex-direction: column;*/
-/*}*/
 
-/*.cont .star-widget input{*/
-/* display: none;*/
-/*}*/
-
-/*.star-widget label{*/
-/* font-size: 15px;*/
-/* color: #444;*/
-/* padding: 5px;*/
-/* float: right;*/
-/* transition: all 0.2s ease;*/
-/*}*/
-
-/*input:not(:checked) ~ label:hover,*/
-/*input:not(:checked) ~ label:hover ~ label{*/
-/* color: #fd4;*/
-/*}*/
-
-/*input:checked ~ label{*/
-/* color: #fd4;*/
-/*}*/
-
-/*input#rate-10:checked ~ label{*/
-/* color: #fe7;*/
-/* text-shadow: 0 0 20px #952;*/
-/*}*/

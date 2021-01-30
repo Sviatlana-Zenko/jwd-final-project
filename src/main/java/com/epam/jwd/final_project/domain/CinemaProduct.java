@@ -17,7 +17,7 @@ public class CinemaProduct extends AbstractAppEntity {
     private List<Genre> genres; //+
     private String starring; //+
     private String posterUrl; //+
-    private List<Review> reviews;
+//    private List<Review> reviews;
 
     public CinemaProduct() {
     }
@@ -56,7 +56,7 @@ public class CinemaProduct extends AbstractAppEntity {
         this.genres = genres;
         this.starring = starring;
         this.posterUrl = posterUrl;
-        this.reviews = new ArrayList<>();
+//        this.reviews = new ArrayList<>();
     }
 
     public CinemaProduct(ProductType type, String title, String description,
@@ -73,7 +73,7 @@ public class CinemaProduct extends AbstractAppEntity {
         this.genres = genres;
         this.starring = starring;
         this.posterUrl = posterUrl;
-        this.reviews = new ArrayList<>();
+//        this.reviews = new ArrayList<>();
     }
 
     //++++
@@ -89,9 +89,10 @@ public class CinemaProduct extends AbstractAppEntity {
         this.runningTime = runningTime;
         this.country = country;
         this.ageRating = ageRating;
+        this.genres = new ArrayList<>();
         this.starring = starring;
         this.posterUrl = posterUrl;
-        this.reviews = new ArrayList<>();
+//        this.reviews = new ArrayList<>();
     }
 
     //для рекомендованных продуктов
@@ -158,9 +159,9 @@ public class CinemaProduct extends AbstractAppEntity {
         return posterUrl;
     }
 
-    public List<Review> getReviews() {
-        return reviews;
-    }
+//    public List<Review> getReviews() {
+//        return reviews;
+//    }
 
     // Нужны ли мне здесь setter-ы, toString(), equals() и hashCode()?
     public void setType(ProductType type) {
@@ -207,9 +208,9 @@ public class CinemaProduct extends AbstractAppEntity {
         this.posterUrl = posterUrl;
     }
 
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
+//    public void setReviews(List<Review> reviews) {
+//        this.reviews = reviews;
+//    }
 
     // Нормально ли такое переопределение?
     @Override
@@ -226,7 +227,6 @@ public class CinemaProduct extends AbstractAppEntity {
                 ", genres=" + genres +
                 ", starring='" + starring +
                 "', posterUrl='" + posterUrl +
-                "', reviews=" + reviews +
                 "}";
     }
 

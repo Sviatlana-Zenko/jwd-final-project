@@ -116,13 +116,20 @@ public class AppUserServiceImpl implements UserService {
         AppUserDaoImpl.getInstance().updateStatus(user, status, ConnectionPool.INSTANCE.getAvailableConnection());
         RatingContext.INSTANCE.reinit(AppUser.class);
 
-//        AppUserCriteria criteria = new AppUserCriteria.AppUserCriteriaBuilder() {{
-//            status(status);
-//        }}.build();
-//
-//        AppUserServiceImpl.getInstance().updateByCriteria(user, criteria);
-
         return null;
+    }
+
+    @Override
+    public boolean addReviewedProduct(Long userId, Long productId) throws DatabaseInteractionException {
+        return AppUserDaoImpl.getInstance().addReviewedProduct(
+                userId, productId, ConnectionPool.INSTANCE.getAvailableConnection());
+    }
+
+    @Override
+    public boolean addRatedReview(Long userId, Long reviewId, boolean isPositiveMark)
+            throws DatabaseInteractionException {
+        return AppUserDaoImpl.getInstance().addRatedReview(userId, reviewId, isPositiveMark,
+                ConnectionPool.INSTANCE.getAvailableConnection());
     }
 
     @Override
@@ -173,13 +180,13 @@ public class AppUserServiceImpl implements UserService {
     public boolean createUserReview(AppUser appUser, Review review) {
         boolean wasCreated = true;
 
-        if (!ReviewServiceImpl.INSTANCE.create(review)) {
-            wasCreated = false;
-        } else {
-            if (!AppUserDaoImpl.getInstance().addReviewedProduct(appUser.getId(), review.getCinemaProductId())) {
-                wasCreated = false;
-            }
-        }
+//        if (!ReviewServiceImpl.INSTANCE.create(review)) {
+//            wasCreated = false;
+//        } else {
+//            if (!AppUserDaoImpl.getInstance().addReviewedProduct(appUser.getId(), review.getCinemaProductId())) {
+//                wasCreated = false;
+//            }
+//        }
 
         return wasCreated;
     }

@@ -25,7 +25,10 @@ public final class SqlUpdateBuilderUtil {
         }
 
         sqlBuilder.append("WHERE id=" + quote.getId());
-        sqlBuilder.deleteCharAt(sqlBuilder.lastIndexOf(","));
+        int lastCommaIndex = sqlBuilder.lastIndexOf(",");
+        if (lastCommaIndex != -1) {
+            sqlBuilder.deleteCharAt(sqlBuilder.lastIndexOf(","));
+        }
 
         return sqlBuilder.toString();
     }

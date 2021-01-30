@@ -18,18 +18,16 @@ public interface AppUserDao extends EntityDao<AppUser, AppUserCriteria> {
 
     boolean updateStatus(AppUser user, Status status, Connection connection) throws DatabaseInteractionException;
 
+    boolean addReviewedProduct(Long userId, Long productId, Connection connection)
+            throws DatabaseInteractionException;
+
+    boolean addRatedReview(Long userId, Long reviewId, boolean isPositiveMark, Connection connection)
+            throws DatabaseInteractionException;
+
+
+
     boolean checkIfNickNameExists(String nickname) throws DatabaseInteractionException;
 
     boolean checkIfEmailExists(String email) throws DatabaseInteractionException;
-
-
-
-
-
-
-
-    boolean addRatedReview(Long userId, Long reviewId, boolean isPositiveMark);
-
-    boolean addReviewedProduct(Long userId, Long productId);
 
 }

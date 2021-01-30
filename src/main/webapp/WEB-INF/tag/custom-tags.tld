@@ -16,4 +16,12 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
+    <tag>
+        <name>splitterTag</name>
+        <tag-class>com.epam.jwd.final_project.tag.NumberSplitterTag</tag-class>
+        <attribute>
+            <name>amount</name>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
 </taglib>

@@ -19,6 +19,11 @@ public interface UserService extends EntityService<AppUser, AppUserCriteria> {
 
     Status updateUserStatus(AppUser user) throws DatabaseInteractionException, ValidationException;
 
+    boolean addReviewedProduct(Long userId, Long productId) throws DatabaseInteractionException;
+
+    boolean addRatedReview(Long userId, Long reviewId, boolean isPositiveMark)
+            throws DatabaseInteractionException;
+
 
 
     boolean createUserReview(AppUser appUser, Review review);

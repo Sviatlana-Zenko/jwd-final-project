@@ -2,6 +2,7 @@ package com.epam.jwd.final_project.dao.impl;
 
 import com.epam.jwd.final_project.criteria.AppUserCriteria;
 import com.epam.jwd.final_project.dao.AppUserDao;
+import com.epam.jwd.final_project.dao.ReleaseResources;
 import com.epam.jwd.final_project.domain.*;
 import com.epam.jwd.final_project.exception.DatabaseInteractionException;
 import com.epam.jwd.final_project.pool.ConnectionPool;
@@ -14,7 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public class AppUserDaoImpl implements AppUserDao {
+public class AppUserDaoImpl implements AppUserDao, ReleaseResources {
 
     private static AppUserDaoImpl INSTANCE;
 
@@ -35,10 +36,6 @@ public class AppUserDaoImpl implements AppUserDao {
             "SELECT * FROM app_user LEFT JOIN user_genre ug ON app_user.id = ug.user_id WHERE nickname=?";
     private static final String SQL_DELETE_USER =
             "DELETE FROM app_user WHERE id=?";
-    private static final String SQL_INSERT_INTO_RATED_REVIEW =
-            "INSERT INTO rated_reviews(user_id, review_id, is_positive_mark) VALUE (?, ?, ?)";
-    private static final String SQL_INSERT_INTO_REVIEWED_PRODUCT =
-            "INSERT INTO reviewed_products(user_id, cinema_product_id) VALUE (?, ?)";
     private static final String SQL_CHECK_NICKNAME_PRESENCE =
             "SELECT COUNT(*) AS number FROM app_user where nickname=?";
     private static final String SQL_CHECK_EMAIL_PRESENCE =
@@ -134,7 +131,7 @@ public class AppUserDaoImpl implements AppUserDao {
         try {
             statement = connection.prepareStatement(SQL_SELECT_USER_BY_EMAIL);
             List<AppUser> users = getUsersFromResultSet(statement.executeQuery());
-            if (users.size() != 1) {
+            if (users.size() == 1) {
                 user = users.get(0);
                 statement = connection.prepareStatement(SQL_SELECT_USER_RATED_REVIEWS);
                 addConcreteUserRatedReviews(user, statement.executeQuery());
@@ -162,7 +159,7 @@ public class AppUserDaoImpl implements AppUserDao {
         try {
             statement = connection.prepareStatement(SQL_SELECT_USER_BY_ID);
             List<AppUser> users = getUsersFromResultSet(statement.executeQuery());
-            if (users.size() != 1) {
+            if (users.size() == 1) {
                 user = users.get(0);
                 statement = connection.prepareStatement(SQL_SELECT_USER_RATED_REVIEWS);
                 addConcreteUserRatedReviews(user, statement.executeQuery());
@@ -377,6 +374,54 @@ public class AppUserDaoImpl implements AppUserDao {
     }
 
 
+    private static final String SQL_INSERT_INTO_REVIEWED_PRODUCT =
+            "INSERT INTO reviewed_products(user_id, cinema_product_id) VALUE (?, ?)";
+    @Override
+    public boolean addReviewedProduct(Long userId, Long productId, Connection connection)
+            throws DatabaseInteractionException {
+        boolean wasAdded = false;
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(SQL_INSERT_INTO_REVIEWED_PRODUCT);
+            statement.setLong(1, userId);
+            statement.setLong(2, productId);
+            statement.executeUpdate();
+            wasAdded = true;
+        } catch (SQLException e) {
+            throw new DatabaseInteractionException(e);
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
+        }
+
+        return wasAdded;
+    }
+
+    private static final String SQL_INSERT_INTO_RATED_REVIEW =
+            "INSERT INTO rated_reviews(user_id, review_id, is_positive_mark) VALUE (?, ?, ?)";
+    @Override
+    public boolean addRatedReview(Long userId, Long reviewId, boolean isPositiveMark,
+                                  Connection connection) throws DatabaseInteractionException {
+        boolean wasAdded = false;
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(SQL_INSERT_INTO_RATED_REVIEW);
+            statement.setLong(1, userId);
+            statement.setLong(2, reviewId);
+            statement.setBoolean(3, isPositiveMark);
+            statement.executeUpdate();
+            wasAdded = true;
+        } catch (SQLException e) {
+            throw new DatabaseInteractionException(e);
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
+        }
+
+        return wasAdded;
+    }
 
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -492,41 +537,6 @@ public class AppUserDaoImpl implements AppUserDao {
 //
 //        return wasDeleted;
 //    }
-
-    @Override
-    public boolean addRatedReview(Long userId, Long reviewId, boolean isPositiveMark) {
-        boolean wasAdded = true;
-
-        try(Connection connection = ConnectionPool.INSTANCE.getAvailableConnection();
-            PreparedStatement statement = connection.prepareStatement(SQL_INSERT_INTO_RATED_REVIEW)) {
-            statement.setLong(1, userId);
-            statement.setLong(2, reviewId);
-            statement.setBoolean(3, isPositiveMark);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            wasAdded = false;
-            e.printStackTrace();
-        }
-
-        return wasAdded;
-    }
-
-    @Override
-    public boolean addReviewedProduct(Long userId, Long productId) {
-        boolean wasAdded = true;
-
-        try(Connection connection = ConnectionPool.INSTANCE.getAvailableConnection();
-            PreparedStatement statement = connection.prepareStatement(SQL_INSERT_INTO_REVIEWED_PRODUCT)) {
-            statement.setLong(1, userId);
-            statement.setLong(2, productId);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            wasAdded = false;
-            e.printStackTrace();
-        }
-
-        return wasAdded;
-    }
 
 
     @Override

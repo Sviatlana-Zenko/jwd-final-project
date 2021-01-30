@@ -13,7 +13,7 @@ public class DateConverterTag extends TagSupport {
     public int doStartTag() throws JspException {
         JspWriter out = pageContext.getOut();
         String[] dateElements = date.split("-");
-        date = dateElements[2] + "-" + dateElements[1]  + "-" + dateElements[0];
+        date = dateElements[2] + "." + dateElements[1]  + "." + dateElements[0];
 
         try {
             out.print(date);

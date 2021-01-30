@@ -18,10 +18,10 @@ public class FindProductCommand implements Command {
 
         String title = requestContext.getParameter("title-to-find");
 
-        List<CinemaProduct> productList = CinemaProductDaoImpl.getInstance().findByTitle(title);
-        System.out.println(productList);
+//        List<CinemaProduct> productList = CinemaProductDaoImpl.getInstance().findByTitle(title);
+//        System.out.println(productList);
 
-        requestContext.setAttributes("products", productList);
+//        requestContext.setAttributes("products", productList);
 
         return responseContext;
     }

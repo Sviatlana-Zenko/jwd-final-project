@@ -1,20 +1,31 @@
 package com.epam.jwd.final_project.dao;
 
 import com.epam.jwd.final_project.criteria.Criteria;
+import com.epam.jwd.final_project.domain.AppEntity;
 import com.epam.jwd.final_project.domain.Review;
+import com.epam.jwd.final_project.exception.DatabaseInteractionException;
 
+import java.sql.Connection;
 import java.util.List;
 
-public interface ReviewDao extends AppEntityDao<Review, Criteria> {
+public interface ReviewDao {
 
-    boolean fullDelete(Review review);
+    boolean create(Review review, Connection connection) throws DatabaseInteractionException;
 
-    boolean transferInHistoryTable(List<Review> reviews);
+    List<Review> findAllForConcreteProduct(Long id, Connection connection)
+            throws DatabaseInteractionException;
 
-    Review updateReviewMarks(Review review, Long userId, Boolean isPositive);
+    Review updateReviewMarks(Review review, Connection connection)
+            throws DatabaseInteractionException;
 
-    List<Review> findAllForParticularCinemaProduct(Long productId);
 
-    List<Review> findAllForParticularUser(Long userId);
+
+//    boolean fullDelete(Review review);
+//
+//    boolean transferInHistoryTable(List<Review> reviews);
+//
+//    List<Review> findAllForParticularCinemaProduct(Long productId);
+//
+//    List<Review> findAllForParticularUser(Long userId);
 
 }

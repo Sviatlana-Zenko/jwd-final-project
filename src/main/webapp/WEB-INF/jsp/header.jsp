@@ -13,10 +13,10 @@
     <span class="branding w3-bar-item w3-text-teal">Let's rate it!</span>
     <span class="w3-right">
         <form class="search-form" id="search-form" action="home?command=search" method="POST">
-            <a href="home?command=show-movies" class="w3-bar-item w3-button w3-hover-teal">
+            <a href="home?command=show-products&type=movie" class="w3-bar-item w3-button w3-hover-teal">
                 <fmt:message key="label.movies"/>
             </a>
-            <a href="home?command=show-tvseries" class="w3-bar-item w3-button w3-hover-teal">
+            <a href="home?command=show-products&type=tvseries" class="w3-bar-item w3-button w3-hover-teal">
                 <fmt:message key="label.tvseries"/>
             </a>
             <a href="home?command=main-page" class="w3-bar-item w3-button w3-hover-teal">
@@ -28,7 +28,7 @@
                         <fmt:message key="button.admin.actions"/>
                     </button>
                     <div class="w3-dropdown-content w3-bar-block w3-card-4 w3-black">
-                        <a href="home?command=user-actions" class="w3-bar-item w3-button w3-hover-teal">
+                        <a href="home?command=user-operations" class="w3-bar-item w3-button w3-hover-teal">
                             <fmt:message key="button.user.work"/>
                         </a>
                         <a href="home?command=product-actions" class="w3-bar-item w3-button w3-hover-teal">

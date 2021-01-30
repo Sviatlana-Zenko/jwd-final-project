@@ -55,27 +55,27 @@ public class CreateMovieCommand implements Command {
                 Integer.valueOf(budget), Integer.valueOf(boxOffice));
 
 
-        CinemaProductDaoImpl.getInstance().create(movie);
-        PreparedStatement statement = null;
-
-        Long generatedForId = null;
-        try {
-            generatedForId = CinemaProductDaoImpl.getInstance().getGeneratedId(ConnectionPool.INSTANCE.getAvailableConnection(), statement, movie);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        for (int i = 0; i < genres.size(); i++) {
-            try(Connection connection2 = ConnectionPool.INSTANCE.getAvailableConnection();
-                PreparedStatement preparedStatement = connection2.prepareStatement("INSERT INTO cinema_product_genre(cinema_product_id, genre_id) VALUE (?, ?)")) {
-                preparedStatement.setLong(1, generatedForId);
-                preparedStatement.setLong(2, genres.get(i).getId());
-                preparedStatement.executeUpdate();
-            } catch (SQLException e) {
-//                wasCreated = false;
-                e.printStackTrace();
-            }
-        }
+//        CinemaProductDaoImpl.getInstance().create(movie);
+//        PreparedStatement statement = null;
+//
+//        Long generatedForId = null;
+//        try {
+//            generatedForId = CinemaProductDaoImpl.getInstance().getGeneratedId(ConnectionPool.INSTANCE.getAvailableConnection(), statement, movie);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        for (int i = 0; i < genres.size(); i++) {
+//            try(Connection connection2 = ConnectionPool.INSTANCE.getAvailableConnection();
+//                PreparedStatement preparedStatement = connection2.prepareStatement("INSERT INTO cinema_product_genre(cinema_product_id, genre_id) VALUE (?, ?)")) {
+//                preparedStatement.setLong(1, generatedForId);
+//                preparedStatement.setLong(2, genres.get(i).getId());
+//                preparedStatement.executeUpdate();
+//            } catch (SQLException e) {
+////                wasCreated = false;
+//                e.printStackTrace();
+//            }
+//        }
 
         ((ResponseContextImpl) responseContext).setPage("/home?command=product-actions");
 

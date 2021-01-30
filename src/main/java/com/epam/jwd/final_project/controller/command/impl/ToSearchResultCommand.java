@@ -5,6 +5,8 @@ import com.epam.jwd.final_project.controller.command.RequestContext;
 import com.epam.jwd.final_project.controller.command.ResponseContext;
 import com.epam.jwd.final_project.controller.command.impl.ResponseContextImpl;
 import com.epam.jwd.final_project.domain.CinemaProduct;
+import com.epam.jwd.final_project.exception.DatabaseInteractionException;
+import com.epam.jwd.final_project.pool.ConnectionPool;
 import com.epam.jwd.final_project.service.impl.CinemaProductServiceImpl;
 
 import java.util.ArrayList;
@@ -17,7 +19,12 @@ public class ToSearchResultCommand implements Command {
         ResponseContext resp = new ResponseContextImpl(ResponseContext.ResponseType.FORWARD);
         String search = req.getParameter("search");
         System.out.println("search === " + search);
-        List<CinemaProduct> products = CinemaProductServiceImpl.INSTANCE.getProductsBySearchRequest(search);
+        List<CinemaProduct> products = null;
+        try {
+            products = CinemaProductServiceImpl.INSTANCE.getProductsBySearchRequest(search);
+        } catch (DatabaseInteractionException e) {
+            e.printStackTrace();
+        }
 
         if (products.size() > 0) {
             int numberOfPages = calculateNumberOfPages(products);

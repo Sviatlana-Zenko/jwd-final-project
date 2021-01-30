@@ -17,8 +17,8 @@ public class ShowUserReviewsCommand implements Command {
         UserSessionInfoDto dto = (UserSessionInfoDto) requestContext.getSession().getAttribute("user");
 
 
-        requestContext.setAttributes("userReviews",
-                ReviewServiceImpl.INSTANCE.getAllForParticularUser(dto.getId()));
+//        requestContext.setAttributes("userReviews",
+//                ReviewServiceImpl.INSTANCE.getAllForParticularUser(dto.getId()));
 
         return responseContext;
     }

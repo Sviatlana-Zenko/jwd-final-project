@@ -51,22 +51,6 @@ public class TvSeries extends CinemaProduct {
         this.isFinished = isFinished;
     }
 
-
-    //new TvSeries(set.getLong("id"),
-    //                    ProductType.TV_SERIES,
-    //                    set.getDouble("current_rating"),
-    //                    set.getString("title"),
-    //                    set.getString("description"),
-    //                    DateConverterUtil.convertToLocalDate(set.getString("release_date")),
-    //                    set.getInt("running_time"),
-    //                    set.getString("country"),
-    //                    set.getByte("age_rating"),
-    //                    set.getString("starring"),
-    //                    set.getString("poster_url"),
-    //                    set.getByte("number_of_seasons"),
-    //                    set.getShort("number_of_episodes"),
-    //                    set.getBoolean("is_finished"));
-
     public Byte getNumberOfSeasons() {
         return numberOfSeasons;
     }

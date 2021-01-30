@@ -4,6 +4,10 @@ import com.epam.jwd.final_project.controller.command.Command;
 import com.epam.jwd.final_project.controller.command.RequestContext;
 import com.epam.jwd.final_project.controller.command.ResponseContext;
 import com.epam.jwd.final_project.controller.command.ResponseContext.ResponseType;
+import com.epam.jwd.final_project.dao.impl.CinemaProductDaoImpl;
+import com.epam.jwd.final_project.dao.impl.ReviewDaoImpl;
+import com.epam.jwd.final_project.exception.DatabaseInteractionException;
+import com.epam.jwd.final_project.pool.ConnectionPool;
 
 public class ToSignInFormCommand implements Command {
 

@@ -3,6 +3,7 @@ package com.epam.jwd.final_project.dao.impl;
 import com.epam.jwd.final_project.criteria.Criteria;
 import com.epam.jwd.final_project.criteria.QuoteCriteria;
 import com.epam.jwd.final_project.dao.EntityDao;
+import com.epam.jwd.final_project.dao.ReleaseResources;
 import com.epam.jwd.final_project.domain.AppEntity;
 import com.epam.jwd.final_project.domain.Quote;
 import com.epam.jwd.final_project.exception.DatabaseInteractionException;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class QuoteDaoImpl implements EntityDao<Quote, QuoteCriteria> {
+public class QuoteDaoImpl implements EntityDao<Quote, QuoteCriteria>, ReleaseResources {
 
     private static QuoteDaoImpl INSTANCE;
 

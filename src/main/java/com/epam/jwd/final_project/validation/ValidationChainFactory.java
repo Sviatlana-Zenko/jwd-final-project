@@ -3,6 +3,7 @@ package com.epam.jwd.final_project.validation;
 import com.epam.jwd.final_project.domain.AppEntity;
 import com.epam.jwd.final_project.validation.impl.AppUserValidationChain;
 import com.epam.jwd.final_project.validation.impl.QuoteValidationChain;
+import com.epam.jwd.final_project.validation.impl.ReviewValidationChain;
 
 public class ValidationChainFactory {
 
@@ -21,6 +22,9 @@ public class ValidationChainFactory {
                 break;
             case "Quote":
                 validationChain = new QuoteValidationChain();
+                break;
+            case "Review":
+                validationChain = new ReviewValidationChain();
                 break;
             default:
                 validationChain = null;

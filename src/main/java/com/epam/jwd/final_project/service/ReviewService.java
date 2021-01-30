@@ -1,12 +1,17 @@
 package com.epam.jwd.final_project.service;
 
-import com.epam.jwd.final_project.criteria.Criteria;
 import com.epam.jwd.final_project.domain.Review;
-
+import com.epam.jwd.final_project.exception.DatabaseInteractionException;
+import com.epam.jwd.final_project.exception.ValidationException;
+import java.sql.Connection;
 import java.util.List;
 
-public interface ReviewService extends EntityService<Review, Criteria<Review>> {
+public interface ReviewService {
 
-    List<Review> getAllForParticularUser(Long userId);
+    boolean create(Review review) throws DatabaseInteractionException, ValidationException;
+
+    List<Review> findAllForConcreteProduct(Long id) throws DatabaseInteractionException;
+
+    Review updateReviewMarks(Review review) throws DatabaseInteractionException;
 
 }

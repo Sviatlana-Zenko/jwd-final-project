@@ -25,6 +25,12 @@ public class CommandFactory {
                 return new ToLoginResultCommand();
             case TO_VALIDATION_ERROR:
                 return new ToValidationErrorPageCommand();
+            case TO_REVIEW_FORM:
+                return new ToReviewFormCommand();
+            case TO_NEW_QUOTE_FORM:
+                return new ToNewQuoteFormCommand();
+            case TO_EDIT_QUOTE_FORM:
+                return new ToEditQuoteFormCommand();
             case SIGN_IN:
                 return new SignInCommand();
             case SIGN_OUT:
@@ -35,10 +41,32 @@ public class CommandFactory {
                 return new NewAccountCommand();
             case SHOW_USER_REVIEWS:
                 return new ShowUserReviewsCommand();
-            case UPDATE_REVIEW_MARKS:
-                return new UpdateReviewMarksCommand();
+            case SHOW_PRODUCTS:
+                return new ShowProductsCommand();
+            case SHOW_PRODUCT_INFO:
+                return new ShowProductInfoCommand();
+            case SHOW_REVIEWS:
+                 return new ShowReviewsCommand();
+            case EDIT_REVIEW_MARKS:
+                return new EditReviewMarksCommand();
             case SEARCH:
                 return new SearchCommand();
+            case CREATE_REVIEW:
+                return new CreateReviewCommand();
+            case QUOTE_OPERATIONS:
+                return new QuoteOperationsCommand();
+            case USER_OPERATIONS:
+                return new UserOperationsCommand();
+            case CREATE_QUOTE:
+                return new CreateQuoteCommand();
+            case EDIT_QUOTE:
+                return new EditQuoteCommand();
+            case DELETE_QUOTE:
+                return new DeleteQuoteCommand();
+            case CONFIRM_QUOTE_DELETING:
+                return new ConfirmQuoteDeletingCommand();
+            case SHOW_USERS:
+                return new ShowUsersCommand();
             default:
                 return new ToMainPageCommand();
         }

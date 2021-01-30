@@ -6,7 +6,6 @@ import com.epam.jwd.final_project.controller.command.ResponseContext;
 import com.epam.jwd.final_project.converter.impl.UserSessionInfoConverter;
 import com.epam.jwd.final_project.domain.AppUser;
 import com.epam.jwd.final_project.exception.DatabaseInteractionException;
-import com.epam.jwd.final_project.exception.ValidationException;
 import com.epam.jwd.final_project.service.impl.AppUserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

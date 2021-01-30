@@ -5,7 +5,7 @@
 <fmt:setBundle basename="pagecontent"/>
 <html>
 <head>
-    <title>New quote form</title>
+    <title>Validation-error</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="<c:url value="../../css/app-style.css"/>">
     <script src="https://kit.fontawesome.com/93c41a9677.js" crossorigin="anonymous"></script>
@@ -22,13 +22,6 @@
             <li>${error};</li>
         </c:forEach>
     </ul>
-    <div id="again-btn">
-        <a href="home?command=new-quote-form">
-            <button class="w3-bar-item w3-button w3-teal">
-                <fmt:message key="button.try.again"/>
-            </button>
-        </a>
-    </div>
 </div>
 </body>
 </html>
