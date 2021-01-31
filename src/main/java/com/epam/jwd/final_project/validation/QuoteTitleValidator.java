@@ -3,7 +3,7 @@ package com.epam.jwd.final_project.validation;
 import com.epam.jwd.final_project.domain.Quote;
 import java.util.List;
 
-public class QuoteProductTitleValidator extends Validator<Quote> {
+public class QuoteTitleValidator extends Validator<Quote> {
 
     private static final int MAX_LENGTH = 100;
 

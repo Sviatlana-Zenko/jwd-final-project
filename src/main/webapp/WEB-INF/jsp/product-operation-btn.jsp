@@ -6,26 +6,26 @@
 <fmt:setBundle basename="pagecontent"/>
 <html>
 <head>
-    <title>User operations buttons</title>
+    <title>Product operations buttons</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="<c:url value="../../css/app-style.css"/>">
     <script src="https://kit.fontawesome.com/93c41a9677.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="user-operations">
-    <a href="home?command=users">
+    <a href="home?command=to-form&type=movie">
         <button class="w3-bar-item w3-button w3-teal">
-            <fmt:message key="button.show.all"/>
+            <fmt:message key="button.create.movie"/>
         </button>
     </a>
-    <a href="home?command=user-search&param=id">
+    <a href="home?command=to-form&type=tvseries">
         <button class="w3-bar-item w3-button w3-teal">
-            <fmt:message key="button.find.by.id"/>
+            <fmt:message key="button.create.tvseries"/>
         </button>
     </a>
-    <a href="home?command=user-search&param=nickname">
+    <a href="home?command=product-search">
         <button class="w3-bar-item w3-button w3-teal">
-            <fmt:message key="button.find.by.nickname"/>
+            <fmt:message key="button.find.by.title"/>
         </button>
     </a>
 </div>

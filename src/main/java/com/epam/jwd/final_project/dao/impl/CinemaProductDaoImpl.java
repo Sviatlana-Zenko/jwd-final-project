@@ -25,9 +25,109 @@ public class CinemaProductDaoImpl implements CinemaProductDao, ReleaseResources 
         return INSTANCE;
     }
 
+
+    private static final String SQL_INSERT_INTO_CINEMA_PRODUCT =
+        "INSERT INTO cinema_product(type_id, title, description, release_date, " +
+                "running_time, country, age_rating, starring, poster_url) " +
+                        "VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_SELECT_GENERATED_ID =
+            "SELECT id FROM cinema_product WHERE title=? AND release_date=?";
+    private static final String SQL_INSERT_INTO_MOVIE =
+            "INSERT INTO movie(id, directed_by, produced_by, budget, box_office) " +
+                    "VALUE (?, ?, ?, ?, ?)";
+    private static final String SQL_INSERT_INTO_TV_SERIES =
+            "INSERT INTO tv_series(id, number_of_seasons, number_of_episodes, " +
+                    "is_finished) VALUE (?, ?, ?, ?)";
     @Override
     public boolean create(CinemaProduct product, Connection connection) throws DatabaseInteractionException {
-        return false;
+        boolean wasCreated = false;
+        PreparedStatement statement = null;
+
+        try {
+            connection.setAutoCommit(false);
+
+            insertIntoProducts(product, connection.prepareStatement(SQL_INSERT_INTO_CINEMA_PRODUCT));
+            Long generatedId = getGeneratedId(connection, statement, product);
+            product.setId(generatedId);
+            List<Genre> genres = product.getGenres();
+            if (product.getGenres() != null &&
+                    product.getGenres().size() > 0) {
+                updateProductGenres(generatedId, product.getGenres(),
+                        connection.prepareStatement(SQL_UPDATE_GENRES));
+            }
+
+            if (product.getType() == ProductType.MOVIE) {
+                insertIntoMovies(product, connection.prepareStatement(SQL_INSERT_INTO_MOVIE));
+            } else {
+                insertIntoTvSeries(product, connection.prepareStatement(SQL_INSERT_INTO_TV_SERIES));
+            }
+            connection.commit();
+            wasCreated = false;
+        } catch (SQLException e) {
+            rollback(connection);
+            throw new DatabaseInteractionException(e);
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
+        }
+
+        return wasCreated;
+    }
+
+    private void insertIntoTvSeries(CinemaProduct product, PreparedStatement statement) throws SQLException {
+        statement.setLong(1, product.getId());
+        statement.setInt(2, ((TvSeries) product).getNumberOfSeasons());
+        statement.setInt(3, ((TvSeries) product).getNumberOfEpisodes());
+        statement.setBoolean(4, ((TvSeries) product).getIsFinished());
+        statement.executeUpdate();
+    }
+
+    private void insertIntoMovies(CinemaProduct product, PreparedStatement statement) throws SQLException {
+        statement.setLong(1, product.getId());
+        statement.setString(2, ((Movie) product).getDirectedBy());
+        statement.setString(3, ((Movie) product).getProducedBy());
+        statement.setInt(4, ((Movie) product).getBudget());
+        statement.setInt(5, ((Movie) product).getBoxOffice());
+        statement.executeUpdate();
+    }
+
+    private static final String SQL_UPDATE_GENRES =
+            "INSERT INTO cinema_product_genre(cinema_product_id, genre_id) VALUE (?, ?)";
+    public void updateProductGenres(Long id, List<Genre> genres,
+                                 PreparedStatement statement) throws SQLException {
+        for (int i = 0; i < genres.size(); i++) {
+            statement.setLong(1, id);
+            statement.setLong(2, genres.get(i).getId());
+            statement.executeUpdate();
+        }
+    }
+
+    private void insertIntoProducts(CinemaProduct product, PreparedStatement statement) throws SQLException {
+        statement.setLong(1, product.getType().getId());
+        statement.setString(2, product.getTitle());
+        statement.setString(3, product.getDescription());
+        statement.setString(4, product.getReleaseDate().toString());
+        statement.setInt(5, product.getRunningTime());
+        statement.setString(6, product.getCountry());
+        statement.setByte(7, product.getAgeRating());
+        statement.setString(8, product.getStarring());
+        statement.setString(9, product.getPosterUrl());
+        statement.executeUpdate();
+    }
+
+    private Long getGeneratedId(Connection connection, PreparedStatement statement,
+                                CinemaProduct product) throws SQLException {
+        Long id = null;
+
+        statement = connection.prepareStatement(SQL_SELECT_GENERATED_ID);
+        statement.setString(1, product.getTitle());
+        statement.setString(2, product.getReleaseDate().toString());
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            id = resultSet.getLong("id");
+        }
+
+        return id;
     }
 
     @Override
@@ -101,6 +201,29 @@ public class CinemaProductDaoImpl implements CinemaProductDao, ReleaseResources 
     @Override
     public CinemaProduct updateByCriteria(CinemaProduct product, CinemaProductCriteria criteria, Connection connection) throws DatabaseInteractionException {
         return null;
+    }
+
+    @Override
+    public Long findIdByTitle(String title, Connection connection) throws DatabaseInteractionException {
+        Long id = null;
+        title = "'%" + title + "%'";
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(SQL_SELECT_ID_BY_TITLE + title);
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                id = set.getLong("id");
+            }
+        } catch (SQLException e) {
+            throw new DatabaseInteractionException(e);
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
+        }
+
+
+        return id;
     }
 
     @Override
@@ -314,6 +437,10 @@ public class CinemaProductDaoImpl implements CinemaProductDao, ReleaseResources 
 
         return number;
     }
+
+    private static final String SQL_SELECT_ID_BY_TITLE =
+        "SELECT id FROM cinema_product WHERE title LIKE ";
+
 
     private static final String SQL_SELECT_BY_SEARCH_REQUEST =
             "SELECT * FROM cinema_product WHERE title LIKE ";
@@ -664,19 +791,5 @@ public class CinemaProductDaoImpl implements CinemaProductDao, ReleaseResources 
 //        return fieldNames;
 //    }
 //
-//    public Long getGeneratedId(Connection connection, PreparedStatement statement,
-//                                CinemaProduct product) throws SQLException {
-//        Long id = null;
-//
-//        statement = connection.prepareStatement(SQL_SELECT_GENERATED_ID);
-//        statement.setString(1, product.getTitle());
-//        statement.setString(2, product.getReleaseDate().toString());
-//        ResultSet resultSet = statement.executeQuery();
-//        while (resultSet.next()) {
-//            id = resultSet.getLong("id");
-//        }
-//
-//        return id;
-//    }
 
 }

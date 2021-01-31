@@ -7,6 +7,7 @@ import com.epam.jwd.final_project.exception.DatabaseInteractionException;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Optional;
 
 public interface CinemaProductService extends EntityService<CinemaProduct, CinemaProductCriteria> {
 
@@ -18,5 +19,7 @@ public interface CinemaProductService extends EntityService<CinemaProduct, Cinem
 
     List<CinemaProduct> findConcreteAmountByType(ProductType type, long startIndex, int number)
             throws DatabaseInteractionException;
+
+    Optional<CinemaProduct> findByTitle(String title) throws DatabaseInteractionException;
 
 }

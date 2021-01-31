@@ -28,7 +28,8 @@
                     <br>
                     <br>
                     <c:choose>
-                        <c:when test="${sessionScope.user.reviewedProducts.contains(requestScope.product.id)}">
+                        <c:when test="${sessionScope.user.reviewedProducts.contains(requestScope.product.id) ||
+                                        sessionScope.user.isBanned eq true}">
                             <button class="w3-bar-item w3-button w3-teal" disabled="disabled"
                                     style="width: 150px; font-weight: normal">
                                 <fmt:message key="button.review.title"/>
@@ -52,23 +53,23 @@
                 <table class="info-inner">
                     <tbody>
                     <tr>
-                        <th class="field-name"><fmt:message key="label.release.date"/></th>
+                        <th class="field-name"><fmt:message key="label.release.date"/>: </th>
                         <th><ct:dateTag date="${requestScope.product.releaseDate}"/></th>
                     </tr>
                     <tr>
-                        <th class="field-name"><fmt:message key="label.country"/></th>
+                        <th class="field-name"><fmt:message key="label.country"/>: </th>
                         <th>${requestScope.product.country}</th>
                     </tr>
                     <tr>
-                        <th class="field-name"><fmt:message key="label.running.time"/></th>
+                        <th class="field-name"><fmt:message key="label.running.time"/>: </th>
                         <th>${requestScope.product.runningTime}<fmt:message key="label.min"/></th>
                     </tr>
                     <tr>
-                        <th class="field-name"><fmt:message key="label.age.rating"/></th>
+                        <th class="field-name"><fmt:message key="label.age.rating"/>: </th>
                         <th>${requestScope.product.ageRating}+</th>
                     </tr>
                     <tr>
-                        <th class="field-name"><fmt:message key="label.genres"/></th>
+                        <th class="field-name"><fmt:message key="label.genres"/>: </th>
                         <th id="product-genres">
                             <c:forEach var="genre" items="${requestScope.product.genres}">
                                 ${genre};
@@ -76,31 +77,31 @@
                         </th>
                     </tr>
                     <tr>
-                        <th class="field-name"><fmt:message key="label.starring"/></th>
+                        <th class="field-name"><fmt:message key="label.starring"/>: </th>
                         <th>${requestScope.product.starring}</th>
                     </tr>
                     <c:choose>
                         <c:when test="${requestScope.product.type eq 'MOVIE'}">
                             <tr>
-                                <th class="field-name"><fmt:message key="label.directed.by"/></th>
+                                <th class="field-name"><fmt:message key="label.directed.by"/>: </th>
                                 <th>${requestScope.product.directedBy}</th>
                             </tr>
                             <tr>
-                                <th class="field-name"><fmt:message key="label.produced.by"/></th>
+                                <th class="field-name"><fmt:message key="label.produced.by"/>: </th>
                                 <th>${requestScope.product.producedBy}</th>
                             </tr>
                             <tr>
-                                <th class="field-name"><fmt:message key="label.budget"/></th>
+                                <th class="field-name"><fmt:message key="label.budget"/>: </th>
                                 <th><ct:splitterTag amount="${requestScope.product.budget}"/>$</th>
                             </tr>
                             <tr>
-                                <th class="field-name"><fmt:message key="label.box.office"/></th>
+                                <th class="field-name"><fmt:message key="label.box.office"/>: </th>
                                 <th><ct:splitterTag amount="${requestScope.product.boxOffice}"/>$</th>
                             </tr>
                         </c:when>
                         <c:otherwise>
                             <tr>
-                                <th class="field-name"><fmt:message key="label.seasons"/></th>
+                                <th class="field-name"><fmt:message key="label.seasons"/>: </th>
                                 <th>
                                     ${requestScope.product.numberOfSeasons}
                                     <c:choose>
@@ -114,13 +115,13 @@
                                 </th>
                             </tr>
                             <tr>
-                                <th class="field-name"><fmt:message key="label.episodes"/></th>
+                                <th class="field-name"><fmt:message key="label.episodes"/>: </th>
                                 <th>${requestScope.product.numberOfEpisodes}</th>
                             </tr>
                         </c:otherwise>
                     </c:choose>
                     <tr>
-                        <th class="field-name"><fmt:message key="label.description"/></th>
+                        <th class="field-name"><fmt:message key="label.description"/>: </th>
                     </tr>
                     </tbody>
                 </table>

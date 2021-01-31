@@ -14,53 +14,62 @@
 <body>
 <c:import url="header.jsp"/>
 <c:import url="user-operation-btn.jsp"/>
-<div>
-    <table class="users">
-        <tbody style="color: white">
-        <tr id="heading">
-            <th>id</th>
-            <th><fmt:message key="label.nickname"/></th>
-            <th><fmt:message key="label.email"/></th>
-            <th><fmt:message key="label.operations"/></th>
-        </tr>
-        <c:forEach var="user" items="${requestScope.users}">
-            <tr id="user-info" style="height: 50px; font-size: 15px">
-                <th>
-                    ${user.id}
-                </th>
-                <th style="width: 153px">
-                    ${user.nickname}
-                </th>
-                <th style="width: 275px">
-                    ${user.email}
-                </th>
-                <th style="width: 215px">
-                    <c:choose>
-                        <c:when test="${user.banned == false}">
-                            <a href="home?command=change-block-status&status=block&id=${user.id}">
+<c:choose>
+    <c:when test="${requestScope.users.size() == 0}">
+        <p>
+            User(s) not found
+        </p>
+    </c:when>
+    <c:otherwise>
+        <div>
+            <table class="users">
+                <tbody style="color: white">
+                <tr id="heading">
+                    <th>id</th>
+                    <th><fmt:message key="label.nickname"/></th>
+                    <th><fmt:message key="label.email"/></th>
+                    <th><fmt:message key="label.operations"/></th>
+                </tr>
+                <c:forEach var="user" items="${requestScope.users}">
+                    <tr id="user-info" style="height: 50px; font-size: 15px">
+                        <th>
+                                ${user.id}
+                        </th>
+                        <th style="width: 153px">
+                                ${user.nickname}
+                        </th>
+                        <th style="width: 275px">
+                                ${user.email}
+                        </th>
+                        <th style="width: 215px">
+                            <c:choose>
+                                <c:when test="${user.banned == false}">
+                                    <a href="home?command=change-block-status&status=block&id=${user.id}">
+                                        <button class="w3-bar-item w3-button w3-teal">
+                                            <fmt:message key="button.block"/>
+                                        </button>
+                                    </a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="home?command=change-block-status&status=unblock&id=${user.id}">
+                                        <button class="w3-bar-item w3-button w3-teal">
+                                            <fmt:message key="button.unblock"/>
+                                        </button>
+                                    </a>
+                                </c:otherwise>
+                            </c:choose>
+                            <a href="home?command=delete-user&id=${user.id}">
                                 <button class="w3-bar-item w3-button w3-teal">
-                                    <fmt:message key="button.block"/>
+                                    <fmt:message key="button.delete"/>
                                 </button>
                             </a>
-                        </c:when>
-                        <c:otherwise>
-                            <a href="home?command=change-block-status&status=unblock&id=${user.id}">
-                                <button class="w3-bar-item w3-button w3-teal">
-                                    <fmt:message key="button.unblock"/>
-                                </button>
-                            </a>
-                        </c:otherwise>
-                    </c:choose>
-                    <a href="home?command=#">
-                        <button class="w3-bar-item w3-button w3-teal">
-                            <fmt:message key="button.delete"/>
-                        </button>
-                    </a>
-                </th>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
-</div>
+                        </th>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+    </c:otherwise>
+</c:choose>
 </body>
 </html>

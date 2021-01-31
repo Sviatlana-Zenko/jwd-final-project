@@ -13,7 +13,7 @@
 <body style="background: linear-gradient(#0b9e9e, #202121) fixed">
 <div class="new-account-container">
     <div class="title"><fmt:message key="label.new.account"/></div>
-    <form class="account-form" id="account-form" action="home?command=create-account" method="POST">
+    <form class="movie-form" id="movie-form" action="home?command=create-movie" method="POST">
         <table class="account-table">
             <tbody>
                 <tr>
@@ -36,6 +36,7 @@
                                        placeholder=" <fmt:message key="label.birthdate"/>"/>
                                 <div class="rule"><fmt:message key="rule.date"/></div>
                             </div>
+
                             <div>
                                 <input id="email" name="email" type="text" class="input-field"
                                        placeholder=" <fmt:message key="placeholder.email"/>" maxlength="100"/>
@@ -141,7 +142,7 @@
             </tbody>
         </table>
         <div class="create-btn">
-            <button class="w3-bar-item w3-button w3-teal w3-mobile" type="submit" id="account-button">
+            <button class="w3-bar-item w3-button w3-teal w3-mobile" type="submit" id="movie-button">
                 <fmt:message key="button.create"/>
             </button>
         </div>

@@ -47,26 +47,40 @@
             </c:choose>
             <c:choose>
                 <c:when test="${sessionScope.user.ratedReviews.containsKey(review.id)}">
-                    <c:if test="${sessionScope.user.ratedReviews.get(review.id) eq true}">
-                        <div>
-                            <button class="w3-bar-item w3-button w3-teal thumbs">
-                                <i class="far fa-thumbs-up"></i>${review.reviewPositiveMarks}
-                            </button>
-                            <button class="w3-bar-item w3-button w3-teal thumbs" disabled="disabled">
-                                <i class="far fa-thumbs-down"></i>${review.reviewNegativeMarks}
-                            </button>
-                        </div>
-                    </c:if>
-                    <c:if test="${sessionScope.user.ratedReviews.get(review.id) eq false}">
-                        <div>
-                            <button class="w3-bar-item w3-button w3-teal thumbs" disabled="disabled">
-                                <i class="far fa-thumbs-up"></i>${review.reviewPositiveMarks}
-                            </button>
-                            <button class="w3-bar-item w3-button w3-teal thumbs">
-                                <i class="far fa-thumbs-down"></i>${review.reviewNegativeMarks}
-                            </button>
-                        </div>
-                    </c:if>
+                    <c:choose>
+                        <c:when test="${sessionScope.user.isBanned eq true}">
+                            <div>
+                                <button class="w3-bar-item w3-button w3-teal thumbs" disabled="disabled">
+                                    <i class="far fa-thumbs-up"></i>${review.reviewPositiveMarks}
+                                </button>
+                                <button class="w3-bar-item w3-button w3-teal thumbs" disabled="disabled">
+                                    <i class="far fa-thumbs-down"></i>${review.reviewNegativeMarks}
+                                </button>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <c:if test="${sessionScope.user.ratedReviews.get(review.id) eq true}">
+                                <div>
+                                    <button class="w3-bar-item w3-button w3-teal thumbs">
+                                        <i class="far fa-thumbs-up"></i>${review.reviewPositiveMarks}
+                                    </button>
+                                    <button class="w3-bar-item w3-button w3-teal thumbs" disabled="disabled">
+                                        <i class="far fa-thumbs-down"></i>${review.reviewNegativeMarks}
+                                    </button>
+                                </div>
+                            </c:if>
+                            <c:if test="${sessionScope.user.ratedReviews.get(review.id) eq false}">
+                                <div>
+                                    <button class="w3-bar-item w3-button w3-teal thumbs" disabled="disabled">
+                                        <i class="far fa-thumbs-up"></i>${review.reviewPositiveMarks}
+                                    </button>
+                                    <button class="w3-bar-item w3-button w3-teal thumbs">
+                                        <i class="far fa-thumbs-down"></i>${review.reviewNegativeMarks}
+                                    </button>
+                                </div>
+                            </c:if>
+                        </c:otherwise>
+                    </c:choose>
                 </c:when>
                 <c:otherwise>
                     <div>

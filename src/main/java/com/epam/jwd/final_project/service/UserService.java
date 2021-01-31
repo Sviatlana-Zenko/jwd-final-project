@@ -15,6 +15,8 @@ public interface UserService extends EntityService<AppUser, AppUserCriteria> {
 
     Optional<AppUser> findByEmail(String email) throws DatabaseInteractionException;
 
+    Optional<AppUser> findByNickname(String Nickname) throws DatabaseInteractionException;
+
     boolean checkPassword(AppUser user, String passwordToCheck);
 
     Status updateUserStatus(AppUser user) throws DatabaseInteractionException, ValidationException;

@@ -6,15 +6,18 @@
 <fmt:setBundle basename="pagecontent"/>
 <html>
 <head>
-    <title>Work with users</title>
+    <title>User operations</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="<c:url value="../../../css/app-style.css"/>">
+    <link rel="stylesheet" href="<c:url value="../../css/app-style.css"/>">
     <script src="https://kit.fontawesome.com/93c41a9677.js" crossorigin="anonymous"></script>
 </head>
 <body>
-<table>
-    <c:import url="adim-user-actions.jsp"/>
-
-</table>
+<c:import url="header.jsp"/>
+<c:import url="product-operation-btn.jsp"/>
+<div class="continue">
+    <p>
+        <fmt:message key="label.next.operation"/>
+    </p>
+</div>
 </body>
 </html>

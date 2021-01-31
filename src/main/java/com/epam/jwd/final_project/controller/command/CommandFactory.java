@@ -2,6 +2,7 @@ package com.epam.jwd.final_project.controller.command;
 
 import com.epam.jwd.final_project.controller.command.impl.*;
 import com.epam.jwd.final_project.controller.command.impl.NewAccountCommand;
+import com.epam.jwd.final_project.controller.command.impl.ToNewProductFormCommand;
 
 public class CommandFactory {
 
@@ -31,6 +32,12 @@ public class CommandFactory {
                 return new ToNewQuoteFormCommand();
             case TO_EDIT_QUOTE_FORM:
                 return new ToEditQuoteFormCommand();
+            case TO_FORM:
+                return new ToNewProductFormCommand();
+            case USER_SEARCH:
+                return new ToUserSearchParamsCommand();
+            case PRODUCT_SEARCH:
+                return new ToProductSearchParamsCommand();
             case SIGN_IN:
                 return new SignInCommand();
             case SIGN_OUT:
@@ -57,18 +64,32 @@ public class CommandFactory {
                 return new QuoteOperationsCommand();
             case USER_OPERATIONS:
                 return new UserOperationsCommand();
+            case PRODUCT_OPERATIONS:
+                return new ProductOperationsCommand();
             case CREATE_QUOTE:
                 return new CreateQuoteCommand();
             case EDIT_QUOTE:
                 return new EditQuoteCommand();
             case DELETE_QUOTE:
                 return new DeleteQuoteCommand();
+            case DELETE_USER:
+                return new DeleteUserCommand();
+            case FIND_USER:
+                return new GetParamToFindUserCommand();
+            case FIND_PRODUCT:
+                return new GetParamToFindProductCommand();
             case CONFIRM_QUOTE_DELETING:
                 return new ConfirmQuoteDeletingCommand();
             case CHANGE_BLOCK_STATUS:
                 return new ChangeBlockStatusCommand();
             case SHOW_USERS:
                 return new ShowUsersCommand();
+            case SHOW_FOUND_USER:
+                return new ShowFoundUserCommand();
+            case SHOW_FOUND_PRODUCT:
+                return new ShowFoundProductCommand();
+            case CREATE_MOVIE:
+                return new CreateMovieCommand();
             default:
                 return new ToMainPageCommand();
         }

@@ -21,9 +21,9 @@ public class QuoteValidationChain implements ValidationChain<Quote> {
 
     private void createValidationChain() {
         QuoteTextValidator quoteTextValidator = new QuoteTextValidator();
-        QuotePosterUrlValidator posterUrlValidator = new QuotePosterUrlValidator();
+        QuoteUrlValidator posterUrlValidator = new QuoteUrlValidator();
 
-        validator = new QuoteProductTitleValidator();
+        validator = new QuoteTitleValidator();
         validator.setNextValidator(quoteTextValidator);
         quoteTextValidator.setNextValidator(posterUrlValidator);
     }

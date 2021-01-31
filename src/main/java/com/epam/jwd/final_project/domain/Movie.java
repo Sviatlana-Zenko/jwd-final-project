@@ -57,6 +57,7 @@ public class Movie extends CinemaProduct {
         this.boxOffice = boxOffice;
     }
 
+
     public String getDirectedBy() {
         return directedBy;
     }

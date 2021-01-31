@@ -88,6 +88,17 @@ public class AppUserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<AppUser> findByNickname(String nickname) throws DatabaseInteractionException {
+        Optional<AppUser> foundByNickname = findUserInCacheByNickname(nickname);
+        if (foundByNickname.isEmpty()) {
+            foundByNickname = AppUserDaoImpl.getInstance().findUserByNickname(nickname,
+                    ConnectionPool.INSTANCE.getAvailableConnection());
+        }
+
+        return foundByNickname;
+    }
+
+    @Override
     public Optional<AppUser> findById(Long id) throws DatabaseInteractionException {
         Optional<AppUser> foundById = findUserInCacheById(id);
         if (foundById.isEmpty()) {
@@ -183,6 +194,12 @@ public class AppUserServiceImpl implements UserService {
     private Optional<AppUser> findUserInCacheByEmail(String email) {
         return RatingContext.INSTANCE.retrieveList(AppUser.class).stream()
                 .filter(user -> user.getEmail().equalsIgnoreCase(email))
+                .findFirst();
+    }
+
+    private Optional<AppUser> findUserInCacheByNickname(String nickname) {
+        return RatingContext.INSTANCE.retrieveList(AppUser.class).stream()
+                .filter(user -> user.getNickname().equalsIgnoreCase(nickname))
                 .findFirst();
     }
 

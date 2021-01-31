@@ -34,7 +34,7 @@ public class UserSessionInfoDto {
         return role;
     }
 
-    public Boolean getBanned() {
+    public Boolean getIsBanned() {
         return isBanned;
     }
 

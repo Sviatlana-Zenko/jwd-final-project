@@ -7,9 +7,13 @@ import com.epam.jwd.final_project.exception.DatabaseInteractionException;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Optional;
 
 
 public interface CinemaProductDao extends EntityDao<CinemaProduct, CinemaProductCriteria> {
+
+    Long findIdByTitle(String string, Connection connection)
+            throws DatabaseInteractionException;
 
     List<CinemaProduct> findAllByType(ProductType productType, Connection connection)
             throws DatabaseInteractionException;

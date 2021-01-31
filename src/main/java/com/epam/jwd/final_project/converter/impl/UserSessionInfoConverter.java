@@ -17,7 +17,7 @@ public class UserSessionInfoConverter implements AppEntityConverter<AppUser, Use
         return new AppUser(dto.getId(),
                 dto.getNickname(),
                 Role.resolveRoleByName(dto.getRole()),
-                dto.getBanned(),
+                dto.getIsBanned(),
                 dto.getReviewedProducts(),
                 dto.getRatedReviews());
     }

@@ -51,6 +51,7 @@ public class TvSeries extends CinemaProduct {
         this.isFinished = isFinished;
     }
 
+
     public Byte getNumberOfSeasons() {
         return numberOfSeasons;
     }

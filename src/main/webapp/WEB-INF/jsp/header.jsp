@@ -31,7 +31,7 @@
                         <a href="home?command=user-operations" class="w3-bar-item w3-button w3-hover-teal">
                             <fmt:message key="button.user.work"/>
                         </a>
-                        <a href="home?command=product-actions" class="w3-bar-item w3-button w3-hover-teal">
+                        <a href="home?command=product-operations" class="w3-bar-item w3-button w3-hover-teal">
                             <fmt:message key="button.products.work"/>
                         </a>
                         <a href="home?command=quote-operations" class="w3-bar-item w3-button w3-hover-teal">

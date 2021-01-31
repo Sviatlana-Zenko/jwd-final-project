@@ -12,6 +12,8 @@ public interface AppUserDao extends EntityDao<AppUser, AppUserCriteria> {
 
     Optional<AppUser> findUserByEmail(String email, Connection connection) throws DatabaseInteractionException;
 
+    Optional<AppUser> findUserByNickname(String nickname, Connection connection) throws DatabaseInteractionException;
+
     List<Integer> getPositiveMarks(AppUser user, Connection connection) throws DatabaseInteractionException;
 
     List<Integer> getNegativeMarks(AppUser user, Connection connection) throws DatabaseInteractionException;
@@ -26,6 +28,8 @@ public interface AppUserDao extends EntityDao<AppUser, AppUserCriteria> {
 
     boolean updateBan(Long userId, Boolean isBanned, Connection connection)
             throws DatabaseInteractionException;
+
+
 
 
 

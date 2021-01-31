@@ -40,18 +40,6 @@ public class NewAccountCommand implements Command {
         AppUser user = new AppUser(firstName, lastName, nickname,
                 reverseDate(dateOfBirth), email, password, Role.USER, getNewGenres(requestContext));
 
-//        System.out.println("user " + user);
-
-//        Criteria<AppUser> criteria = new AppUserCriteria.AppUserCriteriaBuilder() {{
-//                        firstName(firstName);
-//                        lastName(lastName);
-//                        nickname(nickname);
-//                        dateOfBirth(reverseDate(dateOfBirth));
-//                        email(email);
-//                        password(password);
-//                        favouriteGenres(getNewGenres(requestContext));
-//                    }}.build();
-
         try {
             AppUserServiceImpl.getInstance().create(user);
             ((ResponseContextImpl) responseContext).setPage("/home?command=login-result");

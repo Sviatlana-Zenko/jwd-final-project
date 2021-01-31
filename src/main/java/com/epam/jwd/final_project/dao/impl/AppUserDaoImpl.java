@@ -32,8 +32,7 @@ public class AppUserDaoImpl implements AppUserDao, ReleaseResources {
             "SELECT * FROM reviewed_products ORDER BY user_id";
     private static final String SQL_SELECT_RATED_REVIEWS =
             "SELECT * FROM rated_reviews ORDER BY user_id";
-    private static final String SQL_SELECT_USER_BY_NICKNAME =
-            "SELECT * FROM app_user LEFT JOIN user_genre ug ON app_user.id = ug.user_id WHERE nickname=?";
+
 
     private static final String SQL_CHECK_NICKNAME_PRESENCE =
             "SELECT COUNT(*) AS number FROM app_user where nickname=?";
@@ -151,12 +150,47 @@ public class AppUserDaoImpl implements AppUserDao, ReleaseResources {
 
         try {
             statement = connection.prepareStatement(SQL_SELECT_USER_BY_EMAIL);
+            statement.setString(1, email);
             List<AppUser> users = getUsersFromResultSet(statement.executeQuery());
             if (users.size() == 1) {
                 user = users.get(0);
                 statement = connection.prepareStatement(SQL_SELECT_USER_RATED_REVIEWS);
+                statement.setString(1, email);
                 addConcreteUserRatedReviews(user, statement.executeQuery());
                 statement = connection.prepareStatement(SQL_SELECT_USER_REVIEWED_PRODUCTS);
+                statement.setString(1, email);
+                addConcreteUserReviewedProducts(user, statement.executeQuery());
+            }
+        } catch (SQLException e) {
+            throw new DatabaseInteractionException(e);
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
+        }
+
+        return Optional.ofNullable(user);
+    }
+
+    private static final String SQL_SELECT_USER_BY_NICKNAME =
+            "SELECT * FROM app_user LEFT JOIN user_genre ug " +
+                    "ON app_user.id = ug.user_id WHERE nickname=?";
+    @Override
+    public Optional<AppUser> findUserByNickname(String nickname, Connection connection)
+            throws DatabaseInteractionException {
+        AppUser user = null;
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(SQL_SELECT_USER_BY_NICKNAME);
+            statement.setString(1, nickname);
+            List<AppUser> users = getUsersFromResultSet(statement.executeQuery());
+            if (users.size() == 1) {
+                user = users.get(0);
+                statement = connection.prepareStatement(SQL_SELECT_USER_RATED_REVIEWS);
+                statement.setString(1, nickname);
+                addConcreteUserRatedReviews(user, statement.executeQuery());
+                statement = connection.prepareStatement(SQL_SELECT_USER_REVIEWED_PRODUCTS);
+                statement.setString(1, nickname);
                 addConcreteUserReviewedProducts(user, statement.executeQuery());
             }
         } catch (SQLException e) {
@@ -173,18 +207,22 @@ public class AppUserDaoImpl implements AppUserDao, ReleaseResources {
             "SELECT * FROM app_user LEFT JOIN user_genre ug " +
                     "ON app_user.id = ug.user_id WHERE id=?";
     @Override
-    public Optional<AppUser> findById(Long id, Connection connection) throws DatabaseInteractionException {
+    public Optional<AppUser> findById(Long id, Connection connection)
+            throws DatabaseInteractionException {
         AppUser user = null;
         PreparedStatement statement = null;
 
         try {
             statement = connection.prepareStatement(SQL_SELECT_USER_BY_ID);
+            statement.setLong(1, id);
             List<AppUser> users = getUsersFromResultSet(statement.executeQuery());
             if (users.size() == 1) {
                 user = users.get(0);
                 statement = connection.prepareStatement(SQL_SELECT_USER_RATED_REVIEWS);
+                statement.setLong(1, id);
                 addConcreteUserRatedReviews(user, statement.executeQuery());
                 statement = connection.prepareStatement(SQL_SELECT_USER_REVIEWED_PRODUCTS);
+                statement.setLong(1, id);
                 addConcreteUserReviewedProducts(user, statement.executeQuery());
             }
         } catch (SQLException e) {
@@ -522,34 +560,34 @@ public class AppUserDaoImpl implements AppUserDao, ReleaseResources {
         return number;
     }
 
-    public Optional<AppUser> findUserByNickname(String nickname) {
-        AppUser user = null;
-        Connection connection = null;
-        PreparedStatement statement = null;
-
-//        try {
-//            connection = ConnectionPool.INSTANCE.getAvailableConnection();
-//            connection.setAutoCommit(false);
-//            statement = connection.prepareStatement(SQL_SELECT_USER_BY_NICKNAME);
-//            statement.setString(1, nickname);
-//            user = parseSetToGetUsers(statement.executeQuery()).get(0);
-//            statement = connection.prepareStatement(SQL_SELECT_USER_REVIEWED_PRODUCTS);
-//            statement.setLong(1, user.getId());
-//            parseSetToGetReviewedProducts(statement.executeQuery(), user);
-//            statement = connection.prepareStatement(SQL_SELECT_USER_RATED_REVIEWS);
-//            statement.setLong(1, user.getId());
-//            parseSetToGetRatedReviews(statement.executeQuery(), user);
-//            connection.commit();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            rollback(connection);
-//        } finally {
-//            closeStatement(statement);
-//            closeConnection(connection);
-//        }
-
-        return Optional.ofNullable(user);
-    }
+//    public Optional<AppUser> findUserByNickname(String nickname) {
+//        AppUser user = null;
+//        Connection connection = null;
+//        PreparedStatement statement = null;
+//
+////        try {
+////            connection = ConnectionPool.INSTANCE.getAvailableConnection();
+////            connection.setAutoCommit(false);
+////            statement = connection.prepareStatement(SQL_SELECT_USER_BY_NICKNAME);
+////            statement.setString(1, nickname);
+////            user = parseSetToGetUsers(statement.executeQuery()).get(0);
+////            statement = connection.prepareStatement(SQL_SELECT_USER_REVIEWED_PRODUCTS);
+////            statement.setLong(1, user.getId());
+////            parseSetToGetReviewedProducts(statement.executeQuery(), user);
+////            statement = connection.prepareStatement(SQL_SELECT_USER_RATED_REVIEWS);
+////            statement.setLong(1, user.getId());
+////            parseSetToGetRatedReviews(statement.executeQuery(), user);
+////            connection.commit();
+////        } catch (SQLException e) {
+////            e.printStackTrace();
+////            rollback(connection);
+////        } finally {
+////            closeStatement(statement);
+////            closeConnection(connection);
+////        }
+//
+//        return Optional.ofNullable(user);
+//    }
 
 //    @Override
 //    public boolean delete(AppUser appUser) {
