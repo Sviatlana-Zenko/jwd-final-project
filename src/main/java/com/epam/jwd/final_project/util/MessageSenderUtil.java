@@ -24,7 +24,7 @@ public final class MessageSenderUtil {
             message.setSubject("Thank you for registration on Let's rate it!");
             message.setText("Hope you will like it!");
 
-            transport.connect("s.zenko1772453@gmail.com", "pmyeczlujmvehntt");
+            transport.connect("s.zenko1772453@gmail.com", "");
             transport.sendMessage(message, message.getAllRecipients());
 
             System.out.println("Your message has been successfully sent.");
