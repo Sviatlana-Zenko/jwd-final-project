@@ -12,7 +12,7 @@
 </head>
 <body>
 <c:import url="header.jsp"/>
-<c:import url="user-operation-btn.jsp"/>
+<c:import url="product-operation-btn.jsp"/>
 <div class="user-search">
     <form action="home?command=find-product" method="POST">
         <p>

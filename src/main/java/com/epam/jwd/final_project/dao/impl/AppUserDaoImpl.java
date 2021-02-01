@@ -28,23 +28,10 @@ public class AppUserDaoImpl implements AppUserDao, ReleaseResources {
     }
 
 
-    private static final String SQL_SELECT_REVIEWED_PRODUCTS =
-            "SELECT * FROM reviewed_products ORDER BY user_id";
-    private static final String SQL_SELECT_RATED_REVIEWS =
-            "SELECT * FROM rated_reviews ORDER BY user_id";
-
-
     private static final String SQL_CHECK_NICKNAME_PRESENCE =
             "SELECT COUNT(*) AS number FROM app_user where nickname=?";
     private static final String SQL_CHECK_EMAIL_PRESENCE =
             "SELECT COUNT(*) AS number FROM app_user where email=?";
-    private static final String SQL_SELECT_AMOUNT_OF_USERS =
-            "SELECT id, nickname, email, status_id, is_banned FROM app_user WHERE role_id!=? LIMIT ?, ?";
-    private static final String SQL_COUNT_USERS =
-            "SELECT COUNT(*) AS number FROM app_user WHERE role_id!=?";
-
-
-
 
 
     private static final String SQL_INSERT_INTO_APP_USER =
@@ -91,16 +78,16 @@ public class AppUserDaoImpl implements AppUserDao, ReleaseResources {
             "DELETE FROM app_user WHERE id=?";
     @Override
     public boolean delete(AppUser appUser, Connection connection) throws DatabaseInteractionException {
-        boolean wasDeleted = true;
+        boolean wasDeleted = false;
         PreparedStatement statement = null;
 
         try {
             statement = connection.prepareStatement(SQL_DELETE_USER);
             statement.setLong(1, appUser.getId());
             statement.executeUpdate();
+            wasDeleted = true;
         } catch (SQLException e) {
-            e.printStackTrace();
-            wasDeleted = false;
+            throw new DatabaseInteractionException(e);
         } finally {
             closeStatement(statement);
             closeConnection(connection);
@@ -243,6 +230,7 @@ public class AppUserDaoImpl implements AppUserDao, ReleaseResources {
     public AppUser updateByCriteria(AppUser appUser, AppUserCriteria appUserCriteria,
                                     Connection connection) throws DatabaseInteractionException {
         final String updateSql = SqlUpdateBuilderUtil.buildSqlUserUpdate(appUserCriteria, appUser);
+        System.out.println("updateSql + " + updateSql);
         PreparedStatement statement = null;
 
         try {
@@ -508,129 +496,6 @@ public class AppUserDaoImpl implements AppUserDao, ReleaseResources {
         return wasAdded;
     }
 
-
-
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-
-
-
-    public List<AppUser> findConcreteAmount(Long start, Long number) {
-        List<AppUser> users = new ArrayList<>();
-
-        try (Connection connection = ConnectionPool.INSTANCE.getAvailableConnection();
-             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_AMOUNT_OF_USERS)) {
-            statement.setLong(1, 1);
-            statement.setLong(2, start);
-            statement.setLong(3, number);
-            ResultSet set = statement.executeQuery();
-            AppUser user;
-            while (set.next()) {
-                //id, nickname, email, status_id, is_banned
-                user = new AppUser(set.getLong("id"),
-                        set.getString("nickname"),
-                        set.getString("email"),
-                        Status.resolveStatusById(set.getLong("status_id")),
-                        set.getBoolean("is_banned"));
-                users.add(user);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return users;
-    }
-
-    public Long getNumberOfUsers() {
-        Long number = null;
-
-        try (Connection connection = ConnectionPool.INSTANCE.getAvailableConnection();
-             PreparedStatement statement = connection.prepareStatement(SQL_COUNT_USERS)) {
-            statement.setLong(1, 1);
-            ResultSet set = statement.executeQuery();
-            while (set.next()) {
-                number = set.getLong("number");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return number;
-    }
-
-//    public Optional<AppUser> findUserByNickname(String nickname) {
-//        AppUser user = null;
-//        Connection connection = null;
-//        PreparedStatement statement = null;
-//
-////        try {
-////            connection = ConnectionPool.INSTANCE.getAvailableConnection();
-////            connection.setAutoCommit(false);
-////            statement = connection.prepareStatement(SQL_SELECT_USER_BY_NICKNAME);
-////            statement.setString(1, nickname);
-////            user = parseSetToGetUsers(statement.executeQuery()).get(0);
-////            statement = connection.prepareStatement(SQL_SELECT_USER_REVIEWED_PRODUCTS);
-////            statement.setLong(1, user.getId());
-////            parseSetToGetReviewedProducts(statement.executeQuery(), user);
-////            statement = connection.prepareStatement(SQL_SELECT_USER_RATED_REVIEWS);
-////            statement.setLong(1, user.getId());
-////            parseSetToGetRatedReviews(statement.executeQuery(), user);
-////            connection.commit();
-////        } catch (SQLException e) {
-////            e.printStackTrace();
-////            rollback(connection);
-////        } finally {
-////            closeStatement(statement);
-////            closeConnection(connection);
-////        }
-//
-//        return Optional.ofNullable(user);
-//    }
-
-//    @Override
-//    public boolean delete(AppUser appUser) {
-//        boolean wasDeleted = true;
-//        Connection connection = null;
-//        PreparedStatement statement = null;
-//        List<Review> userReviews = null;
-//
-//        userReviews = ReviewDaoImpl.getInstance().findAllForParticularUser(appUser.getId()).stream()
-//                .peek(review -> review.setUserNickname("deleted user"))
-//                .collect(Collectors.toList());
-//
-//        if (userReviews != null && userReviews.size() > 0) {
-//            ReviewDaoImpl.getInstance().transferInHistoryTable(userReviews);
-//        }
-//
-//        try {
-//            connection = ConnectionPool.INSTANCE.getAvailableConnection();
-//            statement = connection.prepareStatement(SQL_DELETE_USER);
-//            statement.setLong(1, appUser.getId());
-//            statement.executeUpdate();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            wasDeleted = false;
-//        } finally {
-//            closeStatement(statement);
-//            closeConnection(connection);
-//        }
-//
-//        return wasDeleted;
-//    }
-
-
-    @Override
-    public boolean checkIfNickNameExists(String nickname) {
-        return checkPresence(SQL_CHECK_NICKNAME_PRESENCE, nickname);
-    }
-
-    @Override
-    public boolean checkIfEmailExists(String email) {
-        return checkPresence(SQL_CHECK_EMAIL_PRESENCE, email);
-    }
-
     private Long getGeneratedId(Connection connection, PreparedStatement statement,
                                 AppUser appUser) throws SQLException {
         Long id = null;
@@ -645,23 +510,55 @@ public class AppUserDaoImpl implements AppUserDao, ReleaseResources {
         return id;
     }
 
-    private boolean checkPresence(String sql, String field) {
-        boolean exsists = false;
-
-        try(Connection connection = ConnectionPool.INSTANCE.getAvailableConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, field);
-            ResultSet set = preparedStatement.executeQuery();
-            while (set.next()) {
-                if(set.getLong("number") > 0) {
-                    return true;
-                }
-            }
+    @Override
+    public boolean checkIfNickNameExists(String nickname, Connection connection) throws DatabaseInteractionException {
+        boolean exsists;
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement(SQL_CHECK_NICKNAME_PRESENCE);
+            statement.setString(1, nickname);
+            exsists = checkPresence(statement.executeQuery());
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseInteractionException(e);
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
         }
 
         return exsists;
     }
+
+    @Override
+    public boolean checkIfEmailExists(String email, Connection connection) throws DatabaseInteractionException {
+        boolean exsists;
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement(SQL_CHECK_EMAIL_PRESENCE);
+            statement.setString(1, email);
+            exsists = checkPresence(statement.executeQuery());
+        } catch (SQLException e) {
+            throw new DatabaseInteractionException(e);
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
+        }
+
+        return exsists;
+    }
+
+
+    private boolean checkPresence(ResultSet set) throws SQLException {
+        boolean exsists = false;
+        while (set.next()) {
+            if(set.getLong("number") > 0) {
+                exsists = true;
+            }
+        }
+
+        return exsists;
+    }
+
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 }

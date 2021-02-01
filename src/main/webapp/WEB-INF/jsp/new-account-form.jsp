@@ -13,6 +13,16 @@
 <body style="background: linear-gradient(#0b9e9e, #202121) fixed">
 <div class="new-account-container">
     <div class="title"><fmt:message key="label.new.account"/></div>
+    <div class="sign-up-error">
+        <p>
+            <c:if test="${sessionScope.emailError == true}">
+                email error
+            </c:if>
+            <c:if test="${sessionScope.nicknameError == true}">
+                nickname error
+            </c:if>
+        </p>
+    </div>
     <form class="account-form" id="account-form" action="home?command=create-account" method="POST">
         <table class="account-table">
             <tbody>

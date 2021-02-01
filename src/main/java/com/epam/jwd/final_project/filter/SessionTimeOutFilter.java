@@ -3,7 +3,7 @@ package com.epam.jwd.final_project.filter;
 import com.epam.jwd.final_project.controller.command.Command;
 import com.epam.jwd.final_project.controller.command.CommandFactory;
 import com.epam.jwd.final_project.controller.command.ResponseContext;
-import com.epam.jwd.final_project.controller.command.impl.temp.CustomRequestContext;
+import com.epam.jwd.final_project.controller.command.impl.CustomRequestContext;
 import com.epam.jwd.final_project.controller.command.impl.ResponseContextImpl;
 
 import javax.servlet.FilterChain;

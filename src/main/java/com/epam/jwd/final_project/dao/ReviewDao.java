@@ -15,7 +15,13 @@ public interface ReviewDao {
     List<Review> findAllForConcreteProduct(Long id, Connection connection)
             throws DatabaseInteractionException;
 
+    List<Review> findAllForConcreteUser(Long id, Connection connection)
+            throws DatabaseInteractionException;
+
     List<Review> findAllForConcreteUserInReview(Long id, Connection connection)
+            throws DatabaseInteractionException;
+
+    List<Review> findAllForConcreteProductInReview(Long id, Connection connection)
             throws DatabaseInteractionException;
 
     Review updateReviewMarks(Review review, Connection connection)
@@ -24,17 +30,12 @@ public interface ReviewDao {
     boolean transferInHistoryTable(List<Review> reviews, Connection connection)
             throws DatabaseInteractionException;
 
+    List<Integer> getAllProductMarks(Long id, Connection connection)
+            throws DatabaseInteractionException;
+
     boolean fullDelete(Review review,  Connection connection)
             throws DatabaseInteractionException;
 
 
-
-//    boolean fullDelete(Review review);
-//
-//    boolean transferInHistoryTable(List<Review> reviews);
-//
-//    List<Review> findAllForParticularCinemaProduct(Long productId);
-//
-//    List<Review> findAllForParticularUser(Long userId);
 
 }

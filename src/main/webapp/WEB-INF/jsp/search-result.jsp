@@ -10,12 +10,6 @@
     <link rel="stylesheet" href="<c:url value="../../css/app-style.css"/>">
 </head>
 <body>
-<c:import url="header.jsp"/>
-<div class="was-found">
-    <p>
-        <fmt:message key="label.was.found"/>
-    </p>
-</div>
-<c:import url="products_view.jsp"/>
+<c:import url="products-view.jsp"/>
 </body>
 </html>

@@ -1,10 +1,7 @@
 package com.epam.jwd.final_project.validation.impl;
 
-import com.epam.jwd.final_project.domain.AppUser;
 import com.epam.jwd.final_project.domain.CinemaProduct;
-import com.epam.jwd.final_project.domain.Movie;
 import com.epam.jwd.final_project.validation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +26,9 @@ public class MovieValidationChain implements ValidationChain<CinemaProduct> {
         DirectedByValidator directedByValidator = new DirectedByValidator();
         ProducedByValidator producedByValidator = new ProducedByValidator();
         DescriptionValidator descriptionValidator = new DescriptionValidator();
+        RunningTimeValidator timeValidator = new RunningTimeValidator();
+        BudgetValidator budgetValidator = new BudgetValidator();
+        BoxOfficeValidator boxOfficeValidator = new BoxOfficeValidator();
 
         validator = new CountryValidator();
         validator.setNextValidator(titleValidator);
@@ -38,8 +38,9 @@ public class MovieValidationChain implements ValidationChain<CinemaProduct> {
         urlValidator.setNextValidator(directedByValidator);
         directedByValidator.setNextValidator(producedByValidator);
         producedByValidator.setNextValidator(descriptionValidator);
-
-
+        descriptionValidator.setNextValidator(timeValidator);
+        timeValidator.setNextValidator(budgetValidator);
+        budgetValidator.setNextValidator(boxOfficeValidator);
     }
 
 }

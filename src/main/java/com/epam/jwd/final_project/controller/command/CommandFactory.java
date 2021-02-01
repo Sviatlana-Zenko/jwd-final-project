@@ -34,6 +34,10 @@ public class CommandFactory {
                 return new ToEditQuoteFormCommand();
             case TO_FORM:
                 return new ToNewProductFormCommand();
+            case TO_EDIT_ACCOUNT_FORM:
+                return new ToEditAccountFormCommand();
+            case EDIT_ACCOUNT:
+                return new EditAccountCommand();
             case USER_SEARCH:
                 return new ToUserSearchParamsCommand();
             case PRODUCT_SEARCH:
@@ -90,6 +94,8 @@ public class CommandFactory {
                 return new ShowFoundProductCommand();
             case CREATE_MOVIE:
                 return new CreateMovieCommand();
+            case DELETE_PRODUCT:
+                return new DeleteProductCommand();
             default:
                 return new ToMainPageCommand();
         }

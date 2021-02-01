@@ -29,6 +29,7 @@ public class ReviewServiceImpl implements ReviewService {
         if (validationErrors.size() == 0) {
             wasCreated = ReviewDaoImpl.getInstance().create(review,
                     ConnectionPool.INSTANCE.getAvailableConnection());
+            CinemaProductServiceImpl.INSTANCE.updateProductRating(review.getCinemaProductId());
         } else {
             throw new ValidationException(AppUser.class.getSimpleName(), validationErrors);
         }
@@ -43,6 +44,11 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    public List<Review> findAllForConcreteUser(Long id) throws DatabaseInteractionException {
+        return ReviewDaoImpl.getInstance().findAllForConcreteUser(id, ConnectionPool.INSTANCE.getAvailableConnection());
+    }
+
+    @Override
     public Review updateReviewMarks(Review review) throws DatabaseInteractionException {
         return ReviewDaoImpl.getInstance().updateReviewMarks(
                 review, ConnectionPool.INSTANCE.getAvailableConnection());
@@ -50,12 +56,24 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public List<Review> findAllForConcreteUserInReview(Long id) throws DatabaseInteractionException {
-        return ReviewDaoImpl.getInstance().findAllForConcreteUserInReview(id, ConnectionPool.INSTANCE.getAvailableConnection());
+        return ReviewDaoImpl.getInstance().findAllForConcreteUserInReview(
+                id, ConnectionPool.INSTANCE.getAvailableConnection());
+    }
+
+    @Override
+    public List<Review> findAllForConcreteProductInReview(Long id) throws DatabaseInteractionException {
+        return ReviewDaoImpl.getInstance().findAllForConcreteProductInReview(
+                id, ConnectionPool.INSTANCE.getAvailableConnection());
     }
 
     @Override
     public boolean transferInHistoryTable(List<Review> reviews) throws DatabaseInteractionException {
         return ReviewDaoImpl.getInstance().transferInHistoryTable(reviews, ConnectionPool.INSTANCE.getAvailableConnection());
+    }
+
+    @Override
+    public List<Integer> getAllProductMarks(Long id) throws DatabaseInteractionException {
+        return ReviewDaoImpl.getInstance().getAllProductMarks(id, ConnectionPool.INSTANCE.getAvailableConnection());
     }
 
 //    @Override

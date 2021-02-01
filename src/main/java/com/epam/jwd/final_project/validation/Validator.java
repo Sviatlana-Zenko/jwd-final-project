@@ -19,39 +19,3 @@ public abstract class Validator<T extends AppEntity> {
     }
 
 }
-
-//public abstract class Validator<T extends AppEntity> {
-//
-//    private Validator nextValidator;
-//
-//    @Override
-//    public void setNextValidator(Validator nextValidator) {
-//        this.nextValidator = nextValidator;
-//    }
-//
-//    @Override
-//    public void validate(T t, List<String> validationErrors) {
-//        if (nextValidator != null) {
-//            nextValidator.validate(t, validationErrors);
-//        }
-//    }
-//
-//}
-
-//public abstract class AbstractValidator implements Validator {
-//
-//    private Validator nextValidator;
-//
-//    @Override
-//    public void setNextValidator(Validator nextValidator) {
-//        this.nextValidator = nextValidator;
-//    }
-//
-//    @Override
-//    public void validate(AppEntity appEntity, List<String> validationErrors) {
-//        if (nextValidator != null) {
-//            nextValidator.validate(appEntity, validationErrors);
-//        }
-//    }
-//
-//}

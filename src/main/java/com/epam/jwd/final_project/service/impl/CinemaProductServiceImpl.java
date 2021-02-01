@@ -7,6 +7,7 @@ import com.epam.jwd.final_project.dao.impl.CinemaProductDaoImpl;
 import com.epam.jwd.final_project.domain.AppUser;
 import com.epam.jwd.final_project.domain.CinemaProduct;
 import com.epam.jwd.final_project.domain.ProductType;
+import com.epam.jwd.final_project.domain.Review;
 import com.epam.jwd.final_project.exception.DatabaseInteractionException;
 import com.epam.jwd.final_project.exception.ValidationException;
 import com.epam.jwd.final_project.pool.ConnectionPool;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class CinemaProductServiceImpl implements CinemaProductService {
 
@@ -50,14 +52,40 @@ public class CinemaProductServiceImpl implements CinemaProductService {
     }
 
     @Override
-    public Optional<CinemaProduct> findByTitle(String title) throws DatabaseInteractionException {
-        Optional<CinemaProduct> product = Optional.empty();
-        Long id = CinemaProductDaoImpl.getInstance().findIdByTitle(title, ConnectionPool.INSTANCE.getAvailableConnection());
-        if (id != null) {
-            product = CinemaProductDaoImpl.getInstance().findById(id, ConnectionPool.INSTANCE.getAvailableConnection());
+    public List<CinemaProduct> findByTitle(String title) throws DatabaseInteractionException {
+        List<CinemaProduct> products = new ArrayList<>();
+        List<Long> idList = CinemaProductDaoImpl.getInstance()
+                .findIdByTitle(title, ConnectionPool.INSTANCE.getAvailableConnection());
+
+        for (int i = 0; i < idList.size(); i++) {
+            Optional<CinemaProduct> found = CinemaProductDaoImpl.getInstance()
+                    .findById(idList.get(i), ConnectionPool.INSTANCE.getAvailableConnection());
+            if (found.isPresent()) {
+                products.add(found.get());
+            }
         }
 
-        return product;
+        return products;
+    }
+
+    @Override
+    public boolean updateProductRating(Long id) throws DatabaseInteractionException {
+        boolean wasUpdated = false;
+        List<Integer> marks = ReviewServiceImpl.INSTANCE.getAllProductMarks(id);
+        System.out.println("marks + " + marks);
+
+        int sum = marks.stream()
+                .mapToInt((mark) -> Integer.parseInt(String.valueOf(mark)))
+                .sum();
+
+        System.out.println("sum + " + sum);
+        Double newRating = sum * 1.0 / marks.size();
+        System.out.println("newParing + " + newRating);
+
+        wasUpdated = CinemaProductDaoImpl.getInstance().updateProductRating(
+                id, newRating, ConnectionPool.INSTANCE.getAvailableConnection());
+
+        return wasUpdated;
     }
 
     @Override
@@ -94,7 +122,20 @@ public class CinemaProductServiceImpl implements CinemaProductService {
 
     @Override
     public boolean delete(CinemaProduct product) throws DatabaseInteractionException {
-        return false;
+        boolean wasDeleted = false;
+
+        List<Review> toTransfer = ReviewServiceImpl.INSTANCE.findAllForConcreteProductInReview(product.getId());
+        System.out.println("toTransfer + " + toTransfer);
+        if (toTransfer.size() > 0) {
+            toTransfer = toTransfer.stream()
+                    .peek(review -> review.setProductTitle("deleted movie/TV series"))
+                    .collect(Collectors.toList());
+            if (ReviewServiceImpl.INSTANCE.transferInHistoryTable(toTransfer)) {
+                wasDeleted = CinemaProductDaoImpl.getInstance().delete(product, ConnectionPool.INSTANCE.getAvailableConnection());
+            }
+        }
+
+        return wasDeleted;
     }
 
     @Override

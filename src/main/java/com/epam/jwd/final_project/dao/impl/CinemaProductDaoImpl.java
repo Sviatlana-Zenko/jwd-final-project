@@ -193,9 +193,27 @@ public class CinemaProductDaoImpl implements CinemaProductDao, ReleaseResources 
         return typeId;
     }
 
+
+    private static final String SQL_DELETE_CINEMA_PRODUCT =
+        "DELETE FROM cinema_product WHERE id=?";
     @Override
     public boolean delete(CinemaProduct product, Connection connection) throws DatabaseInteractionException {
-        return false;
+        boolean wasDeleted = true;
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(SQL_DELETE_CINEMA_PRODUCT);
+            statement.setLong(1, product.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            wasDeleted = false;
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
+        }
+
+        return wasDeleted;
     }
 
     @Override
@@ -204,8 +222,8 @@ public class CinemaProductDaoImpl implements CinemaProductDao, ReleaseResources 
     }
 
     @Override
-    public Long findIdByTitle(String title, Connection connection) throws DatabaseInteractionException {
-        Long id = null;
+    public List<Long> findIdByTitle(String title, Connection connection) throws DatabaseInteractionException {
+        List<Long> idList = new ArrayList<>();
         title = "'%" + title + "%'";
         PreparedStatement statement = null;
 
@@ -213,7 +231,7 @@ public class CinemaProductDaoImpl implements CinemaProductDao, ReleaseResources 
             statement = connection.prepareStatement(SQL_SELECT_ID_BY_TITLE + title);
             ResultSet set = statement.executeQuery();
             while (set.next()) {
-                id = set.getLong("id");
+                idList.add(set.getLong("id"));
             }
         } catch (SQLException e) {
             throw new DatabaseInteractionException(e);
@@ -222,8 +240,7 @@ public class CinemaProductDaoImpl implements CinemaProductDao, ReleaseResources 
             closeConnection(connection);
         }
 
-
-        return id;
+        return idList;
     }
 
     @Override
@@ -511,285 +528,27 @@ public class CinemaProductDaoImpl implements CinemaProductDao, ReleaseResources 
         return recommendations;
     }
 
+    private static final String SQL_UPDATE_RATING =
+            "UPDATE cinema_product SET current_rating=? WHERE id=?";
+    @Override
+    public boolean updateProductRating(Long id, Double newRating, Connection connection)
+            throws DatabaseInteractionException {
+        boolean wasUpdated = false;
+        PreparedStatement statement = null;
 
-//    private static final String SQL_INSERT_INTO_CINEMA_PRODUCT =
-//            "INSERT INTO cinema_product(type_id, title, description, release_date, " +
-//                    "running_time, country, age_rating, starring, poster_url) " +
-//                            "VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-//    private static final String SQL_SELECT_GENERATED_ID =
-//            "SELECT id FROM cinema_product WHERE title=? AND release_date=?";
-//    private static final String SQL_INSERT_INTO_MOVIE =
-//            "INSERT INTO movie(id, directed_by, produced_by, budget, box_office) " +
-//                    "VALUE (?, ?, ?, ?, ?)";
-//    private static final String SQL_INSERT_INTO_TV_SERIES =
-//            "INSERT INTO tv_series(id, number_of_seasons, number_of_episodes, " +
-//                    "is_finished) VALUE (?, ?, ?, ?)";
-//    private static final String SQL_SELECT_MOVIE_BY_ID =
-//            "SELECT * FROM cinema_product INNER JOIN movie m ON cinema_product.id = m.id " +
-//                    "WHERE cinema_product.id=?";
-//    private static final String SQL_SELECT_MOVIE_BY_TITLE =
-//            "SELECT * FROM cinema_product INNER JOIN movie m ON cinema_product.id = m.id " +
-//                    "WHERE cinema_product.title=?";
-//    private static final String SQL_SELECT_TV_SERIES_BY_ID =
-//            "SELECT * FROM cinema_product INNER JOIN tv_series ts on cinema_product.id = ts.id " +
-//                    "WHERE cinema_product.id=?";
-//    private static final String SQL_SELECT_TV_SERIES_BY_TITLE =
-//            "SELECT * FROM cinema_product INNER JOIN tv_series ts on cinema_product.id = ts.id " +
-//                    "WHERE cinema_product.title=?";
-//    private static final String SQL_SELECT_MOVIES =
-//            "SELECT * FROM cinema_product INNER JOIN movie m ON cinema_product.id = m.id";
-//    private static final String SQL_SELECT_AMOUNT_OF_MOVIES =
-//            "SELECT * FROM cinema_product INNER JOIN movie m ON cinema_product.id = m.id " +
-//                    "ORDER BY current_rating DESC LIMIT ?, ?";
-//    private static final String SQL_SELECT_TV_SERIES =
-//            "SELECT * FROM cinema_product INNER JOIN tv_series ts on cinema_product.id = ts.id";
-//    private static final String SQL_SELECT_AMOUNT_OF_TV_SERIES =
-//            "SELECT * FROM cinema_product INNER JOIN tv_series ts on cinema_product.id = ts.id " +
-//                    "ORDER BY current_rating DESC LIMIT ?, ?";
-//    private static final String SQL_DELETE_CINEMA_PRODUCT_GENRES =
-//            "DELETE FROM cinema_product_genre WHERE cinema_product_id=?";
-//    private static final String SQL_DELETE_CINEMA_PRODUCT =
-//            "DELETE FROM cinema_product WHERE id=?";
-//    private static final String SQL_COUNT_ELEMENTS_BY_TYPE =
-//            "SELECT COUNT(*) AS number FROM cinema_product where type_id=?";
-//
-//    @Override
-//    public boolean create(CinemaProduct cinemaProduct) {
-//        boolean wasCreated = true;
-//        Connection connection = null;
-//        PreparedStatement statement = null;
-//
-//        try {
-//            connection = ConnectionPool.INSTANCE.getAvailableConnection();
-//            connection.setAutoCommit(false);
-//
-//            statement = connection.prepareStatement(SQL_INSERT_INTO_CINEMA_PRODUCT);
-//            statement.setLong(1, cinemaProduct.getType().getId());
-//            statement.setString(2, cinemaProduct.getTitle());
-//            statement.setString(3, cinemaProduct.getDescription());
-//            statement.setString(4, cinemaProduct.getReleaseDate().toString());
-//            statement.setInt(5, cinemaProduct.getRunningTime());
-//            statement.setString(6, cinemaProduct.getCountry());
-//            statement.setByte(7, cinemaProduct.getAgeRating());
-//            statement.setString(8, cinemaProduct.getStarring());
-//            statement.setString(9, cinemaProduct.getPosterUrl());
-//            statement.executeUpdate();
-//
-//            Long generatedForId = getGeneratedId(connection, statement, cinemaProduct);
-//            List<Genre> genres = cinemaProduct.getGenres();
-////            if (genres != null && genres.size() > 0) {
-////                wasCreated = GenreDaoImpl.getInstance().createCinemaProductGenres(generatedForId, genres);
-////            }
-//
-//            if (cinemaProduct.getType() == ProductType.MOVIE) {
-//                statement = connection.prepareStatement(SQL_INSERT_INTO_MOVIE);
-//                statement.setLong(1, generatedForId);
-//                statement.setString(2, ((Movie) cinemaProduct).getDirectedBy());
-//                statement.setString(3, ((Movie) cinemaProduct).getProducedBy());
-//                statement.setInt(4, ((Movie) cinemaProduct).getBudget());
-//                statement.setInt(5, ((Movie) cinemaProduct).getBoxOffice());
-//            } else {
-//                statement = connection.prepareStatement(SQL_INSERT_INTO_TV_SERIES);
-//                statement.setLong(1, generatedForId);
-//                statement.setInt(2, ((TvSeries) cinemaProduct).getNumberOfSeasons());
-//                statement.setInt(3, ((TvSeries) cinemaProduct).getNumberOfEpisodes());
-//                statement.setBoolean(4, ((TvSeries) cinemaProduct).getIsFinished());
-//            }
-//            statement.executeUpdate();
-//
-//            connection.commit();
-//        } catch (SQLException e) {
-//            wasCreated = false;
-//            rollback(connection);
-//            e.printStackTrace();
-//        } finally {
-//            closeStatement(statement);
-//            closeConnection(connection);
-//        }
-//
-//        return wasCreated;
-//    }
+        try {
+            statement = connection.prepareStatement(SQL_UPDATE_RATING);
+            statement.setDouble(1, newRating);
+            statement.setLong(2, id);
+            statement.executeUpdate();
+            wasUpdated = true;
+        } catch (SQLException e) {
+            throw new DatabaseInteractionException(e);
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
+        }
 
-//    @Override
-//    public CinemaProduct updateByCriteria(CinemaProduct product, CinemaProductCriteria criteria) {
-//        return null;
-//    }
-//
-//    @Override
-//    public CinemaProduct updateByCriteria(CinemaProductCriteria criteria, CinemaProduct cinemaProduct) {
-//        Connection connection = null;
-//        PreparedStatement statement = null;
-//
-//        try {
-//            connection = ConnectionPool.INSTANCE.getAvailableConnection();
-//            connection.setAutoCommit(false);
-//            statement = connection.prepareStatement(buildSqlForUpdateCinemaProduct(criteria, cinemaProduct));
-//            statement.executeUpdate();
-//
-//            if (criteria.getType() == ProductType.MOVIE) {
-//                statement = connection.prepareStatement(buildSqlForUpdateMovie(criteria, cinemaProduct));
-//            } else {
-//                statement = connection.prepareStatement(buildSqlForUpdateTvSeries(criteria, cinemaProduct));
-//            }
-//            statement.executeUpdate();
-//
-//            List<Genre> newGenres = criteria.getGenres();
-//            if (newGenres != null) {
-//                statement = connection.prepareStatement(SQL_DELETE_CINEMA_PRODUCT_GENRES);
-//                statement.setLong(1, cinemaProduct.getId());
-//                statement.executeUpdate();
-////                GenreDaoImpl.getInstance().createCinemaProductGenres(cinemaProduct.getId(), newGenres);
-//            }
-//            connection.commit();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            rollback(connection);
-//        } finally {
-//            closeStatement(statement);
-//            closeConnection(connection);
-//        }
-//
-//        return cinemaProduct;
-//    }
-
-//    private String buildSqlForUpdateCinemaProduct(CinemaProductCriteria criteria, CinemaProduct product) {
-//        Map<String, Object> criteriaValues = createCinemaProductValuesMap(criteria);
-//        Map<String, String> fieldNames = createCinemaProductFieldNamesMap();
-//        StringBuilder builder = new StringBuilder("UPDATE cinema_product SET ");
-//
-//        for (Map.Entry<String,Object> entry : criteriaValues.entrySet()) {
-//            if (entry.getValue() != null) {
-//                if (entry.getValue().getClass().getSimpleName().equals(String.class.getSimpleName()) ||
-//                        entry.getValue().getClass().getSimpleName().equals(LocalDate.class.getSimpleName())) {
-//                    builder.append(fieldNames.get(entry.getKey()) + "='" + entry.getValue() + "', ");
-//                } else if (entry.getValue().getClass().getSimpleName().equals(ProductType.class.getSimpleName())) {
-//                    builder.append(fieldNames.get(entry.getKey()) + "=" + ((ProductType) entry.getValue()).getId() + ", ");
-//                } else {
-//                    builder.append(fieldNames.get(entry.getKey()) + "=" + entry.getValue() + ", ");
-//                }
-//            }
-//        }
-//
-//        builder.append("WHERE id=" + product.getId());
-//        builder.deleteCharAt(builder.lastIndexOf(","));
-//
-//        return builder.toString();
-//
-//    }
-//
-//    private String buildSqlForUpdateMovie(CinemaProductCriteria criteria, CinemaProduct product) {
-//        Map<String, Object> criteriaValues = createMovieValuesMap(criteria);
-//        Map<String, String> fieldNames = createMovieFieldNamesMap();
-//        StringBuilder builder = new StringBuilder("UPDATE movie SET ");
-//
-//        for (Map.Entry<String,Object> entry : criteriaValues.entrySet()) {
-//            if (entry.getValue() != null) {
-//                if (entry.getValue().getClass().getSimpleName().equals(String.class.getSimpleName())) {
-//                    builder.append(fieldNames.get(entry.getKey()) + "='" + entry.getValue() + "', ");
-//                } else {
-//                    builder.append(fieldNames.get(entry.getKey()) + "=" + entry.getValue() + ", ");
-//                }
-//            }
-//        }
-//
-//        builder.append("WHERE id=" + product.getId());
-//        builder.deleteCharAt(builder.lastIndexOf(","));
-//
-//        return builder.toString();
-//    }
-//
-//    private String buildSqlForUpdateTvSeries(CinemaProductCriteria criteria, CinemaProduct product) {
-//        Map<String, Object> criteriaValues = createTvSeriesValuesMap(criteria);
-//        Map<String, String> fieldNames = createTvSeriesFieldNamesMap();
-//        StringBuilder builder = new StringBuilder("UPDATE tv_series SET ");
-//
-//        for (Map.Entry<String,Object> entry : criteriaValues.entrySet()) {
-//            if (entry.getValue() != null) {
-//                if (entry.getValue().getClass().getSimpleName().equals(Boolean.class.getSimpleName())) {
-//                    if (entry.getValue().equals(true)) {
-//                        builder.append(fieldNames.get(entry.getKey()) + "=" + 1 + ", ");
-//                    } else {
-//                        builder.append(fieldNames.get(entry.getKey()) + "=" + 0 + ", ");
-//                    }
-//                } else {
-//                    builder.append(fieldNames.get(entry.getKey()) + "=" + entry.getValue() + ", ");
-//                }
-//            }
-//        }
-//
-//        builder.append("WHERE id=" + product.getId());
-//        builder.deleteCharAt(builder.lastIndexOf(","));
-//
-//        return builder.toString();
-//    }
-//
-//    private Map<String, Object> createMovieValuesMap(CinemaProductCriteria productCriteria) {
-//        Map<String, Object> criteriaValues = new HashMap<>();
-//        MovieCriteria criteria = (MovieCriteria) productCriteria;
-//        criteriaValues.put("directedBy", criteria.getDirectedBy());
-//        criteriaValues.put("producedBy", criteria.getProducedBy());
-//        criteriaValues.put("budget", criteria.getBudget());
-//        criteriaValues.put("boxOffice", criteria.getBoxOffice());
-//
-//        return criteriaValues;
-//    }
-//
-//    private Map<String, String> createMovieFieldNamesMap() {
-//        Map<String, String> fieldNames = new HashMap<>();
-//        fieldNames.put("directedBy", "directed_by");
-//        fieldNames.put("producedBy", "produced_by");
-//        fieldNames.put("budget", "budget");
-//        fieldNames.put("boxOffice", "box_office");
-//
-//        return fieldNames;
-//    }
-//
-//    private Map<String, Object> createTvSeriesValuesMap(CinemaProductCriteria productCriteria) {
-//        Map<String, Object> criteriaValues = new HashMap<>();
-//        TvSeriesCriteria criteria = (TvSeriesCriteria) productCriteria;
-//        criteriaValues.put("numberOfSeasons", criteria.getNumberOfSeasons());
-//        criteriaValues.put("numberOfEpisodes", criteria.getNumberOfEpisodes());
-//        criteriaValues.put("isFinished", criteria.getFinished());
-//
-//        return criteriaValues;
-//    }
-//
-//    private Map<String, String> createTvSeriesFieldNamesMap() {
-//        Map<String, String> fieldNames = new HashMap<>();
-//        fieldNames.put("numberOfSeasons", "number_of_seasons");
-//        fieldNames.put("numberOfEpisodes", "number_of_episodes");
-//        fieldNames.put("isFinished", "is_finished");
-//
-//        return fieldNames;
-//    }
-//
-//    private Map<String, Object> createCinemaProductValuesMap(CinemaProductCriteria criteria) {
-//        Map<String, Object> criteriaValues = new HashMap<>();
-//        criteriaValues.put("title", criteria.getTitle());
-//        criteriaValues.put("description", criteria.getDescription());
-//        criteriaValues.put("releaseDate", criteria.getReleaseDate());
-//        criteriaValues.put("runningTime", criteria.getRunningTime());
-//        criteriaValues.put("country", criteria.getCountry());
-//        criteriaValues.put("ageRating", criteria.getAgeRating());
-//        criteriaValues.put("starring", criteria.getStarring());
-//        criteriaValues.put("posterUrl", criteria.getPosterUrl());
-//
-//        return criteriaValues;
-//    }
-//
-//    private Map<String, String> createCinemaProductFieldNamesMap() {
-//        Map<String, String> fieldNames = new HashMap<>();
-//        fieldNames.put("title", "title");
-//        fieldNames.put("description", "description");
-//        fieldNames.put("releaseDate", "release_date");
-//        fieldNames.put("runningTime", "running_time");
-//        fieldNames.put("country", "country");
-//        fieldNames.put("ageRating", "age_rating");
-//        fieldNames.put("starring", "starring");
-//        fieldNames.put("posterUrl", "poster_url");
-//
-//        return fieldNames;
-//    }
-//
-
+        return wasUpdated;
+    }
 }

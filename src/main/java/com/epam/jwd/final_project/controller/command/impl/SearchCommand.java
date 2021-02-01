@@ -8,13 +8,12 @@ import com.epam.jwd.final_project.controller.command.impl.ResponseContextImpl;
 public class SearchCommand implements Command {
 
     @Override
-    public ResponseContext execute(RequestContext requestContext) {
-        ResponseContext responseContext = new ResponseContextImpl(ResponseContext.ResponseType.REDIRECT);
-        String search = requestContext.getParameter("search-request");
-        System.out.println("search-request === " + search);
-        ((ResponseContextImpl) responseContext).setPage("/home?command=search-result&search=" + search);
+    public ResponseContext execute(RequestContext req) {
+        ResponseContext resp = new ResponseContextImpl(ResponseContext.ResponseType.REDIRECT);
+        String search = req.getParameter("search-request");
+        ((ResponseContextImpl) resp).setPage("/home?command=search-result&search=" + search);
 
-        return responseContext;
+        return resp;
     }
 
 }

@@ -86,6 +86,37 @@ public class ReviewDaoImpl implements ReviewDao, ReleaseResources {
         return reviews;
     }
 
+//    private static final String SQL_SELECT_USER_REVIEWS =
+//            "SELECT review.*, cinema_product.title, app_user.nickname FROM review " +
+//                    "INNER JOIN cinema_product ON review.cinema_product_id = cinema_product.id " +
+//                    "INNER JOIN app_user ON review.user_id = app_user.id " +
+//                    "WHERE user_id=?";
+    private static final String SQL_SELECT_USER_HIST_REVIEWS =
+            "SELECT * FROM review_history WHERE user_id=?";
+    @Override
+    public List<Review> findAllForConcreteUser(Long id, Connection connection) throws DatabaseInteractionException {
+        List<Review> reviews = new ArrayList<>();
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(SQL_SELECT_USER_REVIEWS);
+            statement.setLong(1, id);
+            reviews.addAll(getReviewsFromResultSet(statement.executeQuery()));
+            statement = connection.prepareStatement(SQL_SELECT_USER_HIST_REVIEWS);
+            statement.setLong(1, id);
+            reviews.addAll(getReviewsFromResultSet(statement.executeQuery()));
+        } catch (SQLException e) {
+            throw new DatabaseInteractionException(e);
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
+        }
+
+        reviews.sort(Comparator.comparing(Review::getId).reversed());
+
+        return reviews;
+    }
+
     private static final String SQL_SELECT_USER_REVIEWS =
     "SELECT review.*, cinema_product.title, app_user.nickname FROM review " +
             "INNER JOIN cinema_product ON review.cinema_product_id = cinema_product.id " +
@@ -109,6 +140,31 @@ public class ReviewDaoImpl implements ReviewDao, ReleaseResources {
         }
 
         reviews.sort(Comparator.comparing(Review::getId).reversed());
+
+        return reviews;
+    }
+
+    private static final String SQL_SELECT_PRODUCT_REVIEWS =
+            "SELECT review.*, cinema_product.title, app_user.nickname FROM review " +
+                    "INNER JOIN cinema_product ON review.cinema_product_id = cinema_product.id " +
+                    "INNER JOIN app_user ON review.user_id = app_user.id " +
+                    "WHERE cinema_product.id=?";
+    @Override
+    public List<Review> findAllForConcreteProductInReview(Long id, Connection connection)
+            throws DatabaseInteractionException {
+        List<Review> reviews = new ArrayList<>();
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(SQL_SELECT_PRODUCT_REVIEWS);
+            statement.setLong(1, id);
+            reviews.addAll(getReviewsFromResultSet(statement.executeQuery()));
+        } catch (SQLException e) {
+            throw new DatabaseInteractionException(e);
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
+        }
 
         return reviews;
     }
@@ -247,6 +303,45 @@ public class ReviewDaoImpl implements ReviewDao, ReleaseResources {
 
         return reviews;
     }
+
+    private static final String SQL_SELECT_REVIEW_MARKS =
+            "SELECT cinema_product_mark FROM review WHERE cinema_product_id=?";
+    private static final String SQL_SELECT_REVIEW_HISTORY_MARKS =
+            "SELECT cinema_product_mark FROM review_history WHERE cinema_product_id=?";
+
+    public List<Integer> getAllProductMarks(Long id, Connection connection)
+            throws DatabaseInteractionException {
+        List<Integer> marks = new ArrayList<>();
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(SQL_SELECT_REVIEW_MARKS);
+            statement.setLong(1, id);
+            marks.addAll(getMarksFromResultSet(statement.executeQuery()));
+            statement = connection.prepareStatement(SQL_SELECT_REVIEW_HISTORY_MARKS);
+            statement.setLong(1, id);
+            marks.addAll(getMarksFromResultSet(statement.executeQuery()));
+        } catch (SQLException e) {
+            throw new DatabaseInteractionException(e);
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
+        }
+
+        return marks;
+    }
+
+    private List<Integer> getMarksFromResultSet(ResultSet set) throws SQLException {
+        List<Integer> marks = new ArrayList<>();
+
+        while (set.next()) {
+            marks.add(set.getInt("cinema_product_mark"));
+        }
+
+        return marks;
+    }
+
+
 
 
 

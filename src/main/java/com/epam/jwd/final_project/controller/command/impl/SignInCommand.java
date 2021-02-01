@@ -10,6 +10,8 @@ import com.epam.jwd.final_project.service.impl.AppUserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
+
 public class SignInCommand implements Command {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SignInCommand.class);
@@ -21,7 +23,11 @@ public class SignInCommand implements Command {
         String password = req.getParameter("password");
 
         try {
-            AppUser foundUser = AppUserServiceImpl.getInstance().findByEmail(email).get();
+            Optional<AppUser> user = AppUserServiceImpl.getInstance().findByEmail(email);
+            AppUser foundUser = null;
+            if (user.isPresent()) {
+                foundUser = user.get();
+            }
             if (foundUser != null &&
                     AppUserServiceImpl.getInstance().checkPassword(foundUser, password)) {
                 AppUserServiceImpl.getInstance().updateUserStatus(foundUser);

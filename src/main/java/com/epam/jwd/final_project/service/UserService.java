@@ -29,8 +29,8 @@ public interface UserService extends EntityService<AppUser, AppUserCriteria> {
     boolean updateBan(Long userId, Boolean isBanned)
             throws DatabaseInteractionException;
 
+    boolean checkIfNickNameExists(String nickname) throws DatabaseInteractionException;
 
-
-    boolean createUserReview(AppUser appUser, Review review);
+    boolean checkIfEmailExists(String email) throws DatabaseInteractionException;
 
 }

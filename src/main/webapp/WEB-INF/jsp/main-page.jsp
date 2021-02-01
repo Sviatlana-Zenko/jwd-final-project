@@ -27,7 +27,7 @@
                         <p>
                             <i class="fas fa-star fa-sm"></i>
                                 ${product.currentRating}
-                            <a href="home?command=movie-info&id=${product.id}">${product.title}</a>
+                            <a href="home?command=product-info&id=${product.id}">${product.title}</a>
                         </p>
                     </th>
                 </c:forEach>
@@ -64,6 +64,5 @@
     </table>
     </div>
 </div>
-<c:import url="footer.jsp"/>
 </body>
 </html>

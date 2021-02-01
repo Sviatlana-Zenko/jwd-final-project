@@ -199,7 +199,13 @@ body{
     padding: 5px 0 5px 0;
 }
 
-.sign-in-error p{
+.sign-up-error{
+    width: 450px;
+    margin: 5px auto;
+    padding: 5px 0 5px 0;
+}
+
+.sign-in-error p, .sign-up-error p{
     color: firebrick;
     text-align: center;
     font-size: small;
@@ -248,7 +254,8 @@ body{
 
 .new-account-container{
     width: 490px;
-    height: 500px;
+    /*height: 500px;*/
+    height: auto;
     margin-left: auto;
     margin-right: auto;
     background-color: black;
@@ -547,6 +554,10 @@ body{
     resize: none;
     width: 550px;
     height: 50px;
+}
+
+.quote-field #poster-url{
+    width: 550px;
 }
 
 .save-quote-button{
@@ -1042,7 +1053,7 @@ input#rate-10:checked ~ label{
     text-align: center;
 }
 
-.user-search, #user-not-found{
+.user-search, #user-not-found, #product-not-found{
     width: 650px;
     color: white;
     margin-right: auto;
@@ -1058,7 +1069,7 @@ input#rate-10:checked ~ label{
     padding: 0 0 10px 0;
 }
 
-#user-not-found{
+#user-not-found, #product-not-found{
     font-size: medium;
     text-align: center;
 }

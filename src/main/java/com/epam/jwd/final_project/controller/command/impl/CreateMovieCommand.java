@@ -26,7 +26,8 @@ public class CreateMovieCommand implements Command {
         String title = req.getParameter("title");
         String description = req.getParameter("description");
         String releaseDate = req.getParameter("release-date");
-        String runningTime = checkInput(req.getParameter("time"));
+        String time = checkInput(req.getParameter("time"));
+        Integer runningTime = checkStringContainsNumber(time) ? Integer.valueOf(time) : null;
         String country = req.getParameter("country");
         String ageRating = req.getParameter("age");
         String starring = req.getParameter("starring");
@@ -35,14 +36,16 @@ public class CreateMovieCommand implements Command {
         String producedBy = req.getParameter("produced-by");
         String budget = req.getParameter("budget");
         String boxOffice = req.getParameter("box-office");
+        Integer movieBudget = checkStringContainsNumber(budget) ? Integer.valueOf(budget) : null;
+        Integer movieBoxOffice = checkStringContainsNumber(boxOffice) ? Integer.valueOf(boxOffice) : null;
 
         CinemaProduct movie = new Movie(ProductType.MOVIE, title, description,
                 reverseDate(releaseDate),
-                Integer.valueOf(runningTime),
+                runningTime,
                 country, Byte.valueOf(ageRating), getNewGenres(req),
                 starring, posterUrl,
                 directedBy, producedBy,
-                Integer.valueOf(budget), Integer.valueOf(boxOffice));
+                movieBudget, movieBoxOffice);
 
         try {
             CinemaProductServiceImpl.INSTANCE.create(movie);
@@ -94,6 +97,11 @@ public class CreateMovieCommand implements Command {
             return input;
         }
 
+    }
+
+    private boolean checkStringContainsNumber(String toCheck) {
+        final String regex = "\\d+";
+        return toCheck != null && toCheck.matches(regex);
     }
 
 }

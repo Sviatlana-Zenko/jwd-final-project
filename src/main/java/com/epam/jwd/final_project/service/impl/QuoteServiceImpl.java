@@ -34,7 +34,7 @@ public class QuoteServiceImpl implements QuoteService {
         if (validationErrors.size() == 0) {
             wasCreated = QuoteDaoImpl.getInstance().create(quote, ConnectionPool.INSTANCE.getAvailableConnection());
             if (wasCreated) {
-                RatingContext.INSTANCE.reinitQuotes();
+                RatingContext.INSTANCE.reinit(Quote.class);
             }
         } else {
             throw new ValidationException(Quote.class.getSimpleName(), validationErrors);
@@ -61,7 +61,7 @@ public class QuoteServiceImpl implements QuoteService {
 
         if (validationErrors.size() == 0) {
             quote = QuoteDaoImpl.getInstance().updateByCriteria(quote, quoteCriteria, ConnectionPool.INSTANCE.getAvailableConnection());
-            RatingContext.INSTANCE.reinitQuotes();
+            RatingContext.INSTANCE.reinit(Quote.class);
         } else {
             throw new ValidationException(Quote.class.getSimpleName(), validationErrors);
         }
@@ -81,7 +81,7 @@ public class QuoteServiceImpl implements QuoteService {
     @Override
     public boolean delete(Quote quote) throws DatabaseInteractionException {
         if (QuoteDaoImpl.getInstance().delete(quote, ConnectionPool.INSTANCE.getAvailableConnection())) {
-            RatingContext.INSTANCE.reinitQuotes();
+            RatingContext.INSTANCE.reinit(Quote.class);
             return true;
         } else {
             return false;

@@ -40,8 +40,11 @@ public final class SqlUpdateBuilderUtil {
 
         for (Map.Entry<String,Object> entry : criteriaValues.entrySet()) {
             if (entry.getValue() != null) {
-                if (entry.getValue().getClass().getSimpleName().equals(String.class.getSimpleName()) ||
-                        entry.getValue().getClass().getSimpleName().equals(LocalDate.class.getSimpleName())) {
+                if (entry.getValue().getClass().getSimpleName().equals(String.class.getSimpleName())) {
+                    if (entry.getValue().toString().length() > 0) {
+                        builder.append(userFieldNames.get(entry.getKey()) + "='" + entry.getValue() + "', ");
+                    }
+                } else if (entry.getValue().getClass().getSimpleName().equals(LocalDate.class.getSimpleName())) {
                     builder.append(userFieldNames.get(entry.getKey()) + "='" + entry.getValue() + "', ");
                 } else if (entry.getValue().getClass().getSimpleName().equals(Role.class.getSimpleName())) {
                     builder.append(userFieldNames.get(entry.getKey()) + "=" + ((Role) entry.getValue()).getId() + ", ");
@@ -96,7 +99,7 @@ public final class SqlUpdateBuilderUtil {
         criteriaValues.put("nickname", criteria.getNickname());
         criteriaValues.put("dateOfBirth", criteria.getDateOfBirth());
         criteriaValues.put("email", criteria.getEmail());
-        if (criteria.getPassword() == null) {
+        if (criteria.getPassword() == null || criteria.getPassword().length() == 0) {
             criteriaValues.put("password", criteria.getPassword());
         } else {
             criteriaValues.put("password", PasswordHasherUtil.generatePasswordHash(criteria.getPassword()));

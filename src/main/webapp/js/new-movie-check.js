@@ -30,7 +30,8 @@ movieForm.addEventListener('submit', (e) => {
     }
 
     if (time.value.length == 0 ||
-        isNaN(time.value)) {
+        isNaN(time.value) ||
+        time.value <= 0) {
         time.style.border = "2px solid red"
         e.preventDefault();
     } else {
@@ -66,7 +67,8 @@ movieForm.addEventListener('submit', (e) => {
     }
 
     if (budget.value.length == 0 ||
-        isNaN(budget.value)) {
+        isNaN(budget.value) ||
+        budget.value < 0) {
         budget.style.border = "2px solid red"
         e.preventDefault();
     } else {
@@ -74,7 +76,8 @@ movieForm.addEventListener('submit', (e) => {
     }
 
     if (boxOffice.value.length == 0 ||
-        isNaN(boxOffice.value)) {
+        isNaN(boxOffice.value) ||
+        boxOffice.value < 0) {
         boxOffice.style.border = "2px solid red"
         e.preventDefault();
     } else {

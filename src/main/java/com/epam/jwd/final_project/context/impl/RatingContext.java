@@ -21,6 +21,13 @@ public class RatingContext implements ApplicationContext {
     private Collection<AppUser> appUsers = new ArrayList<>();
 
 
+    /**
+     * Returns Collection of objects that have the specified class.
+     *
+     * @param tClass class of objects to return
+     * @param <T> the type of elements in this class
+     * @return {@link Collection} of specified objects
+     */
     @Override
     public <T extends AppEntity> Collection<T> retrieveList(Class<T> tClass) {
         if (tClass.getSimpleName().equals(Quote.class.getSimpleName())) {
@@ -33,6 +40,13 @@ public class RatingContext implements ApplicationContext {
 
     }
 
+    /**
+     * Initializes Collection's of objects which define the cache
+     * required for application work.
+     *
+     * @throws DatabaseInteractionException if an SQLException occurs at
+     * the time of working with database
+     */
     @Override
     public void init() throws DatabaseInteractionException {
         quotes = QuoteServiceImpl.INSTANCE.findAll();
@@ -41,22 +55,14 @@ public class RatingContext implements ApplicationContext {
     }
 
     /**
-     * Reinitializes {@link Collection} of {@link Quote} objects
-     * after adding a new quote to the database or updating an existing one.
+     * Reinitializes Collection of objects with specified
+     * class after adding a new object of this class to the database
+     * or updating an existing one.
+     *
      * @throws DatabaseInteractionException if an SQLException occurs at the
      * time of working with database
      */
     @Override
-    public void reinitQuotes() throws DatabaseInteractionException {
-        quotes = QuoteServiceImpl.INSTANCE.findAll();
-    }
-
-    /**
-     * Reinitializes {@link Collection} of specified objects
-     * after adding a new object to the database or updating an existing one.
-     * @throws DatabaseInteractionException if an SQLException occurs at the
-     * time of working with database
-     */
     public <T extends AppEntity> void reinit(Class<T> tClass)
             throws DatabaseInteractionException {
         if (tClass.getSimpleName().equals(Quote.class.getSimpleName())) {
@@ -66,7 +72,6 @@ public class RatingContext implements ApplicationContext {
         } else {
             appUsers = AppUserServiceImpl.getInstance().findAll();
         }
-
     }
 
 }

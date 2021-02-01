@@ -31,7 +31,7 @@
             </li>
         </ul>
     </form>
-    <form class="account-actions">
+    <div class="account-actions">
         <a href="home?command=edit-account-form">
             <button class="w3-bar-item w3-button w3-teal">
                 <fmt:message key="button.edit.account"/>
@@ -42,7 +42,7 @@
                 <fmt:message key="button.delete.account"/>
             </button>
         </a>
-    </form>
+    </div>
 </div>
 </body>
 </html>

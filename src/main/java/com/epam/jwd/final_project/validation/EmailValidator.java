@@ -1,6 +1,8 @@
 package com.epam.jwd.final_project.validation;
 
 import com.epam.jwd.final_project.domain.AppUser;
+import com.epam.jwd.final_project.service.impl.AppUserServiceImpl;
+
 import java.util.List;
 
 public class EmailValidator extends Validator<AppUser> {

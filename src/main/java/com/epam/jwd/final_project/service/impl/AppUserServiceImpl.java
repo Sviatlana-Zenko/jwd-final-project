@@ -174,11 +174,24 @@ public class AppUserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean checkIfNickNameExists(String nickname) throws DatabaseInteractionException {
+        return AppUserDaoImpl.getInstance().checkIfNickNameExists(
+                nickname, ConnectionPool.INSTANCE.getAvailableConnection());
+    }
+
+    @Override
+    public boolean checkIfEmailExists(String email) throws DatabaseInteractionException {
+        return AppUserDaoImpl.getInstance().checkIfEmailExists(
+                email, ConnectionPool.INSTANCE.getAvailableConnection());
+    }
+
+    @Override
     public AppUser updateByCriteria(AppUser appUser, AppUserCriteria appUserCriteria)
             throws ValidationException, DatabaseInteractionException {
         ValidationChain<AppUser> chain = ValidationChainFactory.INSTANCE.
                 createValidationChain(appUser);
         List<String> validationErrors = chain.getValidationReport(appUser, ValidationType.UPDATE_OBJECT);
+        System.out.println("validationErrors + " + validationErrors);
 
         if (validationErrors.size() == 0) {
             appUser = AppUserDaoImpl.getInstance().updateByCriteria(appUser, appUserCriteria,
@@ -212,21 +225,5 @@ public class AppUserServiceImpl implements UserService {
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-
-
-    @Override
-    public boolean createUserReview(AppUser appUser, Review review) {
-        boolean wasCreated = true;
-
-//        if (!ReviewServiceImpl.INSTANCE.create(review)) {
-//            wasCreated = false;
-//        } else {
-//            if (!AppUserDaoImpl.getInstance().addReviewedProduct(appUser.getId(), review.getCinemaProductId())) {
-//                wasCreated = false;
-//            }
-//        }
-
-        return wasCreated;
-    }
 
 }

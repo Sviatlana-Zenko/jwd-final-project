@@ -5,7 +5,8 @@ import com.epam.jwd.final_project.domain.AppUser;
 import com.epam.jwd.final_project.domain.Role;
 import com.epam.jwd.final_project.dto.UserSessionInfoDto;
 
-public class UserSessionInfoConverter implements AppEntityConverter<AppUser, UserSessionInfoDto> {
+public class UserSessionInfoConverter
+        implements AppEntityConverter<AppUser, UserSessionInfoDto> {
 
     public static final UserSessionInfoConverter INSTANCE = new UserSessionInfoConverter();
 

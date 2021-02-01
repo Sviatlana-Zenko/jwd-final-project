@@ -12,6 +12,9 @@ import com.epam.jwd.final_project.domain.Movie;
 import com.epam.jwd.final_project.domain.TvSeries;
 import com.epam.jwd.final_project.exception.DatabaseInteractionException;
 import com.epam.jwd.final_project.pool.ConnectionPool;
+import com.epam.jwd.final_project.service.ReviewService;
+import com.epam.jwd.final_project.service.impl.AppUserServiceImpl;
+import com.epam.jwd.final_project.service.impl.ReviewServiceImpl;
 
 public class ToSignInFormCommand implements Command {
 
@@ -19,6 +22,14 @@ public class ToSignInFormCommand implements Command {
     public ResponseContext execute(RequestContext req) {
         ResponseContext resp = new ResponseContextImpl(ResponseType.FORWARD,
                 "/WEB-INF/jsp/sign-in-form.jsp");
+
+//
+//        try {
+//            System.out.println(ReviewServiceImpl.INSTANCE.findAllForConcreteUser(37L));
+//        } catch (DatabaseInteractionException e) {
+//            e.printStackTrace();
+//        }
+
 
         return resp;
     }

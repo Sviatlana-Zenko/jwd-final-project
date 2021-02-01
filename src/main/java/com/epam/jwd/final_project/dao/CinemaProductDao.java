@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface CinemaProductDao extends EntityDao<CinemaProduct, CinemaProductCriteria> {
 
-    Long findIdByTitle(String string, Connection connection)
+    List<Long> findIdByTitle(String string, Connection connection)
             throws DatabaseInteractionException;
 
     List<CinemaProduct> findAllByType(ProductType productType, Connection connection)
@@ -29,9 +29,11 @@ public interface CinemaProductDao extends EntityDao<CinemaProduct, CinemaProduct
     List<CinemaProduct> findBySearchRequest(String searchRequest, Connection connection)
             throws DatabaseInteractionException;
 
-    List<CinemaProduct> findRecommendations(Connection connection) throws DatabaseInteractionException;
+    List<CinemaProduct> findRecommendations(Connection connection)
+            throws DatabaseInteractionException;
 
+    boolean updateProductRating(Long id, Double newRating, Connection connection)
+            throws DatabaseInteractionException;
 
-//    List<CinemaProduct> findTopOfProducts(ProductType type);
 
 }

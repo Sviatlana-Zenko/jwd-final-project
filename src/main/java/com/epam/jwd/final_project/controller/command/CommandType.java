@@ -40,6 +40,9 @@ public enum CommandType {
     FIND_USER("find-user"),
     FIND_PRODUCT("find-product"),
     CREATE_MOVIE("create-movie"),
+    DELETE_PRODUCT("delete-product"),
+    EDIT_ACCOUNT("edit-account"),
+    TO_EDIT_ACCOUNT_FORM("edit-account-form"),
     SHOW_REVIEWS("show-reviews");
 
     private String commandName;

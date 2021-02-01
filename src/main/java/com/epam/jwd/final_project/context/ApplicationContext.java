@@ -2,7 +2,6 @@ package com.epam.jwd.final_project.context;
 
 import com.epam.jwd.final_project.domain.AppEntity;
 import com.epam.jwd.final_project.exception.DatabaseInteractionException;
-
 import java.util.Collection;
 
 public interface ApplicationContext {
@@ -11,6 +10,6 @@ public interface ApplicationContext {
 
     void init() throws DatabaseInteractionException;
 
-    void reinitQuotes() throws DatabaseInteractionException;
+    <T extends AppEntity> void reinit(Class<T> tClass) throws DatabaseInteractionException;
 
 }

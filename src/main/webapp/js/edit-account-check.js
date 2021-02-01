@@ -11,28 +11,7 @@ const passwordRegex = new RegExp('^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$');
 const dataRegex = new RegExp('((0[1-9])|([12][0-9])|(3[01]))-((0[1-9])|(1[012]))-((19)|(2[012]))\\d{2}')
 
 accountForm.addEventListener('submit', (e) => {
-    if (firstName.value.length == 0) {
-        firstName.style.border = "2px solid red"
-        e.preventDefault();
-    } else {
-        firstName.style.border = "2px none"
-    }
-
-    if (lastName.value.length == 0) {
-        lastName.style.border = "2px solid red"
-        e.preventDefault();
-    } else {
-        lastName.style.border = "2px none"
-    }
-
-    if (nickname.value.length == 0) {
-        nickname.style.border = "2px solid red"
-        e.preventDefault();
-    } else {
-        nickname.style.border = "2px none"
-    }
-
-    if (dateOfBirth.value.length == 0 ||
+    if (dateOfBirth.value.length != 0 &&
         !dataRegex.test(dateOfBirth.value)) {
         dateOfBirth.style.border = "2px solid red"
         e.preventDefault();
@@ -40,27 +19,28 @@ accountForm.addEventListener('submit', (e) => {
         dateOfBirth.style.border = "2px none"
     }
 
-    if (email.value.length == 0 ||
-        email.value.length > 100 ||
-        !emailRegex.test(email.value)) {
+    if (email.value.length != 0 &&
+        (email.value.length > 100 ||
+        !emailRegex.test(email.value))) {
         email.style.border = "2px solid red"
         e.preventDefault();
     } else {
         email.style.border = "2px none"
     }
 
-    if (password.value.length == 0 ||
-        password.value.length < 8 ||
+    if (password.value.length != 0 &&
+        (password.value.length < 8 ||
         password.value.length > 20 ||
-        !passwordRegex.test(password.value)) {
+        !passwordRegex.test(password.value))) {
         password.style.border = "2px solid red";
         e.preventDefault();
     } else {
         password.style.border = "2px none"
     }
 
-    if (confirmPassword.value.length == 0 ||
-        password.value.localeCompare(confirmPassword.value) != 0) {
+    if (password.value.length != 0 &&
+        (confirmPassword.value.length == 0 ||
+        password.value.localeCompare(confirmPassword.value) != 0)) {
         confirmPassword.style.border = "2px solid red";
         e.preventDefault();
     } else {

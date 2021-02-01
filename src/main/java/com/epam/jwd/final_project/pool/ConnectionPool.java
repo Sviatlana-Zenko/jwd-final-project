@@ -60,7 +60,6 @@ public enum ConnectionPool {
         }
     }
 
-    // Нужно ли разрушать пул взятых соединений?
     public void destroyConnectionPool() {
         for (int i = 0; i < availableConnections.size(); i++) {
             try {

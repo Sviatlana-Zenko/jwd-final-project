@@ -31,9 +31,10 @@ public class SessionLocaleFilter extends HttpFilter {
                         .filter(parameter -> !parameter.contains("sessionLocale"))
                         .collect(Collectors.toList());
 
-                newQueryString = parameters.toString().replace(", ", "&")
+                newQueryString = parameters.toString()
+                        .replace(", ", "&")
                         .replace("[", "")
-                                .replace("]", "");
+                        .replace("]", "");
 
                 req.getSession().setAttribute("queryString", "home?" +  newQueryString + "&");
             }

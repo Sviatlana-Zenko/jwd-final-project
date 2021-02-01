@@ -20,6 +20,9 @@ public interface CinemaProductService extends EntityService<CinemaProduct, Cinem
     List<CinemaProduct> findConcreteAmountByType(ProductType type, long startIndex, int number)
             throws DatabaseInteractionException;
 
-    Optional<CinemaProduct> findByTitle(String title) throws DatabaseInteractionException;
+    List<CinemaProduct> findByTitle(String title) throws DatabaseInteractionException;
+
+    boolean updateProductRating(Long id) throws DatabaseInteractionException;
+
 
 }

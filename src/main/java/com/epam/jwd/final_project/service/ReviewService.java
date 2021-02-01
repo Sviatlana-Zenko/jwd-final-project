@@ -13,10 +13,16 @@ public interface ReviewService {
 
     List<Review> findAllForConcreteProduct(Long id) throws DatabaseInteractionException;
 
+    List<Review> findAllForConcreteUser(Long id) throws DatabaseInteractionException;
+
     Review updateReviewMarks(Review review) throws DatabaseInteractionException;
 
     List<Review> findAllForConcreteUserInReview(Long id) throws DatabaseInteractionException;
 
+    List<Review> findAllForConcreteProductInReview(Long id) throws DatabaseInteractionException;
+
     boolean transferInHistoryTable(List<Review> reviews) throws DatabaseInteractionException;
+
+    List<Integer> getAllProductMarks(Long id) throws DatabaseInteractionException;
 
 }

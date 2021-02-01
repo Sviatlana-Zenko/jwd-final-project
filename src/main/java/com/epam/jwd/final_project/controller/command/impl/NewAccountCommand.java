@@ -27,8 +27,7 @@ public class NewAccountCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        ResponseContext responseContext = new ResponseContextImpl(ResponseType.REDIRECT,
-                "/home?command=login-result");
+        ResponseContext responseContext = new ResponseContextImpl(ResponseType.REDIRECT);
 
         String firstName = checkInput(requestContext.getParameter("first-name"));
         String lastName = checkInput(requestContext.getParameter("last-name"));
@@ -37,12 +36,22 @@ public class NewAccountCommand implements Command {
         String email = checkInput(requestContext.getParameter("email"));
         String password = checkInput(requestContext.getParameter("password"));
 
-        AppUser user = new AppUser(firstName, lastName, nickname,
-                reverseDate(dateOfBirth), email, password, Role.USER, getNewGenres(requestContext));
-
         try {
-            AppUserServiceImpl.getInstance().create(user);
-            ((ResponseContextImpl) responseContext).setPage("/home?command=login-result");
+            if (AppUserServiceImpl.getInstance().checkIfEmailExists(email)) {
+                requestContext.getSession().setAttribute("emailError", true);
+                ((ResponseContextImpl) responseContext).setPage("/home?command=new-account-form");
+            }
+            if (AppUserServiceImpl.getInstance().checkIfNickNameExists(nickname)) {
+                requestContext.getSession().setAttribute("nicknameError", true);
+                ((ResponseContextImpl) responseContext).setPage("/home?command=new-account-form");
+            } else {
+                AppUser user = new AppUser(firstName, lastName, nickname,
+                        reverseDate(dateOfBirth), email, password, Role.USER, getNewGenres(requestContext));
+                AppUserServiceImpl.getInstance().create(user);
+                requestContext.getSession().setAttribute("emailError", false);
+                requestContext.getSession().setAttribute("nicknameError", false);
+                ((ResponseContextImpl) responseContext).setPage("/home?command=sign-in-form");
+            }
         } catch (ValidationException e) {
             LOGGER.error(e.getMessage());
             requestContext.getSession().setAttribute("errors", e.getValidationErrors());
