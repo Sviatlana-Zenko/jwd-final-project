@@ -5,7 +5,7 @@
 <fmt:setBundle basename="pagecontent"/>
 <html>
 <head>
-    <title>New Account Form</title>
+    <title>New movie form</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="<c:url value="../../css/app-style.css"/>">
     <script src="<c:url value="../../js/new-movie-check.js"/>" defer></script>
@@ -77,9 +77,7 @@
                             </div>
                         </div>
                     </td>
-                    <td>
-                        <c:import url="genres.jsp"/>
-                    </td>
+                    <td><c:import url="genres.jsp"/></td>
                 </tr>
             </tbody>
         </table>

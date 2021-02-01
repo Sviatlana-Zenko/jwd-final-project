@@ -1,10 +1,7 @@
 package com.epam.jwd.final_project.service.impl;
 
-import com.epam.jwd.final_project.context.impl.RatingContext;
 import com.epam.jwd.final_project.criteria.CinemaProductCriteria;
-import com.epam.jwd.final_project.dao.impl.AppUserDaoImpl;
 import com.epam.jwd.final_project.dao.impl.CinemaProductDaoImpl;
-import com.epam.jwd.final_project.domain.AppUser;
 import com.epam.jwd.final_project.domain.CinemaProduct;
 import com.epam.jwd.final_project.domain.ProductType;
 import com.epam.jwd.final_project.domain.Review;
@@ -12,16 +9,12 @@ import com.epam.jwd.final_project.exception.DatabaseInteractionException;
 import com.epam.jwd.final_project.exception.ValidationException;
 import com.epam.jwd.final_project.pool.ConnectionPool;
 import com.epam.jwd.final_project.service.CinemaProductService;
-import com.epam.jwd.final_project.util.MessageSenderUtil;
 import com.epam.jwd.final_project.validation.ValidationChain;
 import com.epam.jwd.final_project.validation.ValidationChainFactory;
 import com.epam.jwd.final_project.validation.ValidationType;
-
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 public class CinemaProductServiceImpl implements CinemaProductService {
@@ -34,21 +27,22 @@ public class CinemaProductServiceImpl implements CinemaProductService {
 
     @Override
     public List<CinemaProduct> findRecommendations() throws DatabaseInteractionException {
-        return CinemaProductDaoImpl.getInstance().findRecommendations(
-                ConnectionPool.INSTANCE.getAvailableConnection());
+        return CinemaProductDaoImpl.getInstance()
+                .findRecommendations(ConnectionPool.INSTANCE.getAvailableConnection());
     }
 
     @Override
     public int getNumberOfProducts(ProductType productType) throws DatabaseInteractionException {
-        return CinemaProductDaoImpl.getInstance().getNumberOfProducts(
-                productType, ConnectionPool.INSTANCE.getAvailableConnection());
+        return CinemaProductDaoImpl.getInstance()
+                .getNumberOfProducts(productType, ConnectionPool.INSTANCE.getAvailableConnection());
     }
 
     @Override
     public List<CinemaProduct> findConcreteAmountByType(ProductType type, long startIndex,
             int number) throws DatabaseInteractionException {
-        return CinemaProductDaoImpl.getInstance().findConcreteAmountByType(
-                type, startIndex, number, ConnectionPool.INSTANCE.getAvailableConnection());
+        return CinemaProductDaoImpl.getInstance()
+                .findConcreteAmountByType(type, startIndex,
+                        number, ConnectionPool.INSTANCE.getAvailableConnection());
     }
 
     @Override
@@ -70,39 +64,37 @@ public class CinemaProductServiceImpl implements CinemaProductService {
 
     @Override
     public boolean updateProductRating(Long id) throws DatabaseInteractionException {
-        boolean wasUpdated = false;
+        boolean wasUpdated;
         List<Integer> marks = ReviewServiceImpl.INSTANCE.getAllProductMarks(id);
-        System.out.println("marks + " + marks);
-
         int sum = marks.stream()
                 .mapToInt((mark) -> Integer.parseInt(String.valueOf(mark)))
                 .sum();
 
-        System.out.println("sum + " + sum);
         Double newRating = sum * 1.0 / marks.size();
-        System.out.println("newParing + " + newRating);
-
-        wasUpdated = CinemaProductDaoImpl.getInstance().updateProductRating(
-                id, newRating, ConnectionPool.INSTANCE.getAvailableConnection());
+        wasUpdated = CinemaProductDaoImpl.getInstance()
+                .updateProductRating(id, newRating, ConnectionPool.INSTANCE.getAvailableConnection());
 
         return wasUpdated;
     }
 
     @Override
-    public List<CinemaProduct> getProductsBySearchRequest(String searchRequest) throws DatabaseInteractionException {
-        return CinemaProductDaoImpl.getInstance().findBySearchRequest(searchRequest, ConnectionPool.INSTANCE.getAvailableConnection());
+    public List<CinemaProduct> getProductsBySearchRequest(String searchRequest)
+            throws DatabaseInteractionException {
+        return CinemaProductDaoImpl.getInstance()
+                .findBySearchRequest(searchRequest, ConnectionPool.INSTANCE.getAvailableConnection());
     }
 
     @Override
-    public boolean create(CinemaProduct product) throws ValidationException, DatabaseInteractionException {
+    public boolean create(CinemaProduct product)
+            throws ValidationException, DatabaseInteractionException {
         boolean wasCreated;
-        ValidationChain<CinemaProduct> chain = ValidationChainFactory.INSTANCE.
-                createValidationChain(product);
+        ValidationChain<CinemaProduct> chain =
+                ValidationChainFactory.INSTANCE.createValidationChain(product);
         List<String> validationErrors = chain.getValidationReport(product, ValidationType.CREATE_OBJECT);
 
         if (validationErrors.size() == 0) {
-            wasCreated = CinemaProductDaoImpl.getInstance().create(
-                    product, ConnectionPool.INSTANCE.getAvailableConnection());
+            wasCreated = CinemaProductDaoImpl.getInstance()
+                    .create(product, ConnectionPool.INSTANCE.getAvailableConnection());
         } else {
             throw new ValidationException(CinemaProduct.class.getSimpleName(), validationErrors);
         }
@@ -112,26 +104,29 @@ public class CinemaProductServiceImpl implements CinemaProductService {
 
     @Override
     public List<CinemaProduct> findAll() throws DatabaseInteractionException {
-        return null;
+        return CinemaProductDaoImpl.getInstance()
+                .findAll(ConnectionPool.INSTANCE.getAvailableConnection());
     }
 
     @Override
     public Optional<CinemaProduct> findById(Long id) throws DatabaseInteractionException {
-        return CinemaProductDaoImpl.getInstance().findById(id, ConnectionPool.INSTANCE.getAvailableConnection());
+        return CinemaProductDaoImpl.getInstance()
+                .findById(id, ConnectionPool.INSTANCE.getAvailableConnection());
     }
 
     @Override
     public boolean delete(CinemaProduct product) throws DatabaseInteractionException {
         boolean wasDeleted = false;
+        List<Review> toTransfer = ReviewServiceImpl.INSTANCE
+                .findAllForConcreteProductInReview(product.getId());
 
-        List<Review> toTransfer = ReviewServiceImpl.INSTANCE.findAllForConcreteProductInReview(product.getId());
-        System.out.println("toTransfer + " + toTransfer);
         if (toTransfer.size() > 0) {
             toTransfer = toTransfer.stream()
                     .peek(review -> review.setProductTitle("deleted movie/TV series"))
                     .collect(Collectors.toList());
             if (ReviewServiceImpl.INSTANCE.transferInHistoryTable(toTransfer)) {
-                wasDeleted = CinemaProductDaoImpl.getInstance().delete(product, ConnectionPool.INSTANCE.getAvailableConnection());
+                wasDeleted = CinemaProductDaoImpl.getInstance()
+                        .delete(product, ConnectionPool.INSTANCE.getAvailableConnection());
             }
         }
 
@@ -139,7 +134,9 @@ public class CinemaProductServiceImpl implements CinemaProductService {
     }
 
     @Override
-    public CinemaProduct updateByCriteria(CinemaProduct product, CinemaProductCriteria criteria) throws ValidationException, DatabaseInteractionException {
+    public CinemaProduct updateByCriteria(CinemaProduct product, CinemaProductCriteria criteria)
+            throws ValidationException, DatabaseInteractionException {
         return null;
     }
+
 }

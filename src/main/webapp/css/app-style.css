@@ -4,8 +4,6 @@
     padding: 0;
 }
 
-/*header*/
-
 .branding{
     font-size: 30px;
 }
@@ -30,8 +28,6 @@ body{
     background-image: url('../resources/background.PNG');
     background-attachment: fixed;
 }
-
-/*main-page*/
 
 .main{
     width: 51%;
@@ -135,15 +131,11 @@ body{
     padding: 0 0 0 10px;
 }
 
-/*footer*/
-
 .footer{
     color: teal;
     font-size: small;
     height: 30px;
 }
-
-/*sign-in form*/
 
 .sign-in-container{
     margin-right: auto;
@@ -211,8 +203,6 @@ body{
     font-size: small;
 }
 
-/*account info*/
-
 .account-info-container{
     width: 580px;
     margin-left: auto;
@@ -249,8 +239,6 @@ body{
     width: 145px;
     font-size: small;
 }
-
-/*new account page*/
 
 .new-account-container{
     width: 490px;
@@ -312,8 +300,6 @@ body{
     text-align: center;
 }
 
-/*user reviews*/
-
 .user-reviews-container{
     width: 600px;
     margin-right: auto;
@@ -323,10 +309,6 @@ body{
 .user-reviews-container table{
     color: white;
 }
-
-
-
-/**/
 
 .new-quote-container{
     width: 620px;
@@ -375,8 +357,6 @@ body{
     font-size: small;
 }
 
-/*search-result*/
-
 .was-found{
     width: 280px;
     margin-left: auto;
@@ -391,8 +371,6 @@ body{
     padding: 10px 0 10px 0;
     text-align: center;
 }
-
-/*products*/
 
 .product-view{
     margin-left: auto;
@@ -462,11 +440,6 @@ body{
     text-decoration: none;
 }
 
-
-
-
-
-
 .fa-search-minus{
     color: teal;
 }
@@ -504,9 +477,6 @@ body{
 #user-status{
     display: none;
 }
-
-
-/*new quote page*/
 
 .new-quote-container .form-title{
     color: teal;
@@ -568,8 +538,6 @@ body{
     margin-right: auto;
     text-align: center;
 }
-
-/*work with quotes page*/
 
 .quote-options{
     width: 685px;
@@ -661,8 +629,6 @@ body{
     text-align: center;
 }
 
-/*creation errors page*/
-
 .creation-errors{
     width: 590px;
     margin-left: auto;
@@ -697,8 +663,6 @@ body{
     width: 180px;
 
 }
-
-/*database error page*/
 
 .db-error{
     width: 600px;
@@ -791,8 +755,6 @@ body{
     border: 2px solid grey;
 }
 
-/*movie-info*/
-
 .prod-info{
     width: 690px;
     margin-right: auto;
@@ -850,8 +812,6 @@ body{
 .field-name{
     line-height: 1.4;
 }
-
-/*reviews*/
 
 .review-container{
     width: 675px;
@@ -922,8 +882,6 @@ body{
 .more{
     display: none;
 }
-
-/*review-form*/
 
 .container{
     width: 390px;
@@ -1128,113 +1086,3 @@ input#rate-10:checked ~ label{
     border: none;
     margin-left: 2px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*.rule{*/
-/* color: white;*/
-/* font-size: small;*/
-/* margin-left: 20px;*/
-/*}*/
-
-/*.section{*/
-/* color: white;*/
-/* font-size: medium;*/
-/* margin-left: 20px;*/
-/*}*/
-
-/*.genres label{*/
-/* color: white;*/
-/* font-size: small;*/
-/*}*/
-
-/*li{*/
-/* margin-top: 15px;*/
-/* color: white;*/
-/*}*/
-
-/*!*.info{*!*/
-/*!* margin-right: auto;*!*/
-/*!* margin-left: auto;*!*/
-/*!* margin-top: 150px;*!*/
-/*!* width: 560px;*!*/
-/*!* height: auto;*!*/
-/*!* background: #000000;*!*/
-/*!* border-radius: 5px;*!*/
-/*!*}*!*/
-
-
-
-/*!*.outer{*!*/
-/*!* margin: auto;*!*/
-/*!* !*border-collapse: collapse;*!*!*/
-/*!* background-color: black;*!*/
-/*!* color: white;*!*/
-/*!*}*!*/
-
-
-/*!*.more-product-info{*!*/
-/*!* display: none;*!*/
-/*!*}*!*/
-
-
-/*!*.inner, .inner-review th{*!*/
-/*!* color: white;*!*/
-/*!* border-collapse: collapse;*!*/
-/*!* !*font-family: "Comic Sans MS";*!*!*/
-
-/*!*}*!*/
-
-/*!*.inner th, .inner-review th, p{*!*/
-/*!* !*font-weight: bold; !* same as 700 *!*!*!*/
-/*!* font-weight: normal; !* same as 400 *!*!*/
-/*!* !*font-weight: lighter; !* relative to the parent element *!*!*!*/
-/*!*}*!*/
-
-/*!*.inner th:first-child{*!*/
-/*!* width: 120px;*!*/
-/*!* vertical-align: top;*!*/
-/*!*}*!*/
-
-/*!*table{*!*/
-/*!* border-spacing: 20px;*!*/
-/*!* border: 1px solid #69c;*!*/
-/*!*}*!*/
-
-/*tbody{*/
-/* vertical-align: top;*/
-/*}*/
-
-/*!*.inner-review th:first-child{*!*/
-/*!* width: 600px;*!*/
-/*!* vertical-align: top;*!*/
-/*!*}*!*/
-
-

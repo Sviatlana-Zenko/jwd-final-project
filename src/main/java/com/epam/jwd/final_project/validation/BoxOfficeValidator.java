@@ -2,7 +2,6 @@ package com.epam.jwd.final_project.validation;
 
 import com.epam.jwd.final_project.domain.CinemaProduct;
 import com.epam.jwd.final_project.domain.Movie;
-
 import java.util.List;
 
 public class BoxOfficeValidator extends Validator<CinemaProduct> {

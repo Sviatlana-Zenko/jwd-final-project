@@ -14,7 +14,7 @@ public class ValidationChainFactory {
     }
 
     public ValidationChain createValidationChain(AppEntity entity) {
-        ValidationChain validationChain = null;
+        ValidationChain validationChain;
         String entityClass = entity.getClass().getSimpleName();
 
         switch (entityClass) {

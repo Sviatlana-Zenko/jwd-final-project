@@ -99,5 +99,4 @@ movieForm.addEventListener('submit', (e) => {
     } else {
         posterUrl.style.border = "2px none"
     }
-
 });

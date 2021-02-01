@@ -3,7 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <fmt:setLocale value="${sessionScope.lang}" />
 <fmt:setBundle basename="pagecontent"/>
-
 <html>
 <link>
     <title>Sign-in form</title>
@@ -16,9 +15,7 @@
     <p class="form-title"><fmt:message key="label.login.form"/></p>
     <c:if test="${sessionScope.failed == true}">
         <div class="sign-in-error">
-            <p>
-                <fmt:message key="label.signin.error"/>
-            </p>
+            <p><fmt:message key="label.signin.error"/></p>
         </div>
     </c:if>
     <form class="sign-in-form" id="sign-in-form" action="home?command=sign-in" method="POST">

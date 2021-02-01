@@ -1,9 +1,7 @@
 package com.epam.jwd.final_project.validation.impl;
 
-import com.epam.jwd.final_project.domain.Quote;
 import com.epam.jwd.final_project.domain.Review;
 import com.epam.jwd.final_project.validation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 

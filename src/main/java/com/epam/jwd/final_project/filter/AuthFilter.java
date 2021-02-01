@@ -25,10 +25,9 @@ public class AuthFilter extends HttpFilter {
                     (req.getParameter("command").equals("review-form") ||
                             req.getParameter("command").equals("edit-marks"))) {
                 Command command = CommandFactory.command("sign-in-form");
-                ResponseContext responseContext = null;
-                responseContext = command.execute(new CustomRequestContext(req));
-                RequestDispatcher requestDispatcher = req.getRequestDispatcher(((ResponseContextImpl) responseContext).getPage());
-                requestDispatcher.forward(req, res);
+                ResponseContext responseContext = command.execute(new CustomRequestContext(req));
+                RequestDispatcher dispatcher = req.getRequestDispatcher(((ResponseContextImpl) responseContext).getPage());
+                dispatcher.forward(req, res);
             }
         }
 

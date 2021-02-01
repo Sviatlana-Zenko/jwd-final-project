@@ -18,12 +18,8 @@
         <c:forEach var="review" items="${requestScope.userReviews}">
             <tr>
                 <td>
-                    <p id="mark-ttl">
-                        <b>${review.cinemaProductMark}/10 ${review.productTitle}</b>
-                    </p>
-                    <p id="rew-summary">
-                        "${review.reviewSummary}"
-                    </p>
+                    <p id="mark-ttl"><b>${review.cinemaProductMark}/10 ${review.productTitle}</b></p>
+                    <p id="rew-summary">"${review.reviewSummary}"</p>
                     <p>${review.reviewText}</p>
                     <p id="rew-marks">
                         ${review.reviewPositiveMarks} <fmt:message key="label.helpful"/><br>

@@ -2,6 +2,9 @@ package com.epam.jwd.final_project.pool;
 
 import com.epam.jwd.final_project.domain.ApplicationProperties;
 import com.epam.jwd.final_project.util.PropertyReaderUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -13,6 +16,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 public enum ConnectionPool {
     INSTANCE;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionPool.class);
     private BlockingQueue<ProxyConnection> availableConnections;
     private Queue<ProxyConnection> takenConnections;
     private ApplicationProperties properties = PropertyReaderUtil.getApplicationProperties();
@@ -43,20 +47,17 @@ public enum ConnectionPool {
             connection = availableConnections.take();
             takenConnections.offer(connection);
         } catch (InterruptedException e) {
-            e.printStackTrace();
-            //log
+            LOGGER.error(e.getMessage());
         }
 
         return connection;
     }
 
     public void releaseConnection(Connection connection) {
-        if (connection.getClass().getSimpleName().equals(ProxyConnection.class.getSimpleName())) {
+        if (connection.getClass().getSimpleName()
+                .equals(ProxyConnection.class.getSimpleName())) {
             takenConnections.remove(connection);
             availableConnections.offer((ProxyConnection) connection);
-        } else {
-            //exception - "Это не прокси"
-            //log
         }
     }
 
@@ -65,9 +66,14 @@ public enum ConnectionPool {
             try {
                 availableConnections.take().closeCompletely();
             } catch (SQLException | InterruptedException e) {
-                e.printStackTrace();
-                //log
+                LOGGER.error(e.getMessage());
             }
+        }
+
+        try {
+            testConnection.closeCompletely();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
         }
 
         deregisterDrivers();
@@ -79,8 +85,7 @@ public enum ConnectionPool {
         try {
             Class.forName(driverName);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            //log
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -93,8 +98,7 @@ public enum ConnectionPool {
             try {
                 availableConnections.add(new ProxyConnection(DriverManager.getConnection(dbUrl, dbUserName, dbUserPassword)));
             } catch (SQLException e) {
-                e.printStackTrace();
-                //log
+                LOGGER.error(e.getMessage());
             }
         }
     }
@@ -109,7 +113,7 @@ public enum ConnectionPool {
             registerDriver();
             testConnection = new ProxyConnection(DriverManager.getConnection(testDbUrl, dbUserName, dbUserPassword));
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
 
         return testConnection;
@@ -120,8 +124,7 @@ public enum ConnectionPool {
             try {
                 DriverManager.deregisterDriver(driver);
             } catch (SQLException e) {
-                e.printStackTrace();
-                //log
+                LOGGER.error(e.getMessage());
             }
         });
     }

@@ -16,7 +16,8 @@ import java.util.stream.Collectors;
 public class SessionLocaleFilter extends HttpFilter {
 
     @Override
-    protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
+    protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
         Locale.setDefault(Locale.ENGLISH);
         String queryString = req.getQueryString();
 

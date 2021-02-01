@@ -5,7 +5,8 @@ import java.util.List;
 
 public class PasswordValidator extends Validator<AppUser> {
 
-    private static final String PASSWORD_REGEX = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$";
+    private static final String PASSWORD_REGEX =
+            "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$";
     private static final int MIN_LENGTH = 8;
     private static final int MAX_LENGTH = 20;
 

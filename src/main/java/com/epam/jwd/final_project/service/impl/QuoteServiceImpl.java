@@ -11,7 +11,6 @@ import com.epam.jwd.final_project.service.QuoteService;
 import com.epam.jwd.final_project.validation.ValidationChain;
 import com.epam.jwd.final_project.validation.ValidationChainFactory;
 import com.epam.jwd.final_project.validation.ValidationType;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -27,12 +26,12 @@ public class QuoteServiceImpl implements QuoteService {
     @Override
     public boolean create(Quote quote) throws ValidationException, DatabaseInteractionException {
         boolean wasCreated;
-        ValidationChain<Quote> chain = ValidationChainFactory.INSTANCE.
-                createValidationChain(quote);
+        ValidationChain<Quote> chain = ValidationChainFactory.INSTANCE.createValidationChain(quote);
         List<String> validationErrors = chain.getValidationReport(quote, ValidationType.CREATE_OBJECT);
 
         if (validationErrors.size() == 0) {
-            wasCreated = QuoteDaoImpl.getInstance().create(quote, ConnectionPool.INSTANCE.getAvailableConnection());
+            wasCreated = QuoteDaoImpl.getInstance()
+                    .create(quote, ConnectionPool.INSTANCE.getAvailableConnection());
             if (wasCreated) {
                 RatingContext.INSTANCE.reinit(Quote.class);
             }
@@ -45,22 +44,25 @@ public class QuoteServiceImpl implements QuoteService {
 
     @Override
     public List<Quote> findAll() throws DatabaseInteractionException {
-        return QuoteDaoImpl.getInstance().findAll(ConnectionPool.INSTANCE.getAvailableConnection());
+        return QuoteDaoImpl.getInstance()
+                .findAll(ConnectionPool.INSTANCE.getAvailableConnection());
     }
 
     @Override
     public Optional<Quote> findById(Long id) throws DatabaseInteractionException {
-        return QuoteDaoImpl.getInstance().findById(id, ConnectionPool.INSTANCE.getAvailableConnection());
+        return QuoteDaoImpl.getInstance()
+                .findById(id, ConnectionPool.INSTANCE.getAvailableConnection());
     }
 
     @Override
-    public Quote updateByCriteria(Quote quote, QuoteCriteria quoteCriteria) throws ValidationException, DatabaseInteractionException {
-        ValidationChain<Quote> chain = ValidationChainFactory.INSTANCE.
-                createValidationChain(quote);
+    public Quote updateByCriteria(Quote quote, QuoteCriteria quoteCriteria)
+            throws ValidationException, DatabaseInteractionException {
+        ValidationChain<Quote> chain = ValidationChainFactory.INSTANCE.createValidationChain(quote);
         List<String> validationErrors = chain.getValidationReport(quote, ValidationType.UPDATE_OBJECT);
 
         if (validationErrors.size() == 0) {
-            quote = QuoteDaoImpl.getInstance().updateByCriteria(quote, quoteCriteria, ConnectionPool.INSTANCE.getAvailableConnection());
+            quote = QuoteDaoImpl.getInstance()
+                    .updateByCriteria(quote, quoteCriteria, ConnectionPool.INSTANCE.getAvailableConnection());
             RatingContext.INSTANCE.reinit(Quote.class);
         } else {
             throw new ValidationException(Quote.class.getSimpleName(), validationErrors);

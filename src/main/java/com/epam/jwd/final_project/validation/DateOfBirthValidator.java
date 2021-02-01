@@ -7,7 +7,8 @@ import java.util.List;
 
 public class DateOfBirthValidator extends Validator<AppUser> {
 
-    private final static String DATE_REGEX = "((19)|(2[012]))\\d{2}-((0[1-9])|(1[012]))-((0[1-9])|([12][0-9])|(3[01]))";
+    private final static String DATE_REGEX
+            = "((19)|(2[012]))\\d{2}-((0[1-9])|(1[012]))-((0[1-9])|([12][0-9])|(3[01]))";
 
     public void validate(AppUser user, List<String> validationErrors, ValidationType type) {
         LocalDate dateOfBirth = user.getDateOfBirth();

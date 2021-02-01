@@ -18,26 +18,18 @@
         <table class="product-view">
             <tbody>
             <tr>
-                <th>
-                    <img src="${product.posterUrl}">
-                </th>
+                <th><img src="${product.posterUrl}"></th>
                 <th>
                     <div class="product-info">
                         <p>
                             <i class="fas fa-star fa-lg"></i>
-                            <span style="font-size: 18px; padding-top: 2px">
-                                ${product.currentRating}
-                            </span>
+                            <span style="font-size: 18px; padding-top: 2px">${product.currentRating}</span>
                         </p>
                         <div class="title">
                             <a href="home?command=product-info&id=${product.id}">${product.title}</a>
                         </div>
-                        <p>
-                            <fmt:message key="label.release.date"/><ct:dateTag date="${product.releaseDate}"/>
-                        </p>
-                        <p>
-                            <fmt:message key="label.country"/>${product.country}
-                        </p>
+                        <p><fmt:message key="label.release.date"/><ct:dateTag date="${product.releaseDate}"/></p>
+                        <p><fmt:message key="label.country"/>${product.country}</p>
                     </div>
                 </th>
             </tr>

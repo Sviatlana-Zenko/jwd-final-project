@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <fmt:setLocale value="${sessionScope.lang}" />
 <fmt:setBundle basename="pagecontent"/>
 <html>
@@ -16,32 +15,24 @@
 <c:import url="header.jsp"/>
 <section class="review-container">
     <c:if test="${requestScope.reviews.size() == 0}">
-        <p id="none-reviews">
-            <fmt:message key="label.no.reviews"/>
-        </p>
+        <p id="none-reviews"><fmt:message key="label.no.reviews"/></p>
     </c:if>
     <c:forEach var="review" items="${requestScope.reviews}">
         <div class="review-info">
             <p id="rew-ttl">
                 <b>${review.cinemaProductMark}/10 "${review.reviewSummary}"
             </p>
-            <p id="rew-nick">
-                ${review.userNickname}
-            </p>
+            <p id="rew-nick">${review.userNickname}</p>
             <c:choose>
                 <c:when test="${review.hasSpoilers == false}">
-                    <p>
-                        ${review.reviewText}
-                    </p>
+                    <p>${review.reviewText}</p>
                 </c:when>
                 <c:otherwise>
                     <span id="spoiler"><fmt:message key="label.spoilers"/></span>
                     <button class="read"><i class="fas fa-chevron-down"></i></button>
                     <br>
                     <span class="more">
-                        <p>
-                            ${review.reviewText}
-                        </p>
+                        <p>${review.reviewText}</p>
                     </span>
                 </c:otherwise>
             </c:choose>

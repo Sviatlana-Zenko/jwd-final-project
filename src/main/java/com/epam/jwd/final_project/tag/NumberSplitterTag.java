@@ -12,16 +12,9 @@ public class NumberSplitterTag extends TagSupport {
     @Override
     public int doStartTag() throws JspException {
         JspWriter out = pageContext.getOut();
-        StringBuilder builder = new StringBuilder(amount);
-        int length = amount.length();
-        int index = length % 3 == 0 ? 3 : length % 3;
-        while (index < length) {
-            builder.insert(index, " ");
-            index += 4;
-        }
 
         try {
-            out.print(builder.toString());
+            out.print(splitString());
             out.flush();
         } catch (IOException e) {
             throw new JspException(e);
@@ -36,6 +29,19 @@ public class NumberSplitterTag extends TagSupport {
 
     public void setAmount(String amount) {
         this.amount = amount;
+    }
+
+    private String splitString() {
+        StringBuilder builder = new StringBuilder(amount);
+        int length = amount.length();
+        int index = length % 3 == 0 ? 3 : length % 3;
+
+        while (index < length) {
+            builder.insert(index, " ");
+            index += 4;
+        }
+
+        return builder.toString();
     }
 
 }

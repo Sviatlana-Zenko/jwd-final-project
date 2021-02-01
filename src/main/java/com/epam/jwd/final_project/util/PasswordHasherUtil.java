@@ -14,11 +14,7 @@ public final class PasswordHasherUtil {
     }
 
     public static Boolean checkPassword(String passwordToCheck, String passwordHash) {
-        if (BCrypt.checkpw(passwordToCheck, passwordHash)) {
-            return true;
-        }
-
-        return false;
+        return BCrypt.checkpw(passwordToCheck, passwordHash);
     }
 
 }

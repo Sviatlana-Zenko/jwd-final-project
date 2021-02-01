@@ -17,7 +17,8 @@ public class LastNameValidator extends Validator<AppUser> {
             }
         } else {
             if (lastName.length() > MAX_LENGTH) {
-                validationErrors.add("'last name' is longer than " +  MAX_LENGTH + " characters");
+                validationErrors.add("'last name' is longer than " +
+                        MAX_LENGTH + " characters");
             }
         }
 

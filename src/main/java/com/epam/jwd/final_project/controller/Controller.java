@@ -38,7 +38,6 @@ public class Controller extends HttpServlet {
         RequestContext reqContext = new CustomRequestContext(req);
         ResponseContext respContext = command.execute(reqContext);
         if (reqContext.getSession().getAttribute("user") != null) {
-            System.out.println("зашла в if в servlet process");
             LocalDateTime localDateTime = LocalDateTime.now();
             ZonedDateTime zdt = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
             reqContext.getSession().setAttribute("start", zdt.toInstant().toEpochMilli());

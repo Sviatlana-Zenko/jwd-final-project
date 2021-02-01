@@ -1,7 +1,6 @@
 package com.epam.jwd.final_project.validation;
 
 import com.epam.jwd.final_project.domain.CinemaProduct;
-
 import java.util.List;
 
 public class StarringValidator extends Validator<CinemaProduct> {
@@ -12,7 +11,8 @@ public class StarringValidator extends Validator<CinemaProduct> {
     public void validate(CinemaProduct product, List<String> validationErrors, ValidationType type) {
         String starring = product.getStarring();
 
-        if (type == ValidationType.CREATE_OBJECT & (starring == null || starring.length() == 0)) {
+        if (type == ValidationType.CREATE_OBJECT &
+                (starring == null || starring.length() == 0)) {
             validationErrors.add("'starring' field is not filled");
         } else {
             if (starring != null && starring.length() > MAX_LENGTH) {

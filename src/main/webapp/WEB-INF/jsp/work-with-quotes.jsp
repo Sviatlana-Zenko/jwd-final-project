@@ -5,7 +5,7 @@
 <fmt:setBundle basename="pagecontent"/>
 <html>
 <head>
-    <title>Work with quotes</title>
+    <title>Quote operations</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="<c:url value="../../css/app-style.css"/>">
     <script src="https://kit.fontawesome.com/93c41a9677.js" crossorigin="anonymous"></script>
@@ -39,13 +39,16 @@
                                 </td>
                                 <td id="col-two">
                                     <p id="txt">
-                                        "${quote.quoteText}"</p>
+                                        "${quote.quoteText}"
+                                    </p>
                                     <p id="ttl">
                                         <fmt:message key="label.from"/> ${quote.productTitle}
                                     </p>
                                 </td>
                                 <td id="edit-btn">
-                                    <a href="home?command=edit-quote-form&id=${quote.id}"><i class="fas fa-edit"></i></a>
+                                    <a href="home?command=edit-quote-form&id=${quote.id}">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
                                 </td>
                                 <td id="delete-btn">
                                     <a href="home?command=confirm-quote-deleting&id=${quote.id}">

@@ -15,9 +15,7 @@
 <body style="background: linear-gradient(#0b9e9e, #202121) fixed">
 <c:import url="header.jsp"/>
 <div class="new-quote-container">
-    <p class="form-title">
-        <fmt:message key="label.edit.quote"/>
-    </p>
+    <p class="form-title"><fmt:message key="label.edit.quote"/></p>
     <form class="new-quote-form" id="new-quote-form" action="home?command=edit-quote&id=${param.id}" method="POST">
         <div class="quote-instr">
             <button class="w3-bar-item w3-button w3-teal instr-button" type="button">

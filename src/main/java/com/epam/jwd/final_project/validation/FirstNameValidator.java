@@ -17,7 +17,8 @@ public class FirstNameValidator extends Validator<AppUser> {
             }
         } else {
             if (firstName.length() > MAX_LENGTH) {
-                validationErrors.add("'first name' field is not filled");   //!!!!!!!!!!!!!!!!!
+                validationErrors.add("'first name' is longer than " +
+                        MAX_LENGTH + " characters");
             }
         }
 

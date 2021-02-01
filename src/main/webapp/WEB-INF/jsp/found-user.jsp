@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <fmt:setLocale value="${sessionScope.lang}" />
 <fmt:setBundle basename="pagecontent"/>
 <html>
@@ -16,9 +15,7 @@
 <c:import url="user-operation-btn.jsp"/>
 <c:choose>
     <c:when test="${requestScope.user == null}">
-        <p id="user-not-found">
-            <fmt:message key="label.user.not.found"/>
-        </p>
+        <p id="user-not-found"><fmt:message key="label.user.not.found"/></p>
     </c:when>
     <c:otherwise>
         <div>
@@ -31,15 +28,9 @@
                     <th><fmt:message key="label.operations"/></th>
                 </tr>
                 <tr id="user-info" style="height: 50px; font-size: 15px">
-                    <th>
-                            ${requestScope.user.id}
-                    </th>
-                    <th style="width: 153px">
-                            ${requestScope.user.nickname}
-                    </th>
-                    <th style="width: 275px">
-                            ${requestScope.user.email}
-                    </th>
+                    <th>${requestScope.user.id}</th>
+                    <th style="width: 153px">${requestScope.user.nickname}</th>
+                    <th style="width: 275px">${requestScope.user.email}</th>
                     <th style="width: 215px">
                         <c:choose>
                             <c:when test="${requestScope.user.banned == false}">

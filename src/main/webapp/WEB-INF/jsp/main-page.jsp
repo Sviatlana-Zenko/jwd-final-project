@@ -3,7 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <fmt:setLocale value="${sessionScope.lang}" />
 <fmt:setBundle basename="pagecontent"/>
-
 <html>
 <head>
     <title>Main page</title>
@@ -25,8 +24,7 @@
                     <th>
                         <img src="${product.posterUrl}"/><br>
                         <p>
-                            <i class="fas fa-star fa-sm"></i>
-                                ${product.currentRating}
+                            <i class="fas fa-star fa-sm"></i>${product.currentRating}
                             <a href="home?command=product-info&id=${product.id}">${product.title}</a>
                         </p>
                     </th>
@@ -36,15 +34,11 @@
         </table>
     </div>
     <div class="random-quote">
-        <p>
-            <fmt:message key="label.random.quote"/>
-        </p>
+        <p><fmt:message key="label.random.quote"/></p>
         <table>
         <tbody>
         <tr>
-            <th id="q-img">
-                <img src="${requestScope.random.posterUrl}">
-            </th>
+            <th id="q-img"><img src="${requestScope.random.posterUrl}"></th>
             <th id="q-body">
                 <p id="q-txt">
                     <i class="fas fa-quote-right fa-2x"></i><br>
@@ -55,9 +49,7 @@
                 </p>
             </th>
             <th id="q-description">
-                <p>
-                    <fmt:message key="label.about.random.quote"/>
-                </p>
+                <p><fmt:message key="label.about.random.quote"/></p>
             </th>
         </tr>
         </tbody>

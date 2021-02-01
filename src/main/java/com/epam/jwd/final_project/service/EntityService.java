@@ -12,6 +12,7 @@ public interface EntityService<T extends AppEntity, K extends Criteria<T>> {
     /**
      * Validates the element and inserts this element into the database
      * if element matches validation criteria.
+     *
      * @param t the element to validate and to add to the database
      * @return true if the element was added to the database, else false
      * @throws ValidationException if element does not match specified validation
@@ -22,15 +23,17 @@ public interface EntityService<T extends AppEntity, K extends Criteria<T>> {
 
     /**
      * Returns all elements of the specified type retrieved from the database.
+     *
      * @return {@link java.util.List} of elements
      * @throws DatabaseInteractionException if an SQLException occurs
      */
     List<T> findAll() throws DatabaseInteractionException;
 
     /**
-     * Returns an {@link java.util.Optional} describing the element found in
+     * Returns an Optional describing the element found in
      * the database by a specific id number, or an empty
      * Optional if such element wasn't found.
+     *
      * @param id id of the element to find
      * @return an Optional describing some element, or an empty Optional
      * @throws DatabaseInteractionException if an SQLException occurs
@@ -39,6 +42,7 @@ public interface EntityService<T extends AppEntity, K extends Criteria<T>> {
 
     /**
      * Removes the specified element from the database.
+     *
      * @param t the element to remove
      * @return true if the element was removed, else false
      * @throws DatabaseInteractionException if an SQLException occurs
@@ -47,6 +51,7 @@ public interface EntityService<T extends AppEntity, K extends Criteria<T>> {
 
     /**
      * Validates the element and updates this element according to the given criteria.
+     *
      * @param t the element to update
      * @param k the criteria that contains information about how the element should be updated
      * @return updated element

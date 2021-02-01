@@ -12,11 +12,9 @@ public class DateConverterTag extends TagSupport {
     @Override
     public int doStartTag() throws JspException {
         JspWriter out = pageContext.getOut();
-        String[] dateElements = date.split("-");
-        date = dateElements[2] + "." + dateElements[1]  + "." + dateElements[0];
 
         try {
-            out.print(date);
+            out.print(formatString());
             out.flush();
         } catch (IOException e) {
             throw new JspException(e);
@@ -31,6 +29,16 @@ public class DateConverterTag extends TagSupport {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    private String formatString(){
+        String formatted;
+        String[] dateElements = date.split("-");
+        formatted = dateElements[2] + "." +
+                dateElements[1]  + "." +
+                dateElements[0];
+
+        return formatted;
     }
 
 }

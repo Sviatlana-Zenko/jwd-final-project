@@ -16,9 +16,7 @@
 <c:import url="product-operation-btn.jsp"/>
 <c:choose>
     <c:when test="${requestScope.products == null || requestScope.products.size() == 0}">
-        <p id="product-not-found">
-            <fmt:message key="label.product.not.found"/>
-        </p>
+        <p id="product-not-found"><fmt:message key="label.product.not.found"/></p>
     </c:when>
     <c:otherwise>
         <div class="products">
@@ -26,9 +24,7 @@
                 <table class="product-view">
                     <tbody>
                     <tr>
-                        <th>
-                            <img src="${product.posterUrl}">
-                        </th>
+                        <th><img src="${product.posterUrl}"></th>
                         <th>
                             <div class="product-info">
                                 <p>

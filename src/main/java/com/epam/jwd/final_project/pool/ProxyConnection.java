@@ -8,11 +8,9 @@ import java.util.concurrent.Executor;
 public class ProxyConnection implements Connection {
     private Connection connection;
 
-    ProxyConnection(Connection connection) {  // модификатор default для того, что бы нельзя было создать новый connection из dao
+    ProxyConnection(Connection connection) {
         this.connection = connection;
     }
-
-    //Нужно ли в методе closeCompletely() обработка через try-catch?
 
     @Override
     public Statement createStatement() throws SQLException {
@@ -317,4 +315,5 @@ public class ProxyConnection implements Connection {
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
         return connection.isWrapperFor(iface);
     }
+
 }

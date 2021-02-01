@@ -13,9 +13,7 @@
 <body>
 <c:import url="header.jsp"/>
 <div class="confirm-quote">
-    <p>
-        <fmt:message key="label.delete.quote"/>
-    </p>
+    <p><fmt:message key="label.delete.quote"/></p>
     <div>
         <a href="home?command=delete-quote&id=${param.id}">
             <button class="w3-bar-item w3-button w3-teal" style="width: 100px">
@@ -37,11 +35,8 @@
                 <img src="${requestScope.quote.posterUrl}" width="140px">
             </th>
             <th>
-                <p id="txt">
-                    "${requestScope.quote.quoteText}"</p>
-                <p id="ttl">
-                    <fmt:message key="label.from"/> ${requestScope.quote.productTitle}
-                </p>
+                <p id="txt">"${requestScope.quote.quoteText}"</p>
+                <p id="ttl"><fmt:message key="label.from"/> ${requestScope.quote.productTitle}</p>
             </th>
         </tr>
         </tbody>

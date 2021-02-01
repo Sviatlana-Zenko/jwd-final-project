@@ -3,8 +3,6 @@ package com.epam.jwd.final_project.service;
 import com.epam.jwd.final_project.domain.Review;
 import com.epam.jwd.final_project.exception.DatabaseInteractionException;
 import com.epam.jwd.final_project.exception.ValidationException;
-
-import java.sql.Connection;
 import java.util.List;
 
 public interface ReviewService {

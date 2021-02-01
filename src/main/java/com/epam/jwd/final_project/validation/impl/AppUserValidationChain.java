@@ -2,7 +2,6 @@ package com.epam.jwd.final_project.validation.impl;
 
 import com.epam.jwd.final_project.domain.AppUser;
 import com.epam.jwd.final_project.validation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 

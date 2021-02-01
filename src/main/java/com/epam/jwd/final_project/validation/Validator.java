@@ -1,7 +1,6 @@
 package com.epam.jwd.final_project.validation;
 
 import com.epam.jwd.final_project.domain.AppEntity;
-
 import java.util.List;
 
 public abstract class Validator<T extends AppEntity> {

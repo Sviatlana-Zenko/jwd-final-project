@@ -1,7 +1,6 @@
 package com.epam.jwd.final_project.validation;
 
 import com.epam.jwd.final_project.domain.Review;
-
 import java.util.List;
 
 public class ReviewTextValidator extends Validator<Review> {
