@@ -16,8 +16,7 @@ public class NicknameValidator extends Validator<AppUser> {
             }
         } else {
             if (nickname.length() > MAX_LENGTH) {
-                validationErrors.add("'nickname' is longer than " +
-                        MAX_LENGTH + " characters");
+                validationErrors.add("'nickname' is longer than " + MAX_LENGTH + " characters");
             }
         }
 

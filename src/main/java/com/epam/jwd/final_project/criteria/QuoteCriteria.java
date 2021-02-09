@@ -51,12 +51,4 @@ public class QuoteCriteria extends Criteria<Quote> {
         }
     }
 
-    @Override
-    public String toString() {
-        return "QuoteCriteria{" +
-                "quoteText='" + quoteText + '\'' +
-                ", productTitle='" + productTitle + '\'' +
-                ", posterUrl='" + posterUrl + '\'' +
-                "} " + super.toString();
-    }
 }

@@ -20,7 +20,6 @@ public class ReviewValidationChain implements ValidationChain<Review> {
 
     private void createValidationChain() {
         ReviewTextValidator textValidator = new ReviewTextValidator();
-
         validator = new ReviewSummaryValidator();
         validator.setNextValidator(textValidator);
     }

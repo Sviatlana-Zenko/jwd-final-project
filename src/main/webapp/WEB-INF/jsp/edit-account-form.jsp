@@ -16,6 +16,7 @@
 <c:import url="header.jsp"/>
 <div class="new-account-container">
     <div class="title"><fmt:message key="button.edit.account"/></div>
+    <p style="text-align: center; color: white; "><fmt:message key="label.edit.rule"/></p>
     <form class="account-form" id="account-form" action="home?command=edit-account" method="POST">
         <table class="account-table">
             <tbody>

@@ -38,8 +38,6 @@ public enum Role implements AppEntity {
                     .filter(rolePredicate)
                     .findFirst()
                     .get();
-        } else {
-            // log + throwing error
         }
 
         return roleById;

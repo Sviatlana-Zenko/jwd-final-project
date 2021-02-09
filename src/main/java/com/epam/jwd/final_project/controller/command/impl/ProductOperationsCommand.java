@@ -8,10 +8,8 @@ import com.epam.jwd.final_project.controller.command.ResponseContext.ResponseTyp
 public class ProductOperationsCommand implements Command {
 
     @Override
-    public ResponseContext execute(RequestContext requestContext) {
-        ResponseContext responseContext = new ResponseContextImpl(ResponseType.FORWARD,
-                "/WEB-INF/jsp/work-with-products.jsp");
-        return responseContext;
+    public ResponseContext execute(RequestContext req) {
+        return new ResponseContextImpl(ResponseType.FORWARD, "/WEB-INF/jsp/work-with-products.jsp");
     }
 
 }

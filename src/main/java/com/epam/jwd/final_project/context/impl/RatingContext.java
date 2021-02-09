@@ -41,7 +41,7 @@ public class RatingContext implements ApplicationContext {
     }
 
     /**
-     * Initializes Collection's of objects which define the cache
+     * Initializes Collections of objects which define the cache
      * required for application work.
      *
      * @throws DatabaseInteractionException if an SQLException occurs at

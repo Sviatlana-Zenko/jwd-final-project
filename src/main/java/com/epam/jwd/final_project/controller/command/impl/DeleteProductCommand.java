@@ -4,10 +4,8 @@ import com.epam.jwd.final_project.controller.command.Command;
 import com.epam.jwd.final_project.controller.command.RequestContext;
 import com.epam.jwd.final_project.controller.command.ResponseContext;
 import com.epam.jwd.final_project.controller.command.ResponseContext.ResponseType;
-import com.epam.jwd.final_project.domain.AppUser;
 import com.epam.jwd.final_project.domain.CinemaProduct;
 import com.epam.jwd.final_project.exception.DatabaseInteractionException;
-import com.epam.jwd.final_project.service.impl.AppUserServiceImpl;
 import com.epam.jwd.final_project.service.impl.CinemaProductServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,4 +29,5 @@ public class DeleteProductCommand implements Command {
 
         return resp;
     }
+
 }

@@ -16,8 +16,7 @@ public class CountryValidator extends Validator<CinemaProduct> {
             validationErrors.add("'country' field is not filled");
         } else {
             if (country != null && country.length() > MAX_LENGTH) {
-                validationErrors.add("'country' is longer than " +
-                        MAX_LENGTH +  "characters");
+                validationErrors.add("'country' is longer than " + MAX_LENGTH +  "characters");
             }
         }
 

@@ -37,17 +37,22 @@ public class Controller extends HttpServlet {
         Command command = CommandFactory.command(commandParamName);
         RequestContext reqContext = new CustomRequestContext(req);
         ResponseContext respContext = command.execute(reqContext);
-        if (reqContext.getSession().getAttribute("user") != null) {
-            LocalDateTime localDateTime = LocalDateTime.now();
-            ZonedDateTime zdt = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
-            reqContext.getSession().setAttribute("start", zdt.toInstant().toEpochMilli());
-        }
+        updateStartTime(reqContext);
 
         if (((ResponseContextImpl) respContext).getResponseType() == ResponseType.FORWARD) {
             RequestDispatcher dispatcher = req.getRequestDispatcher(((ResponseContextImpl) respContext).getPage());
             dispatcher.forward(req, resp);
         } else {
             resp.sendRedirect(((ResponseContextImpl) respContext).getPage());
+        }
+
+    }
+
+    private void updateStartTime(RequestContext reqContext) {
+        if (reqContext.getSession().getAttribute("user") != null) {
+            LocalDateTime localDateTime = LocalDateTime.now();
+            ZonedDateTime zdt = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
+            reqContext.getSession().setAttribute("start", zdt.toInstant().toEpochMilli());
         }
     }
 

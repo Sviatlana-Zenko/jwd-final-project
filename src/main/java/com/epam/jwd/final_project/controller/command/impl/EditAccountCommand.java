@@ -3,26 +3,18 @@ package com.epam.jwd.final_project.controller.command.impl;
 import com.epam.jwd.final_project.controller.command.Command;
 import com.epam.jwd.final_project.controller.command.RequestContext;
 import com.epam.jwd.final_project.controller.command.ResponseContext;
-import com.epam.jwd.final_project.controller.command.impl.ResponseContextImpl;
-import com.epam.jwd.final_project.converter.impl.UserSessionInfoConverter;
+import com.epam.jwd.final_project.controller.command.ResponseContext.ResponseType;
 import com.epam.jwd.final_project.criteria.AppUserCriteria;
 import com.epam.jwd.final_project.criteria.Criteria;
-import com.epam.jwd.final_project.criteria.QuoteCriteria;
 import com.epam.jwd.final_project.domain.AppUser;
 import com.epam.jwd.final_project.domain.Genre;
 import com.epam.jwd.final_project.dto.UserSessionInfoDto;
 import com.epam.jwd.final_project.exception.DatabaseInteractionException;
 import com.epam.jwd.final_project.exception.ValidationException;
-import com.epam.jwd.final_project.pool.ConnectionPool;
 import com.epam.jwd.final_project.service.impl.AppUserServiceImpl;
-import com.epam.jwd.final_project.service.impl.QuoteServiceImpl;
 import com.epam.jwd.final_project.util.DateConverterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,22 +25,18 @@ public class EditAccountCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext req) {
-        ResponseContext responseContext = new ResponseContextImpl(ResponseContext.ResponseType.REDIRECT);
-
+        ResponseContext responseContext = new ResponseContextImpl(ResponseType.REDIRECT);
         String firstName = req.getParameter("first-name");
         String lastName = req.getParameter("last-name");
         String nickname = req.getParameter("nickname");
         String date = req.getParameter("date-of-birth");
-        LocalDate dateOfBirth = reverseDate(date) == null ? null : DateConverterUtil.convertToLocalDate(reverseDate(date));
+        LocalDate dateOfBirth = reversedDate(date) == null ? null : DateConverterUtil.convertToLocalDate(reversedDate(date));
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
         UserSessionInfoDto userDto = (UserSessionInfoDto) req.getSession().getAttribute("user");
-//        AppUser user = UserSessionInfoConverter.INSTANCE.toEntity(userDto);
-
         AppUser newUser = new AppUser(userDto.getId(), firstName, lastName, nickname,
-                dateOfBirth,
-                email, password, getNewGenres(req));
+                dateOfBirth, email, password, getNewGenres(req));
 
         Criteria<AppUser> criteria = new AppUserCriteria.AppUserCriteriaBuilder() {{
             firstName(firstName);
@@ -59,11 +47,6 @@ public class EditAccountCommand implements Command {
             password(password);
             favouriteGenres(getNewGenres(req));
         }}.build();
-
-
-        System.out.println("newUser + " + newUser);
-        System.out.println("criteria + " + criteria);
-
 
         try {
             AppUserServiceImpl.getInstance().updateByCriteria(newUser, (AppUserCriteria) criteria);
@@ -94,7 +77,7 @@ public class EditAccountCommand implements Command {
         return newFavoriteGenres;
     }
 
-    private String reverseDate(String date) {
+    private String reversedDate(String date) {
         String converted = null;
         if (date != null && date.length() > 0) {
             if (date.matches("\\d{2}-\\d{2}-\\d{4}")) {

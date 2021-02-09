@@ -1,6 +1,5 @@
 package com.epam.jwd.final_project.controller.command.impl;
 
-import com.epam.jwd.final_project.context.impl.RatingContext;
 import com.epam.jwd.final_project.controller.command.Command;
 import com.epam.jwd.final_project.controller.command.RequestContext;
 import com.epam.jwd.final_project.controller.command.ResponseContext;
@@ -10,7 +9,6 @@ import com.epam.jwd.final_project.exception.DatabaseInteractionException;
 import com.epam.jwd.final_project.service.impl.AppUserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.Optional;
 
 public class ShowFoundUserCommand implements Command {
@@ -20,10 +18,9 @@ public class ShowFoundUserCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext req) {
         ResponseContext resp = new ResponseContextImpl(ResponseType.FORWARD);
-
         String param = req.getParameter("param");
-
         AppUser found = null;
+
         try {
             Optional<AppUser> user;
             if (param.equals("id")) {
@@ -43,4 +40,5 @@ public class ShowFoundUserCommand implements Command {
 
         return resp;
     }
+
 }

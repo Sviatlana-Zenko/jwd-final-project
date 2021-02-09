@@ -18,7 +18,6 @@ public class DeleteQuoteCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext req) {
         ResponseContext resp = new ResponseContextImpl(ResponseType.FORWARD);
-
         Long quoteId = Long.valueOf(req.getParameter("id"));
 
         try {
@@ -32,4 +31,5 @@ public class DeleteQuoteCommand implements Command {
 
         return resp;
     }
+
 }

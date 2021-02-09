@@ -24,7 +24,8 @@ public class AppUser extends AbstractAppEntity {
         super(id);
     }
 
-    public AppUser(Long id, String nickname, String email, Role role, Boolean isBanned) {
+    public AppUser(Long id, String nickname, String email,
+                   Role role, Boolean isBanned) {
         super(id);
         this.nickname = nickname;
         this.email = email;
@@ -34,7 +35,6 @@ public class AppUser extends AbstractAppEntity {
         this.ratedReviews = new HashMap<>();
     }
 
-    // +++ для UserSessionDtoConverter
     public AppUser(Long id, String nickname, Role role, Boolean isBanned,
                    List<Long> reviewedProducts, Map<Long, Boolean> ratedReviews) {
         super(id);
@@ -43,16 +43,6 @@ public class AppUser extends AbstractAppEntity {
         this.isBanned = isBanned;
         this.reviewedProducts = reviewedProducts;
         this.ratedReviews = ratedReviews;
-    }
-
-    //id, nickname, email, status_id, is_banned
-
-    public AppUser(Long id, String nickname, String email, Status status, Boolean isBanned) {
-        super(id);
-        this.nickname = nickname;
-        this.email = email;
-        this.status = status;
-        this.isBanned = isBanned;
     }
 
     public AppUser(String firstName, String lastName, String nickname,
@@ -68,8 +58,6 @@ public class AppUser extends AbstractAppEntity {
         this.favouriteGenres = favouriteGenres;
     }
 
-
-    // +++ для findAll()
     public AppUser(Long id, String firstName, String lastName, String nickname,
                    LocalDate dateOfBirth, String email, String password,
                    Role role, Status status, Boolean isBanned) {
@@ -99,6 +87,18 @@ public class AppUser extends AbstractAppEntity {
         this.email = email;
         this.password = password;
         this.favouriteGenres = favouriteGenres;
+    }
+
+    public AppUser(Long id, String firstName, String lastName, String nickname,
+                   LocalDate dateOfBirth, String email, String password) {
+        super(id);
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.nickname = nickname;
+        this.dateOfBirth = dateOfBirth;
+        this.email = email;
+        this.password = password;
+        this.favouriteGenres = new ArrayList<>();
     }
 
     public String getFirstName() {
@@ -141,7 +141,6 @@ public class AppUser extends AbstractAppEntity {
         return favouriteGenres;
     }
 
-    // Нужны ли мне здесь setter-ы, toString(), equals() и hashCode()?
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -185,6 +184,7 @@ public class AppUser extends AbstractAppEntity {
     public List<Long> getReviewedProducts() {
         return reviewedProducts;
     }
+
     public void setReviewedProducts(List<Long> reviewedProducts) {
         this.reviewedProducts = reviewedProducts;
     }
@@ -197,35 +197,16 @@ public class AppUser extends AbstractAppEntity {
         this.ratedReviews = ratedReviews;
     }
 
-
-    // Нормально ли такое переопределение?
-//    @Override
-//    public String toString() {
-//        return getClass().getSimpleName() + "{" +
-//                super.toString() +
-//                ", firstName='" + firstName +
-//                "', lastName='" + lastName +
-//                "', nickname='" + nickname +
-//                "', dateOfBirth=" + dateOfBirth +
-//                ", email='" + email +
-//                "', password='" + password +
-//                "', role=" + role.getName() +
-//                ", status=" + status.getName() +
-//                ", isBanned=" + isBanned +
-//                ", favouriteGenres=" + favouriteGenres +
-//                "}";
-//    }
-
     @Override
     public String toString() {
-        return "AppUser{" +
+        return getClass().getSimpleName() + "{" +
                 super.toString() +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", nickname='" + nickname + '\'' +
+                ", firstName='" + firstName + "'" +
+                ", lastName='" + lastName + "'" +
+                ", nickname='" + nickname + "'" +
                 ", dateOfBirth=" + dateOfBirth +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
+                ", email='" + email + "'" +
+                ", password='" + password + "'" +
                 ", role=" + role +
                 ", status=" + status +
                 ", isBanned=" + isBanned +

@@ -16,8 +16,7 @@ public class DescriptionValidator extends Validator<CinemaProduct> {
             validationErrors.add("'description' field is not filled");
         } else {
             if (description != null && description.length() > MAX_LENGTH) {
-                validationErrors.add("'description' is longer than " +
-                        MAX_LENGTH +  "characters");
+                validationErrors.add("'description' is longer than " + MAX_LENGTH +  "characters");
             }
         }
 

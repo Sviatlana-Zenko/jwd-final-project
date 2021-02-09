@@ -17,18 +17,18 @@ import org.slf4j.LoggerFactory;
 
 public class EditReviewMarksCommand implements Command {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ShowProductsCommand.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EditReviewMarksCommand.class);
 
     @Override
     public ResponseContext execute(RequestContext req) {
         ResponseContext resp = new ResponseContextImpl(ResponseType.FORWARD);
-        String id = req.getParameter("id");
+        String productId = req.getParameter("id");
         String reviewId = req.getParameter("rewid");
         String positiveMarks = req.getParameter("pos");
         String negativeMarks = req.getParameter("neg");
         String operation = req.getParameter("plus");
         boolean isPositive;
-        Review review = null;
+        Review review;
 
         if (operation.equals("t")) {
             review = new Review(Long.valueOf(reviewId),
@@ -38,7 +38,7 @@ public class EditReviewMarksCommand implements Command {
         } else {
             review = new Review(Long.valueOf(reviewId),
                     Integer.valueOf(positiveMarks),
-                            Integer.valueOf(negativeMarks) + 1);
+                    Integer.valueOf(negativeMarks) + 1);
             isPositive = false;
         }
 
@@ -51,7 +51,7 @@ public class EditReviewMarksCommand implements Command {
             RatingContext.INSTANCE.reinit(AppUser.class);
             AppUser updated = AppUserServiceImpl.getInstance().findById(user.getId()).get();
             req.getSession().setAttribute("user", UserSessionInfoConverter.INSTANCE.toDto(updated));
-            ((ResponseContextImpl) resp).setPage("/home?command=show-reviews&id=" + id);
+            ((ResponseContextImpl) resp).setPage("/home?command=show-reviews&id=" + productId);
         } catch (DatabaseInteractionException e) {
             LOGGER.error(e.getMessage());
             ((ResponseContextImpl) resp).setPage("/home?command=db-error");
@@ -59,4 +59,5 @@ public class EditReviewMarksCommand implements Command {
 
         return resp;
     }
+
 }

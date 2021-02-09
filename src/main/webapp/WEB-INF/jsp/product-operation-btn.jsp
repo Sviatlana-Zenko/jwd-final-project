@@ -18,7 +18,7 @@
         </button>
     </a>
     <a href="home?command=to-form&type=tvseries">
-        <button class="w3-bar-item w3-button w3-teal">
+        <button class="w3-bar-item w3-button w3-teal" disabled>
             <fmt:message key="button.create.tvseries"/>
         </button>
     </a>

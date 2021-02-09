@@ -9,10 +9,9 @@ public class SignOutCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext req) {
-        ResponseContext responseContext = new ResponseContextImpl(ResponseType.REDIRECT,
-                "/home?command=main-page");
+        ResponseContext resp = new ResponseContextImpl(ResponseType.REDIRECT, "/home?command=main-page");
         req.getSession().removeAttribute("user");
 
-        return responseContext;
+        return resp;
     }
 }

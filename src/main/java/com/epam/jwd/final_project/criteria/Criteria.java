@@ -25,7 +25,8 @@ public class Criteria<T extends AppEntity> {
             this.configure();
         }
 
-        protected void configure() {}
+        protected void configure() {
+        }
 
         public CriteriaBuilder id(Long id) {
             this.id = id;

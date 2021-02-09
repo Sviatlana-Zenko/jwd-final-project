@@ -10,17 +10,16 @@ public class GetParamToFindUserCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext req) {
         ResponseContext resp = new ResponseContextImpl(ResponseType.REDIRECT);
-
         String param = req.getParameter("param");
 
         if (param.equals("id")) {
             String id = req.getParameter("id-to-find");
-            System.out.println("ID + " + id);
-            ((ResponseContextImpl) resp).setPage("/home?command=found-user&param=" + param + "&id=" + id);
+            ((ResponseContextImpl) resp).setPage("/home?command=found-user&param=" +
+                    param + "&id=" + id);
         } else {
             String nickname = req.getParameter("nickname-to-find");
-            System.out.println("nickname + " + nickname);
-            ((ResponseContextImpl) resp).setPage("/home?command=found-user&param=" + param + "&nickname=" + nickname);
+            ((ResponseContextImpl) resp).setPage("/home?command=found-user&param=" +
+                    param + "&nickname=" + nickname);
         }
 
         return resp;

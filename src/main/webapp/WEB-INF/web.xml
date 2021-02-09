@@ -12,4 +12,6 @@
     <taglib-uri>jwdTags</taglib-uri>
     <taglib-location>/WEB-INF/tag/custom-tags.tld</taglib-location>
   </taglib>
+  <request-character-encoding>UTF-8</request-character-encoding>
+  <response-character-encoding>UTF-8</response-character-encoding>
 </web-app>

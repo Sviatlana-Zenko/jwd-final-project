@@ -14,12 +14,13 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
 public enum ConnectionPool {
+
     INSTANCE;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionPool.class);
     private BlockingQueue<ProxyConnection> availableConnections;
     private Queue<ProxyConnection> takenConnections;
-    private ApplicationProperties properties = PropertyReaderUtil.getApplicationProperties();
+    private final ApplicationProperties properties = PropertyReaderUtil.getApplicationProperties();
     private final Integer defaultPoolSize = properties.getDefaultPoolSize();
     private final Integer maxPoolSize = properties.getMaxPoolSize();
     private final Integer connectionsToAdd = 10;
@@ -29,7 +30,6 @@ public enum ConnectionPool {
     ConnectionPool() {
         availableConnections = new LinkedBlockingDeque<>(defaultPoolSize);
         takenConnections = new ArrayDeque<>();
-
         registerDriver();
         initConnections(defaultPoolSize);
     }
@@ -54,10 +54,16 @@ public enum ConnectionPool {
     }
 
     public void releaseConnection(Connection connection) {
-        if (connection.getClass().getSimpleName()
-                .equals(ProxyConnection.class.getSimpleName())) {
-            takenConnections.remove(connection);
-            availableConnections.offer((ProxyConnection) connection);
+        try {
+            if (!connection.getMetaData().getURL().equals(properties.getTestDbUrl())){
+                if (connection.getClass().getSimpleName()
+                        .equals(ProxyConnection.class.getSimpleName())) {
+                    takenConnections.remove(connection);
+                    availableConnections.offer((ProxyConnection) connection);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -96,7 +102,8 @@ public enum ConnectionPool {
 
         for (int i = 0; i < connectionsToInit; i++) {
             try {
-                availableConnections.add(new ProxyConnection(DriverManager.getConnection(dbUrl, dbUserName, dbUserPassword)));
+                availableConnections.add(new ProxyConnection(DriverManager.getConnection(
+                        dbUrl, dbUserName, dbUserPassword)));
             } catch (SQLException e) {
                 LOGGER.error(e.getMessage());
             }
@@ -111,7 +118,8 @@ public enum ConnectionPool {
 
         try {
             registerDriver();
-            testConnection = new ProxyConnection(DriverManager.getConnection(testDbUrl, dbUserName, dbUserPassword));
+            testConnection = new ProxyConnection(DriverManager.getConnection(
+                    testDbUrl, dbUserName, dbUserPassword));
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
         }

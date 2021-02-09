@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="<c:url value="../../css/app-style.css"/>">
     <script src="https://kit.fontawesome.com/93c41a9677.js" crossorigin="anonymous"></script>
 </head>
-<body>
 <c:import url="header.jsp"/>
+<c:import url="sort-parameters.jsp"/>
 <div class="products">
     <c:forEach var="product" items="${requestScope.products}">
         <table class="product-view">
@@ -28,8 +28,8 @@
                         <div class="title">
                             <a href="home?command=product-info&id=${product.id}">${product.title}</a>
                         </div>
-                        <p><fmt:message key="label.release.date"/><ct:dateTag date="${product.releaseDate}"/></p>
-                        <p><fmt:message key="label.country"/>${product.country}</p>
+                        <p><fmt:message key="label.release.date"/>: <ct:dateTag date="${product.releaseDate}"/></p>
+                        <p><fmt:message key="label.country"/>: ${product.country}</p>
                     </div>
                 </th>
             </tr>

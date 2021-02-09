@@ -1,12 +1,9 @@
 package com.epam.jwd.final_project.controller.command.impl;
 
-import com.epam.jwd.final_project.context.impl.RatingContext;
 import com.epam.jwd.final_project.controller.command.Command;
 import com.epam.jwd.final_project.controller.command.RequestContext;
 import com.epam.jwd.final_project.controller.command.ResponseContext;
 import com.epam.jwd.final_project.controller.command.ResponseContext.ResponseType;
-import com.epam.jwd.final_project.criteria.AppUserCriteria;
-import com.epam.jwd.final_project.criteria.Criteria;
 import com.epam.jwd.final_project.domain.AppUser;
 import com.epam.jwd.final_project.domain.Genre;
 import com.epam.jwd.final_project.domain.Role;
@@ -16,7 +13,6 @@ import com.epam.jwd.final_project.service.impl.AppUserServiceImpl;
 import com.epam.jwd.final_project.util.DateConverterUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +24,12 @@ public class NewAccountCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         ResponseContext responseContext = new ResponseContextImpl(ResponseType.REDIRECT);
-
-        String firstName = checkInput(requestContext.getParameter("first-name"));
-        String lastName = checkInput(requestContext.getParameter("last-name"));
-        String nickname = checkInput(requestContext.getParameter("nickname"));
-        String dateOfBirth = checkInput(requestContext.getParameter("date-of-birth"));
-        String email = checkInput(requestContext.getParameter("email"));
-        String password = checkInput(requestContext.getParameter("password"));
+        String firstName = requestContext.getParameter("first-name");
+        String lastName = requestContext.getParameter("last-name");
+        String nickname = requestContext.getParameter("nickname");
+        String dateOfBirth = requestContext.getParameter("date-of-birth");
+        String email = requestContext.getParameter("email");
+        String password = requestContext.getParameter("password");
 
         try {
             if (AppUserServiceImpl.getInstance().checkIfEmailExists(email)) {
@@ -45,8 +40,8 @@ public class NewAccountCommand implements Command {
                 requestContext.getSession().setAttribute("nicknameError", true);
                 ((ResponseContextImpl) responseContext).setPage("/home?command=new-account-form");
             } else {
-                AppUser user = new AppUser(firstName, lastName, nickname,
-                        reverseDate(dateOfBirth), email, password, Role.USER, getNewGenres(requestContext));
+                AppUser user = new AppUser(firstName, lastName, nickname, reversedDate(dateOfBirth),
+                        email, password, Role.USER, getNewGenres(requestContext));
                 AppUserServiceImpl.getInstance().create(user);
                 requestContext.getSession().setAttribute("emailError", false);
                 requestContext.getSession().setAttribute("nicknameError", false);
@@ -78,9 +73,8 @@ public class NewAccountCommand implements Command {
         return newFavoriteGenres;
     }
 
-    private LocalDate reverseDate(String date) {
+    private LocalDate reversedDate(String date) {
         LocalDate localDate;
-
         if (date != null && date.length() == 10) {
             String[] str = date.split("-");
             date = str[2] + "-" + str[1] + "-" + str[0];
@@ -92,12 +86,4 @@ public class NewAccountCommand implements Command {
         return localDate;
     }
 
-    private String checkInput(String input) {
-        if (input.length() == 0) {
-            return null;
-        } else {
-            return input;
-        }
-
-    }
 }

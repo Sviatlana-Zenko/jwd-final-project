@@ -17,7 +17,6 @@ public class CreateQuoteCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext req) {
-
         ResponseContext resp = new ResponseContextImpl(ResponseType.REDIRECT);
         String productTitle = req.getParameter("prod-title");
         String quoteText = req.getParameter("quote-txt");

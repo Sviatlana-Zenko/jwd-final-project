@@ -5,10 +5,10 @@ import java.util.List;
 
 public class Movie extends CinemaProduct {
 
-    private String directedBy; //+
-    private String producedBy; //+
-    private Integer budget; //+
-    private Integer boxOffice; //+
+    private String directedBy;
+    private String producedBy;
+    private Integer budget;
+    private Integer boxOffice;
 
     public Movie(Long id) {
         super(id);
@@ -74,13 +74,31 @@ public class Movie extends CinemaProduct {
         return boxOffice;
     }
 
+    public void setDirectedBy(String directedBy) {
+        this.directedBy = directedBy;
+    }
+
+    public void setProducedBy(String producedBy) {
+        this.producedBy = producedBy;
+    }
+
+    public void setBudget(Integer budget) {
+        this.budget = budget;
+    }
+
+    public void setBoxOffice(Integer boxOffice) {
+        this.boxOffice = boxOffice;
+    }
+
     @Override
     public String toString() {
-        return "Movie{" +
-                "directedBy='" + directedBy + '\'' +
-                ", producedBy='" + producedBy + '\'' +
+        return getClass().getSimpleName() + "{" +
+                super.toString() +
+                ", directedBy='" + directedBy + "'" +
+                ", producedBy='" + producedBy + "'" +
                 ", budget=" + budget +
                 ", boxOffice=" + boxOffice +
-                "} " + super.toString();
+                "}";
     }
+
 }

@@ -10,13 +10,9 @@ public class GetParamToFindProductCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext req) {
         ResponseContext resp = new ResponseContextImpl(ResponseType.REDIRECT);
-
         String title = req.getParameter("title-to-find");
-
         req.getSession().setAttribute("title", title);
         ((ResponseContextImpl) resp).setPage("/home?command=found-product");
-
-        System.out.println("1title" + title);
 
         return resp;
     }

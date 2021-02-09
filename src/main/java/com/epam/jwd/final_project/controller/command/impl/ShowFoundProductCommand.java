@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.List;
 
-
 public class ShowFoundProductCommand implements Command {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShowFoundProductCommand.class);
@@ -33,4 +32,5 @@ public class ShowFoundProductCommand implements Command {
 
         return resp;
     }
+
 }

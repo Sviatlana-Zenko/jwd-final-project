@@ -15,12 +15,11 @@ public interface CinemaProductService extends EntityService<CinemaProduct, Cinem
 
     int getNumberOfProducts(ProductType productType) throws DatabaseInteractionException;
 
-    List<CinemaProduct> findConcreteAmountByType(ProductType type, long startIndex, int number)
-            throws DatabaseInteractionException;
+    List<CinemaProduct> findConcreteAmountByType(ProductType type, long startIndex,
+             int number, String field, String dir) throws DatabaseInteractionException;
 
     List<CinemaProduct> findByTitle(String title) throws DatabaseInteractionException;
 
     boolean updateProductRating(Long id) throws DatabaseInteractionException;
-
 
 }

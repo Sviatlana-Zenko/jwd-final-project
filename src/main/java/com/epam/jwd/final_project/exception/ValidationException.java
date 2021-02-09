@@ -12,6 +12,18 @@ public class ValidationException extends Exception {
         this.validationErrors = errors;
     }
 
+    public ValidationException(Throwable cause, String entityName, List<String> validationErrors) {
+        super(cause);
+        this.entityName = entityName;
+        this.validationErrors = validationErrors;
+    }
+
+    public ValidationException(String message, String entityName, List<String> validationErrors) {
+        super(message);
+        this.entityName = entityName;
+        this.validationErrors = validationErrors;
+    }
+
     public List<String> getValidationErrors() {
         return validationErrors;
     }
@@ -21,18 +33,4 @@ public class ValidationException extends Exception {
         return entityName + " wasn't created, because of the following errors: " + validationErrors;
     }
 
-    //public FigureException() {
-    //    }
-    //
-    //    public FigureException(String message) {
-    //        super(message);
-    //    }
-    //
-    //    public FigureException(String message, Throwable cause) {
-    //        super(message, cause);
-    //    }
-    //
-    //    public FigureException(Throwable cause) {
-    //        super(cause);
-    //    }
 }

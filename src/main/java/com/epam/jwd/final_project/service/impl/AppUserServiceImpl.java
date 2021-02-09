@@ -62,11 +62,11 @@ public class AppUserServiceImpl implements UserService {
             toTransfer = toTransfer.stream()
                     .peek(review -> review.setUserNickname("deleted user"))
                     .collect(Collectors.toList());
-            if (ReviewServiceImpl.INSTANCE.transferInHistoryTable(toTransfer)) {
-                wasDeleted = AppUserDaoImpl.getInstance()
-                        .delete(appUser, ConnectionPool.INSTANCE.getAvailableConnection());
-                RatingContext.INSTANCE.reinit(AppUser.class);
-            }
+        }
+        if (ReviewServiceImpl.INSTANCE.transferInHistoryTable(toTransfer)) {
+            wasDeleted = AppUserDaoImpl.getInstance()
+                    .delete(appUser, ConnectionPool.INSTANCE.getAvailableConnection());
+            RatingContext.INSTANCE.reinit(AppUser.class);
         }
 
         return wasDeleted;
@@ -119,9 +119,9 @@ public class AppUserServiceImpl implements UserService {
     @Override
     public Status updateUserStatus(AppUser user) throws DatabaseInteractionException {
         List<Integer> positiveMarks = AppUserDaoImpl.getInstance()
-                .getPositiveMarks(user, ConnectionPool.INSTANCE.getAvailableConnection());
+                .getPositiveMarks(user.getId(), ConnectionPool.INSTANCE.getAvailableConnection());
         List<Integer> negativeMarks = AppUserDaoImpl.getInstance()
-                .getNegativeMarks(user, ConnectionPool.INSTANCE.getAvailableConnection());
+                .getNegativeMarks(user.getId(), ConnectionPool.INSTANCE.getAvailableConnection());
 
         int numberOfPositiveMarks = positiveMarks.stream()
                 .mapToInt((s) -> Integer.parseInt(String.valueOf(s)))

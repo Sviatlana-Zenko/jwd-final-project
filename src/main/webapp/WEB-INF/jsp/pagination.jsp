@@ -19,11 +19,11 @@
             <c:choose>
                 <c:when test="${param.page-1 > 1}">
                     <a href="home?command=${param.command}${type}&page=${param.page-1}"
-                       class="w3-bar-item w3-button w3-hover-teal"><</a>
+                       class="w3-bar-item w3-button w3-hover-teal" id="page-btn"><</a>
                 </c:when>
                 <c:when test="${param.page-1 <= 1}">
                     <a href="home?command=${param.command}${type}&page=${1}"
-                       class="w3-bar-item w3-button w3-hover-teal"><</a>
+                       class="w3-bar-item w3-button w3-hover-teal" id="page-btn"><</a>
                 </c:when>
             </c:choose>
             <c:set var="last" value="5"/>
@@ -38,7 +38,7 @@
             <c:set var="number" value="${first}"/>
             <c:forEach begin="${first}" end="${last}" varStatus="loop">
                 <a href="home?command=${param.command}${type}&page=${number}"
-                   class="w3-bar-item w3-button w3-hover-teal">
+                   class="w3-bar-item w3-button w3-hover-teal" id="page-btn">
                         ${number}
                 </a>
                 <c:set var="number" value="${number + 1}"/>
@@ -46,11 +46,11 @@
             <c:choose>
                 <c:when test="${param.page+1 < requestScope.pages}">
                     <a href="home?command=${param.command}${type}&page=${param.page+1}"
-                       class="w3-bar-item w3-button w3-hover-teal">></a>
+                       class="w3-bar-item w3-button w3-hover-teal" id="page-btn">></a>
                 </c:when>
                 <c:when test="${param.page+1 >= requestScope.pages}">
                     <a href="home?command=${param.command}${type}&page=${requestScope.pages}"
-                       class="w3-bar-item w3-button w3-hover-teal">></a>
+                       class="w3-bar-item w3-button w3-hover-teal" id="page-btn">></a>
                 </c:when>
             </c:choose>
         </c:when>
@@ -58,7 +58,7 @@
             <c:set var="number" value="${first}"/>
             <c:forEach begin="${first}" end="${last}" varStatus="loop">
                 <a href="home?command=${param.command}${type}&page=${number}"
-                   class="w3-bar-item w3-button w3-hover-teal">${number}</a>
+                   class="w3-bar-item w3-button w3-hover-teal" id="page-btn">${number}</a>
                 <c:set var="number" value="${number + 1}"/>
             </c:forEach>
         </c:otherwise>

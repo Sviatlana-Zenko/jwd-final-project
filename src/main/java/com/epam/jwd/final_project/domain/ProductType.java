@@ -20,10 +20,6 @@ public enum ProductType implements AppEntity {
         return id;
     }
 
-    public String getName() {
-        return name().toLowerCase().replace("_", " ");
-    }
-
     public static ProductType resolveTypeById(Long id) {
         ProductType typeById = null;
         List<ProductType> types = Arrays.asList(ProductType.values());
@@ -34,8 +30,6 @@ public enum ProductType implements AppEntity {
                     .filter(typePredicate)
                     .findFirst()
                     .get();
-        } else {
-            // log + throwing error
         }
 
         return typeById;

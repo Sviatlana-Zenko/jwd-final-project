@@ -11,6 +11,15 @@ const passwordRegex = new RegExp('^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$');
 const dataRegex = new RegExp('((0[1-9])|([12][0-9])|(3[01]))-((0[1-9])|(1[012]))-((19)|(2[012]))\\d{2}')
 
 accountForm.addEventListener('submit', (e) => {
+    if (firstName.value.length === 0 &
+        lastName.value.length === 0 &
+        nickname.value.length === 0 &
+        dateOfBirth.value.length === 0 &
+        email.value.length === 0 &
+        password.value.length === 0) {
+        e.preventDefault();
+    }
+
     if (dateOfBirth.value.length != 0 &&
         !dataRegex.test(dateOfBirth.value)) {
         dateOfBirth.style.border = "2px solid red"

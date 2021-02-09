@@ -372,13 +372,35 @@ body{
     text-align: center;
 }
 
-.product-view{
+.product-view, .sort-select{
     margin-left: auto;
     margin-right: auto;
     width: 650px;
     padding-top: 10px;
     padding-bottom: 10px;
     border-bottom: 3px solid teal;
+}
+
+.sort-select{
+    color: white;
+    text-align: right;
+}
+
+.sort-field, .sort-dir {
+    background-color: white;
+    font-weight: normal;
+    font-size: 15px;
+    height: 30px;
+    width: 145px;
+    color:black;
+    border: none;
+}
+
+#sort-btn{
+    width: 125px;
+    height: 30px;
+    padding: 0!important;
+    margin-bottom: 4px;
 }
 
 .product-view th{

@@ -1,6 +1,5 @@
 package com.epam.jwd.final_project.domain;
 
-// implements Serializable, Cloneable?
 public abstract class AbstractAppEntity implements AppEntity {
 
     private Long id;
@@ -21,9 +20,8 @@ public abstract class AbstractAppEntity implements AppEntity {
         this.id = id;
     }
 
-    // Нормально ли такое переопределение?
     @Override
     public String toString() {
-        return "id=" + id;
+        return "id=" + id + ";";
     }
 }

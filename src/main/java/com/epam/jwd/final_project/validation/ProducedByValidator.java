@@ -17,8 +17,7 @@ public class ProducedByValidator extends Validator<CinemaProduct> {
             validationErrors.add("'producedBy' field is not filled");
         } else {
             if (producedBy != null && producedBy.length() > MAX_LENGTH) {
-                validationErrors.add("'producedBy' is longer than "
-                        + MAX_LENGTH +  "characters");
+                validationErrors.add("'producedBy' is longer than " + MAX_LENGTH +  "characters");
             }
         }
 

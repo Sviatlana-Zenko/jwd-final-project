@@ -5,13 +5,9 @@ import com.epam.jwd.final_project.dao.CinemaProductDao;
 import com.epam.jwd.final_project.dao.ReleaseResources;
 import com.epam.jwd.final_project.domain.*;
 import com.epam.jwd.final_project.exception.DatabaseInteractionException;
-import com.epam.jwd.final_project.pool.ConnectionPool;
 import com.epam.jwd.final_project.util.DateConverterUtil;
-
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class CinemaProductDaoImpl implements CinemaProductDao, ReleaseResources {
 
@@ -21,37 +17,65 @@ public class CinemaProductDaoImpl implements CinemaProductDao, ReleaseResources 
         if (INSTANCE == null) {
             INSTANCE = new CinemaProductDaoImpl();
         }
-
         return INSTANCE;
     }
 
-
     private static final String SQL_INSERT_INTO_CINEMA_PRODUCT =
-        "INSERT INTO cinema_product(type_id, title, description, release_date, " +
-                "running_time, country, age_rating, starring, poster_url) " +
-                        "VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "INSERT INTO cinema_product(type_id, title, description, release_date, " +
+            "running_time, country, age_rating, starring, poster_url) " +
+            "VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_SELECT_GENERATED_ID =
             "SELECT id FROM cinema_product WHERE title=? AND release_date=?";
     private static final String SQL_INSERT_INTO_MOVIE =
             "INSERT INTO movie(id, directed_by, produced_by, budget, box_office) " +
-                    "VALUE (?, ?, ?, ?, ?)";
+            "VALUE (?, ?, ?, ?, ?)";
     private static final String SQL_INSERT_INTO_TV_SERIES =
-            "INSERT INTO tv_series(id, number_of_seasons, number_of_episodes, " +
-                    "is_finished) VALUE (?, ?, ?, ?)";
+            "INSERT INTO tv_series(id, number_of_seasons, number_of_episodes, is_finished) " +
+             "VALUE (?, ?, ?, ?)";
+    private static final String SQL_UPDATE_GENRES =
+            "INSERT INTO cinema_product_genre(cinema_product_id, genre_id) VALUE (?, ?)";
+    private static final String SQL_SELECT_TYPE_BY_ID =
+            "SELECT type_id FROM cinema_product WHERE id=?";
+    private static final String SQL_SELECT_MOVIE_BY_ID =
+            "SELECT * FROM cinema_product INNER JOIN movie m ON cinema_product.id = m.id " +
+            "INNER JOIN cinema_product_genre cpg on cinema_product.id = cpg.cinema_product_id " +
+            "WHERE cinema_product.id=?";
+    private static final String SQL_SELECT_TV_SERIES_BY_ID =
+            "SELECT * FROM cinema_product INNER JOIN tv_series ts on cinema_product.id = ts.id " +
+            "INNER JOIN cinema_product_genre cpg on cinema_product.id = cpg.cinema_product_id " +
+            "WHERE cinema_product.id=?";
+    private static final String SQL_DELETE_CINEMA_PRODUCT =
+            "DELETE FROM cinema_product WHERE id=?";
+    private static final String SQL_SELECT_MOVIES =
+            "SELECT * FROM cinema_product INNER JOIN movie m ON cinema_product.id = m.id " +
+            "INNER JOIN cinema_product_genre cpg on cinema_product.id = cpg.cinema_product_id";
+    private static final String SQL_SELECT_TV_SERIES =
+            "SELECT * FROM cinema_product INNER JOIN tv_series ts on cinema_product.id = ts.id " +
+            "INNER JOIN cinema_product_genre cpg on cinema_product.id = cpg.cinema_product_id";
+    private static final String SQL_COUNT_ELEMENTS_BY_TYPE =
+            "SELECT COUNT(*) AS number FROM cinema_product where type_id=?";
+    private static final String SQL_SELECT_ID_BY_TITLE =
+            "SELECT id FROM cinema_product WHERE title LIKE ";
+    private static final String SQL_SELECT_BY_SEARCH_REQUEST =
+            "SELECT * FROM cinema_product WHERE title LIKE ";
+    private static final String SQL_SELECT_RECOMMENDATIONS =
+            "SELECT id FROM cinema_product ORDER BY RAND() LIMIT ?";
+    private static final String SQL_UPDATE_RATING =
+            "UPDATE cinema_product SET current_rating=? WHERE id=?";
+
     @Override
-    public boolean create(CinemaProduct product, Connection connection) throws DatabaseInteractionException {
-        boolean wasCreated = false;
+    public boolean create(CinemaProduct product, Connection connection)
+            throws DatabaseInteractionException {
         PreparedStatement statement = null;
 
         try {
             connection.setAutoCommit(false);
-
             insertIntoProducts(product, connection.prepareStatement(SQL_INSERT_INTO_CINEMA_PRODUCT));
             Long generatedId = getGeneratedId(connection, statement, product);
             product.setId(generatedId);
+
             List<Genre> genres = product.getGenres();
-            if (product.getGenres() != null &&
-                    product.getGenres().size() > 0) {
+            if (genres != null && genres.size() > 0) {
                 updateProductGenres(generatedId, product.getGenres(),
                         connection.prepareStatement(SQL_UPDATE_GENRES));
             }
@@ -61,8 +85,9 @@ public class CinemaProductDaoImpl implements CinemaProductDao, ReleaseResources 
             } else {
                 insertIntoTvSeries(product, connection.prepareStatement(SQL_INSERT_INTO_TV_SERIES));
             }
+
             connection.commit();
-            wasCreated = false;
+            return true;
         } catch (SQLException e) {
             rollback(connection);
             throw new DatabaseInteractionException(e);
@@ -70,64 +95,6 @@ public class CinemaProductDaoImpl implements CinemaProductDao, ReleaseResources 
             closeStatement(statement);
             closeConnection(connection);
         }
-
-        return wasCreated;
-    }
-
-    private void insertIntoTvSeries(CinemaProduct product, PreparedStatement statement) throws SQLException {
-        statement.setLong(1, product.getId());
-        statement.setInt(2, ((TvSeries) product).getNumberOfSeasons());
-        statement.setInt(3, ((TvSeries) product).getNumberOfEpisodes());
-        statement.setBoolean(4, ((TvSeries) product).getIsFinished());
-        statement.executeUpdate();
-    }
-
-    private void insertIntoMovies(CinemaProduct product, PreparedStatement statement) throws SQLException {
-        statement.setLong(1, product.getId());
-        statement.setString(2, ((Movie) product).getDirectedBy());
-        statement.setString(3, ((Movie) product).getProducedBy());
-        statement.setInt(4, ((Movie) product).getBudget());
-        statement.setInt(5, ((Movie) product).getBoxOffice());
-        statement.executeUpdate();
-    }
-
-    private static final String SQL_UPDATE_GENRES =
-            "INSERT INTO cinema_product_genre(cinema_product_id, genre_id) VALUE (?, ?)";
-    public void updateProductGenres(Long id, List<Genre> genres,
-                                 PreparedStatement statement) throws SQLException {
-        for (int i = 0; i < genres.size(); i++) {
-            statement.setLong(1, id);
-            statement.setLong(2, genres.get(i).getId());
-            statement.executeUpdate();
-        }
-    }
-
-    private void insertIntoProducts(CinemaProduct product, PreparedStatement statement) throws SQLException {
-        statement.setLong(1, product.getType().getId());
-        statement.setString(2, product.getTitle());
-        statement.setString(3, product.getDescription());
-        statement.setString(4, product.getReleaseDate().toString());
-        statement.setInt(5, product.getRunningTime());
-        statement.setString(6, product.getCountry());
-        statement.setByte(7, product.getAgeRating());
-        statement.setString(8, product.getStarring());
-        statement.setString(9, product.getPosterUrl());
-        statement.executeUpdate();
-    }
-
-    private Long getGeneratedId(Connection connection, PreparedStatement statement,
-                                CinemaProduct product) throws SQLException {
-        Long id = null;
-
-        statement = connection.prepareStatement(SQL_SELECT_GENERATED_ID);
-        statement.setString(1, product.getTitle());
-        statement.setString(2, product.getReleaseDate().toString());
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-            id = resultSet.getLong("id");
-        }
-
-        return id;
     }
 
     @Override
@@ -139,18 +106,9 @@ public class CinemaProductDaoImpl implements CinemaProductDao, ReleaseResources 
         return products;
     }
 
-    private static final String SQL_SELECT_TYPE_BY_ID =
-            "SELECT type_id FROM cinema_product WHERE id=?";
-    private static final String SQL_SELECT_MOVIE_BY_ID =
-        "SELECT * FROM cinema_product INNER JOIN movie m ON cinema_product.id = m.id " +
-                "INNER JOIN cinema_product_genre cpg on cinema_product.id = cpg.cinema_product_id " +
-                        "WHERE cinema_product.id=?";
-    private static final String SQL_SELECT_TV_SERIES_BY_ID =
-            "SELECT * FROM cinema_product INNER JOIN tv_series ts on cinema_product.id = ts.id " +
-                    "INNER JOIN cinema_product_genre cpg on cinema_product.id = cpg.cinema_product_id " +
-                            "WHERE cinema_product.id=?";
     @Override
-    public Optional<CinemaProduct> findById(Long id, Connection connection) throws DatabaseInteractionException {
+    public Optional<CinemaProduct> findById(Long id, Connection connection)
+            throws DatabaseInteractionException {
         CinemaProduct product = null;
         PreparedStatement statement = null;
 
@@ -184,45 +142,29 @@ public class CinemaProductDaoImpl implements CinemaProductDao, ReleaseResources 
         return Optional.ofNullable(product);
     }
 
-    private Long getType(ResultSet set) throws SQLException {
-        Long typeId = null;
-        while (set.next()) {
-            typeId = set.getLong("type_id");
-        }
 
-        return typeId;
-    }
-
-
-    private static final String SQL_DELETE_CINEMA_PRODUCT =
-        "DELETE FROM cinema_product WHERE id=?";
     @Override
-    public boolean delete(CinemaProduct product, Connection connection) throws DatabaseInteractionException {
-        boolean wasDeleted = true;
+    public boolean delete(CinemaProduct product, Connection connection)
+            throws DatabaseInteractionException {
+        boolean wasDeleted;
         PreparedStatement statement = null;
 
         try {
             statement = connection.prepareStatement(SQL_DELETE_CINEMA_PRODUCT);
             statement.setLong(1, product.getId());
             statement.executeUpdate();
+            return true;
         } catch (SQLException e) {
-            e.printStackTrace();
-            wasDeleted = false;
+            throw new DatabaseInteractionException(e);
         } finally {
             closeStatement(statement);
             closeConnection(connection);
         }
-
-        return wasDeleted;
     }
 
     @Override
-    public CinemaProduct updateByCriteria(CinemaProduct product, CinemaProductCriteria criteria, Connection connection) throws DatabaseInteractionException {
-        return null;
-    }
-
-    @Override
-    public List<Long> findIdByTitle(String title, Connection connection) throws DatabaseInteractionException {
+    public List<Long> findIdByTitle(String title, Connection connection)
+            throws DatabaseInteractionException {
         List<Long> idList = new ArrayList<>();
         title = "'%" + title + "%'";
         PreparedStatement statement = null;
@@ -244,19 +186,222 @@ public class CinemaProductDaoImpl implements CinemaProductDao, ReleaseResources 
     }
 
     @Override
-    public List<CinemaProduct> findAllByType(ProductType productType, Connection connection)
+    public List<CinemaProduct> findAllByType(ProductType type, Connection connection)
             throws DatabaseInteractionException {
-        if (productType == ProductType.MOVIE) {
+        if (type == ProductType.MOVIE) {
             return findAllMovies(connection);
         } else {
             return findAllTvSeries(connection);
         }
     }
 
-    private static final String SQL_SELECT_MOVIES =
-        "SELECT * FROM cinema_product INNER JOIN movie m ON cinema_product.id = m.id " +
-                "INNER JOIN cinema_product_genre cpg on cinema_product.id = cpg.cinema_product_id";
-    private List<CinemaProduct> findAllMovies(Connection connection)  throws DatabaseInteractionException{
+    @Override
+    public List<CinemaProduct> findConcreteAmountByType(ProductType type, long startIndex,
+            int number, String field, String dir, Connection connection) throws DatabaseInteractionException{
+        List<CinemaProduct> products;
+        PreparedStatement statement = null;
+
+        try {
+            if (type == ProductType.MOVIE) {
+                statement = connection.prepareStatement("SELECT * FROM cinema_product " +
+                        "INNER JOIN movie m ON cinema_product.id = m.id " +
+                        "ORDER BY " + field + " " + dir +
+                        " LIMIT ?, ?");
+                statement.setLong(1, startIndex);
+                statement.setInt(2, number);
+                products = getMoviesFromResultSet(statement.executeQuery());
+            } else {
+                statement = connection.prepareStatement("SELECT * FROM cinema_product " +
+                        "INNER JOIN tv_series ts on cinema_product.id = ts.id " +
+                        "ORDER BY " + field + " " + dir +
+                        " LIMIT ?, ?");
+                statement.setLong(1, startIndex);
+                statement.setInt(2, number);
+                products = getTvSeriesFromResultSet(statement.executeQuery());
+            }
+        } catch (SQLException e) {
+            throw new DatabaseInteractionException(e);
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
+        }
+
+        return products;
+    }
+
+    @Override
+    public int getNumberOfProducts(ProductType type, Connection connection)
+            throws DatabaseInteractionException {
+        int number = 0;
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(SQL_COUNT_ELEMENTS_BY_TYPE);
+            statement.setLong(1, type.getId());
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                number = set.getInt("number");
+            }
+        } catch (SQLException e) {
+            throw new DatabaseInteractionException(e);
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
+        }
+
+        return number;
+    }
+
+    @Override
+    public List<CinemaProduct> findBySearchRequest(String searchRequest, Connection connection)
+            throws DatabaseInteractionException {
+        List<CinemaProduct> products = new ArrayList<>();
+        searchRequest = "'%" + searchRequest + "%'";
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(SQL_SELECT_BY_SEARCH_REQUEST + searchRequest);
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                products.add(new CinemaProduct(set.getLong("id"),
+                        ProductType.resolveTypeById(set.getLong("type_id")),
+                        set.getDouble("current_rating"),
+                        set.getString("title"),
+                        set.getString("description"),
+                        DateConverterUtil.convertToLocalDate(set.getString("release_date")),
+                        set.getInt("running_time"),
+                        set.getString("country"),
+                        set.getByte("age_rating"),
+                        set.getString("starring"),
+                        set.getString("poster_url")));
+            }
+        } catch (SQLException e) {
+            throw new DatabaseInteractionException(e);
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
+        }
+
+        return products;
+    }
+
+    @Override
+    public List<CinemaProduct> findRecommendations(Connection connection)
+            throws DatabaseInteractionException {
+        List<CinemaProduct> recommendations = new ArrayList<>();
+        List<Long> idNumbers = new ArrayList<>();
+        final int numberOfProducts = 6;
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(SQL_SELECT_RECOMMENDATIONS);
+            statement.setInt(1, numberOfProducts);
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                idNumbers.add(set.getLong("id"));
+            }
+
+            for (int i = 0; i < idNumbers.size(); i++) {
+                Optional<CinemaProduct> product = findById(idNumbers.get(i), connection);
+                if (product.isPresent()) {
+                    recommendations.add(product.get());
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseInteractionException(e);
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
+        }
+
+        return recommendations;
+    }
+
+    @Override
+    public boolean updateProductRating(Long productId, Double newRating, Connection connection)
+            throws DatabaseInteractionException {
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(SQL_UPDATE_RATING);
+            statement.setDouble(1, newRating);
+            statement.setLong(2, productId);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            throw new DatabaseInteractionException(e);
+        } finally {
+            closeStatement(statement);
+            closeConnection(connection);
+        }
+    }
+
+    private void insertIntoTvSeries(CinemaProduct product, PreparedStatement statement) throws SQLException {
+        statement.setLong(1, product.getId());
+        statement.setInt(2, ((TvSeries) product).getNumberOfSeasons());
+        statement.setInt(3, ((TvSeries) product).getNumberOfEpisodes());
+        statement.setBoolean(4, ((TvSeries) product).getIsFinished());
+        statement.executeUpdate();
+    }
+
+    private void insertIntoMovies(CinemaProduct product, PreparedStatement statement) throws SQLException {
+        statement.setLong(1, product.getId());
+        statement.setString(2, ((Movie) product).getDirectedBy());
+        statement.setString(3, ((Movie) product).getProducedBy());
+        statement.setInt(4, ((Movie) product).getBudget());
+        statement.setInt(5, ((Movie) product).getBoxOffice());
+        statement.executeUpdate();
+    }
+
+    private void updateProductGenres(Long id, List<Genre> genres,
+                                     PreparedStatement statement) throws SQLException {
+        for (int i = 0; i < genres.size(); i++) {
+            statement.setLong(1, id);
+            statement.setLong(2, genres.get(i).getId());
+            statement.executeUpdate();
+        }
+    }
+
+    private void insertIntoProducts(CinemaProduct product, PreparedStatement statement) throws SQLException {
+        statement.setLong(1, product.getType().getId());
+        statement.setString(2, product.getTitle());
+        statement.setString(3, product.getDescription());
+        statement.setString(4, product.getReleaseDate().toString());
+        statement.setInt(5, product.getRunningTime());
+        statement.setString(6, product.getCountry());
+        statement.setByte(7, product.getAgeRating());
+        statement.setString(8, product.getStarring());
+        statement.setString(9, product.getPosterUrl());
+        statement.executeUpdate();
+    }
+
+    private Long getGeneratedId(Connection connection, PreparedStatement statement,
+                                CinemaProduct product) throws SQLException {
+        Long id = null;
+
+        statement = connection.prepareStatement(SQL_SELECT_GENERATED_ID);
+        statement.setString(1, product.getTitle());
+        statement.setString(2, product.getReleaseDate().toString());
+
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            id = resultSet.getLong("id");
+        }
+
+        return id;
+    }
+
+    private Long getType(ResultSet set) throws SQLException {
+        Long typeId = null;
+        while (set.next()) {
+            typeId = set.getLong("type_id");
+        }
+
+        return typeId;
+    }
+
+    private List<CinemaProduct> findAllMovies(Connection connection)
+            throws DatabaseInteractionException{
         List<CinemaProduct> movies;
         PreparedStatement statement = null;
 
@@ -273,10 +418,8 @@ public class CinemaProductDaoImpl implements CinemaProductDao, ReleaseResources 
         return movies;
     }
 
-    private static final String SQL_SELECT_TV_SERIES =
-            "SELECT * FROM cinema_product INNER JOIN tv_series ts on cinema_product.id = ts.id " +
-                    "INNER JOIN cinema_product_genre cpg on cinema_product.id = cpg.cinema_product_id";
-    private List<CinemaProduct> findAllTvSeries(Connection connection)  throws DatabaseInteractionException{
+    private List<CinemaProduct> findAllTvSeries(Connection connection)
+            throws DatabaseInteractionException{
         List<CinemaProduct> tvSeries;
         PreparedStatement statement = null;
 
@@ -377,7 +520,6 @@ public class CinemaProductDaoImpl implements CinemaProductDao, ReleaseResources 
                         set.getShort("number_of_episodes"),
                         set.getBoolean("is_finished"));
             }
-
             if (hasGenres) {
                 if (set.getLong("genre_id") != 0) {
                     series.getGenres().add(Genre.resolveGenreById(set.getLong("genre_id")));
@@ -390,165 +532,9 @@ public class CinemaProductDaoImpl implements CinemaProductDao, ReleaseResources 
     }
 
     @Override
-    public CinemaProduct updateByCriteria(CinemaProductCriteria criteria, CinemaProduct cinemaProduct) {
+    public CinemaProduct updateByCriteria(CinemaProduct product, CinemaProductCriteria criteria,
+                                          Connection connection) throws DatabaseInteractionException {
         return null;
     }
 
-
-    private static final String SQL_SELECT_AMOUNT_OF_MOVIES =
-        "SELECT * FROM cinema_product INNER JOIN movie m ON cinema_product.id = m.id " +
-                        "ORDER BY current_rating DESC LIMIT ?, ?";
-    private static final String SQL_SELECT_AMOUNT_OF_TV_SERIES =
-            "SELECT * FROM cinema_product INNER JOIN tv_series ts on cinema_product.id = ts.id " +
-                    "ORDER BY current_rating DESC LIMIT ?, ?";
-    @Override
-    public List<CinemaProduct> findConcreteAmountByType(ProductType type, long startIndex,
-            int number, Connection connection) throws DatabaseInteractionException{
-        List<CinemaProduct> products;
-        PreparedStatement statement = null;
-
-        try {
-            if (type == ProductType.MOVIE) {
-                statement = connection.prepareStatement(SQL_SELECT_AMOUNT_OF_MOVIES);
-                statement.setLong(1, startIndex);
-                statement.setInt(2, number);
-                products = getMoviesFromResultSet(statement.executeQuery());
-            } else {
-                statement = connection.prepareStatement(SQL_SELECT_AMOUNT_OF_TV_SERIES);
-                statement.setLong(1, startIndex);
-                statement.setInt(2, number);
-                products = getTvSeriesFromResultSet(statement.executeQuery());
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DatabaseInteractionException(e);
-        } finally {
-            closeStatement(statement);
-            closeConnection(connection);
-        }
-
-        return products;
-    }
-
-    private static final String SQL_COUNT_ELEMENTS_BY_TYPE =
-        "SELECT COUNT(*) AS number FROM cinema_product where type_id=?";
-    @Override
-    public int getNumberOfProducts(ProductType productType, Connection connection)
-            throws DatabaseInteractionException {
-        int number = 0;
-        PreparedStatement statement = null;
-
-        try {
-            statement = connection.prepareStatement(SQL_COUNT_ELEMENTS_BY_TYPE);
-            statement.setLong(1, productType.getId());
-            ResultSet set = statement.executeQuery();
-            while (set.next()) {
-                number = set.getInt("number");
-            }
-        } catch (SQLException e) {
-            throw new DatabaseInteractionException(e);
-        } finally {
-            closeStatement(statement);
-            closeConnection(connection);
-        }
-
-        return number;
-    }
-
-    private static final String SQL_SELECT_ID_BY_TITLE =
-        "SELECT id FROM cinema_product WHERE title LIKE ";
-
-
-    private static final String SQL_SELECT_BY_SEARCH_REQUEST =
-            "SELECT * FROM cinema_product WHERE title LIKE ";
-    @Override
-    public List<CinemaProduct> findBySearchRequest(String searchRequest, Connection connection)
-            throws DatabaseInteractionException {
-        List<CinemaProduct> products = new ArrayList<>();
-        searchRequest = "'%" + searchRequest + "%'";
-        PreparedStatement statement = null;
-
-        try {
-            statement = connection.prepareStatement(SQL_SELECT_BY_SEARCH_REQUEST + searchRequest);
-            ResultSet set = statement.executeQuery();
-            while (set.next()) {
-                products.add(new CinemaProduct(set.getLong("id"),
-                        ProductType.resolveTypeById(set.getLong("type_id")),
-                        set.getDouble("current_rating"),
-                        set.getString("title"),
-                        set.getString("description"),
-                        DateConverterUtil.convertToLocalDate(set.getString("release_date")),
-                        set.getInt("running_time"),
-                        set.getString("country"),
-                        set.getByte("age_rating"),
-                        set.getString("starring"),
-                        set.getString("poster_url")));
-            }
-        } catch (SQLException e) {
-            throw new DatabaseInteractionException(e);
-        } finally {
-            closeStatement(statement);
-            closeConnection(connection);
-        }
-
-        return products;
-    }
-
-    private static final String SQL_SELECT_RECOMMENDATIONS =
-            "SELECT id FROM cinema_product ORDER BY RAND() LIMIT ?";
-    @Override
-    public List<CinemaProduct> findRecommendations(Connection connection)
-            throws DatabaseInteractionException {
-        List<CinemaProduct> recommendations = new ArrayList<>();
-        List<Long> idNumbers = new ArrayList<>();
-        final int numberOfProducts = 6;
-        PreparedStatement statement = null;
-
-        try {
-            statement = connection.prepareStatement(SQL_SELECT_RECOMMENDATIONS);
-            statement.setInt(1, numberOfProducts);
-            ResultSet set = statement.executeQuery();
-            while (set.next()) {
-                idNumbers.add(set.getLong("id"));
-            }
-
-            for (int i = 0; i < idNumbers.size(); i++) {
-                Optional<CinemaProduct> product = findById(idNumbers.get(i), connection);
-                if (product.isPresent()) {
-                    recommendations.add(product.get());
-                }
-            }
-        } catch (SQLException e) {
-            throw new DatabaseInteractionException(e);
-        } finally {
-            closeStatement(statement);
-            closeConnection(connection);
-        }
-
-        return recommendations;
-    }
-
-    private static final String SQL_UPDATE_RATING =
-            "UPDATE cinema_product SET current_rating=? WHERE id=?";
-    @Override
-    public boolean updateProductRating(Long id, Double newRating, Connection connection)
-            throws DatabaseInteractionException {
-        boolean wasUpdated = false;
-        PreparedStatement statement = null;
-
-        try {
-            statement = connection.prepareStatement(SQL_UPDATE_RATING);
-            statement.setDouble(1, newRating);
-            statement.setLong(2, id);
-            statement.executeUpdate();
-            wasUpdated = true;
-        } catch (SQLException e) {
-            throw new DatabaseInteractionException(e);
-        } finally {
-            closeStatement(statement);
-            closeConnection(connection);
-        }
-
-        return wasUpdated;
-    }
 }

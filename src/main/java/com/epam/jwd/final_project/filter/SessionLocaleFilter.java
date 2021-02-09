@@ -19,16 +19,24 @@ public class SessionLocaleFilter extends HttpFilter {
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
             throws IOException, ServletException {
         Locale.setDefault(Locale.ENGLISH);
-        String queryString = req.getQueryString();
+        rebuildQuery(req, req.getQueryString());
 
-        if (queryString == null) {
+        if (req.getParameter("sessionLocale") != null) {
+            req.getSession().setAttribute("lang", req.getParameter("sessionLocale"));
+        }
+
+        chain.doFilter(req, res);
+    }
+
+    private void rebuildQuery(HttpServletRequest req, String query) {
+        if (query == null) {
             req.getSession().setAttribute("queryString", "?");
         } else {
-            if (queryString.startsWith("sessionLocale")) {
+            if (query.startsWith("sessionLocale")) {
                 req.getSession().setAttribute("queryString", "?");
             } else {
                 String newQueryString = "";
-                List<String> parameters = Arrays.asList(queryString.split("&")).stream()
+                List<String> parameters = Arrays.asList(query.split("&")).stream()
                         .filter(parameter -> !parameter.contains("sessionLocale"))
                         .collect(Collectors.toList());
 
@@ -40,11 +48,5 @@ public class SessionLocaleFilter extends HttpFilter {
                 req.getSession().setAttribute("queryString", "home?" +  newQueryString + "&");
             }
         }
-
-        if (req.getParameter("sessionLocale") != null) {
-            req.getSession().setAttribute("lang", req.getParameter("sessionLocale"));
-        }
-
-        chain.doFilter(req, res);
     }
 }

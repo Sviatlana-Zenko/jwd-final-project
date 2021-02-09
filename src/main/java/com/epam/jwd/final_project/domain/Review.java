@@ -136,17 +136,19 @@ public class Review extends AbstractAppEntity {
 
     @Override
     public String toString() {
-        return "Review{" +
-                "cinemaProductId=" + cinemaProductId +
+        return getClass().getSimpleName() + "{" +
+                super.toString() +
+                ", cinemaProductId=" + cinemaProductId +
                 ", userId=" + userId +
-                ", productTitle='" + productTitle + '\'' +
-                ", userNickname='" + userNickname + '\'' +
+                ", productTitle='" + productTitle + "'" +
+                ", userNickname='" + userNickname + "'" +
                 ", cinemaProductMark=" + cinemaProductMark +
-                ", reviewSummary='" + reviewSummary + '\'' +
-                ", reviewText='" + reviewText + '\'' +
+                ", reviewSummary='" + reviewSummary + "'" +
+                ", reviewText='" + reviewText + "'" +
                 ", reviewPositiveMarks=" + reviewPositiveMarks +
                 ", reviewNegativeMarks=" + reviewNegativeMarks +
                 ", hasSpoilers=" + hasSpoilers +
-                "} " + super.toString();
+                "}";
     }
+
 }

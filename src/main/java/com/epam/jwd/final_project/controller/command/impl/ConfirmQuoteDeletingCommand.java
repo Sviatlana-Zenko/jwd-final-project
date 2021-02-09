@@ -3,6 +3,7 @@ package com.epam.jwd.final_project.controller.command.impl;
 import com.epam.jwd.final_project.controller.command.Command;
 import com.epam.jwd.final_project.controller.command.RequestContext;
 import com.epam.jwd.final_project.controller.command.ResponseContext;
+import com.epam.jwd.final_project.controller.command.ResponseContext.ResponseType;
 import com.epam.jwd.final_project.domain.Quote;
 import com.epam.jwd.final_project.exception.DatabaseInteractionException;
 import com.epam.jwd.final_project.service.impl.QuoteServiceImpl;
@@ -15,11 +16,11 @@ public class ConfirmQuoteDeletingCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        ResponseContext responseContext = new ResponseContextImpl(ResponseContext.ResponseType.FORWARD);
+        ResponseContext responseContext = new ResponseContextImpl(ResponseType.FORWARD);
+        String id = requestContext.getParameter("id");
 
-        Long id = Long.valueOf(requestContext.getParameter("id"));
         try {
-            Quote quote = QuoteServiceImpl.INSTANCE.findById(id).get();
+            Quote quote = QuoteServiceImpl.INSTANCE.findById(Long.valueOf(id)).get();
             requestContext.setAttributes("quote", quote);
             ((ResponseContextImpl) responseContext).setPage("/WEB-INF/jsp/confirm-quote-deleting.jsp");
         } catch (DatabaseInteractionException e) {

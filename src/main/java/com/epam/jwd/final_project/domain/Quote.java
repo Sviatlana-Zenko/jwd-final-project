@@ -51,11 +51,12 @@ public class Quote extends AbstractAppEntity {
 
     @Override
     public String toString() {
-        return "Quote{" +
-                "quoteText='" + quoteText + '\'' +
-                ", productTitle='" + productTitle + '\'' +
-                ", posterUrl='" + posterUrl + '\'' +
-                "} " + super.toString();
+        return getClass().getSimpleName() + "{" +
+                super.toString() +
+                ", quoteText='" + quoteText + "'" +
+                ", productTitle='" + productTitle + "'" +
+                ", posterUrl='" + posterUrl + "'" +
+                "}";
     }
 
     @Override
@@ -72,4 +73,5 @@ public class Quote extends AbstractAppEntity {
     public int hashCode() {
         return Objects.hash(quoteText, productTitle, posterUrl);
     }
+
 }

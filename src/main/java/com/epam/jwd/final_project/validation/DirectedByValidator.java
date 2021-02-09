@@ -17,8 +17,7 @@ public class DirectedByValidator extends Validator<CinemaProduct> {
             validationErrors.add("'directedBy' field is not filled");
         } else {
             if (directedBy != null && directedBy.length() > MAX_LENGTH) {
-                validationErrors.add("'directedBy' is longer than " +
-                        MAX_LENGTH +  "characters");
+                validationErrors.add("'directedBy' is longer than " + MAX_LENGTH +  "characters");
             }
         }
 

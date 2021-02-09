@@ -14,27 +14,23 @@
 <c:import url="header.jsp"/>
 <c:import url="user-operation-btn.jsp"/>
 <div class="user-search">
-    <form action="home?command=find-user&param=${param.param}" method="POST">
+    <form action="home?command=find-user&param=${param.param}" METHOD="POST">
     <c:choose>
         <c:when test="${param.param eq 'id'}">
             <p>
                 <fmt:message key="label.enter.id"/>: <input name="id-to-find" type="text" class="input-field"/>
             </p>
-            <a href="home?command=find-user&param=${param.param}">
-                <button class="w3-bar-item w3-button w3-teal" type="submit">
-                    <fmt:message key="button.find"/>
-                </button>
-            </a>
+            <button class="w3-bar-item w3-button w3-teal" type="submit">
+                <fmt:message key="button.find"/>
+            </button>
         </c:when>
         <c:when test="${param.param eq 'nickname'}">
             <p>
                 <fmt:message key="label.enter.nickname"/>: <input name="nickname-to-find" type="text" class="input-field"/>
             </p>
-            <a href="home?command=find-user&param=${param.param}">
-                <button class="w3-bar-item w3-button w3-teal" type="submit">
-                    <fmt:message key="button.find"/>
-                </button>
-            </a>
+            <button class="w3-bar-item w3-button w3-teal" type="submit">
+                <fmt:message key="button.find"/>
+            </button>
         </c:when>
     </c:choose>
     </form>

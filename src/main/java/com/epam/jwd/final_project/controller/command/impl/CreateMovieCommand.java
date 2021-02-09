@@ -3,6 +3,7 @@ package com.epam.jwd.final_project.controller.command.impl;
 import com.epam.jwd.final_project.controller.command.Command;
 import com.epam.jwd.final_project.controller.command.RequestContext;
 import com.epam.jwd.final_project.controller.command.ResponseContext;
+import com.epam.jwd.final_project.controller.command.ResponseContext.ResponseType;
 import com.epam.jwd.final_project.domain.*;
 import com.epam.jwd.final_project.exception.DatabaseInteractionException;
 import com.epam.jwd.final_project.exception.ValidationException;
@@ -20,9 +21,7 @@ public class CreateMovieCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext req) {
-
-        ResponseContext resp = new ResponseContextImpl(ResponseContext.ResponseType.REDIRECT);
-
+        ResponseContext resp = new ResponseContextImpl(ResponseType.REDIRECT);
         String title = req.getParameter("title");
         String description = req.getParameter("description");
         String releaseDate = req.getParameter("release-date");
@@ -39,13 +38,9 @@ public class CreateMovieCommand implements Command {
         Integer movieBudget = checkStringContainsNumber(budget) ? Integer.valueOf(budget) : null;
         Integer movieBoxOffice = checkStringContainsNumber(boxOffice) ? Integer.valueOf(boxOffice) : null;
 
-        CinemaProduct movie = new Movie(ProductType.MOVIE, title, description,
-                reverseDate(releaseDate),
-                runningTime,
-                country, Byte.valueOf(ageRating), getNewGenres(req),
-                starring, posterUrl,
-                directedBy, producedBy,
-                movieBudget, movieBoxOffice);
+        CinemaProduct movie = new Movie(ProductType.MOVIE, title, description, reverseDate(releaseDate),
+                runningTime, country, Byte.valueOf(ageRating), getNewGenres(req), starring, posterUrl,
+                directedBy, producedBy, movieBudget, movieBoxOffice);
 
         try {
             CinemaProductServiceImpl.INSTANCE.create(movie);

@@ -16,8 +16,7 @@ public class QuoteTitleValidator extends Validator<Quote> {
             validationErrors.add("'movie/TV series title' field is not filled");
         } else {
             if (title != null && title.length() > MAX_LENGTH) {
-                validationErrors.add("'movie/TV series title' is longer than " +
-                        MAX_LENGTH + " characters");
+                validationErrors.add("'movie/TV series title' is longer than " + MAX_LENGTH + " characters");
             }
         }
 

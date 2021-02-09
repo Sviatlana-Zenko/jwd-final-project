@@ -24,7 +24,6 @@ public class CinemaProductServiceImpl implements CinemaProductService {
     private CinemaProductServiceImpl() {
     }
 
-
     @Override
     public List<CinemaProduct> findRecommendations() throws DatabaseInteractionException {
         return CinemaProductDaoImpl.getInstance()
@@ -39,10 +38,10 @@ public class CinemaProductServiceImpl implements CinemaProductService {
 
     @Override
     public List<CinemaProduct> findConcreteAmountByType(ProductType type, long startIndex,
-            int number) throws DatabaseInteractionException {
+            int number, String field, String dir) throws DatabaseInteractionException {
         return CinemaProductDaoImpl.getInstance()
                 .findConcreteAmountByType(type, startIndex,
-                        number, ConnectionPool.INSTANCE.getAvailableConnection());
+                        number, field, dir, ConnectionPool.INSTANCE.getAvailableConnection());
     }
 
     @Override
@@ -69,8 +68,8 @@ public class CinemaProductServiceImpl implements CinemaProductService {
         int sum = marks.stream()
                 .mapToInt((mark) -> Integer.parseInt(String.valueOf(mark)))
                 .sum();
-
         Double newRating = sum * 1.0 / marks.size();
+
         wasUpdated = CinemaProductDaoImpl.getInstance()
                 .updateProductRating(id, newRating, ConnectionPool.INSTANCE.getAvailableConnection());
 
@@ -122,12 +121,12 @@ public class CinemaProductServiceImpl implements CinemaProductService {
 
         if (toTransfer.size() > 0) {
             toTransfer = toTransfer.stream()
-                    .peek(review -> review.setProductTitle("deleted movie/TV series"))
+                    .peek(review -> review.setProductTitle(review.getProductTitle() + "(deleted)"))
                     .collect(Collectors.toList());
-            if (ReviewServiceImpl.INSTANCE.transferInHistoryTable(toTransfer)) {
-                wasDeleted = CinemaProductDaoImpl.getInstance()
-                        .delete(product, ConnectionPool.INSTANCE.getAvailableConnection());
-            }
+        }
+        if (ReviewServiceImpl.INSTANCE.transferInHistoryTable(toTransfer)) {
+            wasDeleted = CinemaProductDaoImpl.getInstance()
+                    .delete(product, ConnectionPool.INSTANCE.getAvailableConnection());
         }
 
         return wasDeleted;

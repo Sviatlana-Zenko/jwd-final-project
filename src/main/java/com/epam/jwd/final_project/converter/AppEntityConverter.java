@@ -13,7 +13,7 @@ import com.epam.jwd.final_project.domain.AppEntity;
 public interface AppEntityConverter<T extends AppEntity, K> {
 
     /**
-     * Convert DTO object to original object;
+     * Converts DTO object to original object.
      *
      * @param dto DTO object to convert
      * @return original object
@@ -21,7 +21,7 @@ public interface AppEntityConverter<T extends AppEntity, K> {
     T toEntity(K dto);
 
     /**
-     * Convert original given object to its DTO version.
+     * Converts original given object to its DTO version.
      *
      * @param entity original object to convert
      * @return DTO version of given object

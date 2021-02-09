@@ -8,13 +8,13 @@ import com.epam.jwd.final_project.controller.command.ResponseContext.ResponseTyp
 import com.epam.jwd.final_project.domain.AppUser;
 
 public class ShowUsersCommand implements Command {
+
     @Override
     public ResponseContext execute(RequestContext req) {
-        ResponseContext resp = new ResponseContextImpl(ResponseType.FORWARD,
-                "/WEB-INF/jsp/users.jsp");
-
+        ResponseContext resp = new ResponseContextImpl(ResponseType.FORWARD, "/WEB-INF/jsp/users.jsp");
         req.setAttributes("users", RatingContext.INSTANCE.retrieveList(AppUser.class));
 
         return resp;
     }
+
 }

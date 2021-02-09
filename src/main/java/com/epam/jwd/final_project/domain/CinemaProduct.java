@@ -6,18 +6,17 @@ import java.util.List;
 
 public class CinemaProduct extends AbstractAppEntity {
 
-    private ProductType type; //+
-    private Double currentRating; //+
-    private String title; //+
-    private String description; //+
-    private LocalDate releaseDate; //+
-    private Integer runningTime; //+
-    private String country; //+
-    private Byte ageRating; //+
-    private List<Genre> genres; //+
-    private String starring; //+
-    private String posterUrl; //+
-//    private List<Review> reviews;
+    private ProductType type;
+    private Double currentRating;
+    private String title;
+    private String description;
+    private LocalDate releaseDate;
+    private Integer runningTime;
+    private String country;
+    private Byte ageRating;
+    private List<Genre> genres;
+    private String starring;
+    private String posterUrl;
 
     public CinemaProduct() {
     }
@@ -26,7 +25,6 @@ public class CinemaProduct extends AbstractAppEntity {
         super(id);
     }
 
-    //++++
     public CinemaProduct(Long id, ProductType type, Double currentRating,
                          String title, LocalDate releaseDate, String country,
                          Byte ageRating, String posterUrl) {
@@ -56,7 +54,6 @@ public class CinemaProduct extends AbstractAppEntity {
         this.genres = genres;
         this.starring = starring;
         this.posterUrl = posterUrl;
-//        this.reviews = new ArrayList<>();
     }
 
     public CinemaProduct(ProductType type, String title, String description,
@@ -73,10 +70,8 @@ public class CinemaProduct extends AbstractAppEntity {
         this.genres = genres;
         this.starring = starring;
         this.posterUrl = posterUrl;
-//        this.reviews = new ArrayList<>();
     }
 
-    //++++
     public CinemaProduct(Long id, ProductType type, Double currentRating, String title,
                          String description, LocalDate releaseDate, Integer runningTime,
                          String country, Byte ageRating, String starring, String posterUrl) {
@@ -92,10 +87,8 @@ public class CinemaProduct extends AbstractAppEntity {
         this.genres = new ArrayList<>();
         this.starring = starring;
         this.posterUrl = posterUrl;
-//        this.reviews = new ArrayList<>();
     }
 
-    //для рекомендованных продуктов
     public CinemaProduct(Long id, Double currentRating, String title, String posterUrl) {
         super(id);
         this.currentRating = currentRating;
@@ -159,11 +152,6 @@ public class CinemaProduct extends AbstractAppEntity {
         return posterUrl;
     }
 
-//    public List<Review> getReviews() {
-//        return reviews;
-//    }
-
-    // Нужны ли мне здесь setter-ы, toString(), equals() и hashCode()?
     public void setType(ProductType type) {
         this.type = type;
     }
@@ -208,26 +196,21 @@ public class CinemaProduct extends AbstractAppEntity {
         this.posterUrl = posterUrl;
     }
 
-//    public void setReviews(List<Review> reviews) {
-//        this.reviews = reviews;
-//    }
-
-    // Нормально ли такое переопределение?
     @Override
     public String toString() {
         return getClass().getSimpleName() + "{" +
-                "type=" + type +
+                super.toString() +
+                ", type=" + type +
                 ", currentRating=" + currentRating +
-                ", title='" + title +
-                "', description='" + description +
-                "', releaseDate=" + releaseDate +
+                ", title='" + title + "'" +
+                ", description='" + description + "'" +
+                ", releaseDate=" + releaseDate +
                 ", runningTime=" + runningTime +
-                ", country='" + country +
-                "', ageRating=" + ageRating +
+                ", country='" + country + "'" +
+                ", ageRating=" + ageRating +
                 ", genres=" + genres +
-                ", starring='" + starring +
-                "', posterUrl='" + posterUrl +
+                ", starring='" + starring + "'" +
+                ", posterUrl='" + posterUrl + "'" +
                 "}";
     }
-
 }

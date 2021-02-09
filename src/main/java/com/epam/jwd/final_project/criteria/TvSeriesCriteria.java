@@ -2,7 +2,6 @@ package com.epam.jwd.final_project.criteria;
 
 import com.epam.jwd.final_project.domain.Genre;
 import com.epam.jwd.final_project.domain.ProductType;
-
 import java.time.LocalDate;
 import java.util.List;
 

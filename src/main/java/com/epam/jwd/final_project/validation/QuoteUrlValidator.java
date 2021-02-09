@@ -15,7 +15,7 @@ public class QuoteUrlValidator extends Validator<Quote> {
                 (posterUrl == null || posterUrl.length() == 0)) {
             validationErrors.add("'poster url' field is not filled");
         } else {
-            if (posterUrl != null) {
+            if (posterUrl != null && posterUrl.length() != 0) {
                 if (posterUrl.length() > MAX_LENGTH) {
                     validationErrors.add("'poster url' is longer than 80 characters");
                 } else {

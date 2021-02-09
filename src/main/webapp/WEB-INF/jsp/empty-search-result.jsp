@@ -19,7 +19,7 @@
     <div class="search-result">
         <p class="description"><fmt:message key="label.no.results"/></p>
         <p>
-            <fmt:message key="label.result.one"/> <i style="font-size: 21px">"${param.search}"</i> <fmt:message key="label.result.two"/><br>
+            <fmt:message key="label.result.one"/> <i style="font-size: 21px">"${sessionScope.search}"</i> <fmt:message key="label.result.two"/><br>
             <fmt:message key="label.result.three"/>
         </p>
     </div>

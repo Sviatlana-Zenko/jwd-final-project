@@ -28,7 +28,8 @@ public class CreateReviewCommand implements Command {
         String text = req.getParameter("rev-text");
         UserSessionInfoDto userDto = (UserSessionInfoDto) req.getSession().getAttribute("user");
         AppUser user = UserSessionInfoConverter.INSTANCE.toEntity(userDto);
-        Review newReview = new Review(Long.valueOf(id), user.getId(), getRate(req), summary, text, getSpoilerStatus(req));
+        Review newReview = new Review(Long.valueOf(id), user.getId(), getRate(req),
+                summary, text, getSpoilerStatus(req));
 
         try {
             if(ReviewServiceImpl.INSTANCE.create(newReview)) {
@@ -71,4 +72,5 @@ public class CreateReviewCommand implements Command {
 
         return hasSpoilers;
     }
+
 }

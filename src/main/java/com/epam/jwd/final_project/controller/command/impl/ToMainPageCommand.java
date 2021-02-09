@@ -12,9 +12,7 @@ public class ToMainPageCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext req) {
-        ResponseContext resp = new ResponseContextImpl(ResponseType.FORWARD,
-                "/WEB-INF/jsp/main-page.jsp");
-
+        ResponseContext resp = new ResponseContextImpl(ResponseType.FORWARD, "/WEB-INF/jsp/main-page.jsp");
         req.setAttributes("random", QuoteServiceImpl.INSTANCE.getRandomQuote());
         req.setAttributes("recommendations", RatingContext.INSTANCE.retrieveList(CinemaProduct.class));
 

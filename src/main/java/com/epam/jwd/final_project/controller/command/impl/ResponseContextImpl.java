@@ -20,7 +20,6 @@ public class ResponseContextImpl implements ResponseContext {
         return responseType;
     }
 
-
     public String getPage() {
         return page;
     }

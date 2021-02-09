@@ -5,8 +5,7 @@ import java.util.List;
 
 public class EmailValidator extends Validator<AppUser> {
 
-    private static final String EMAIL_REGEX =
-            "^\\w+([-+.\']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$";
+    private static final String EMAIL_REGEX = "^\\w+([-+.\']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$";
     private static final int MAX_LENGTH = 100;
 
     public void validate(AppUser user, List<String> validationErrors, ValidationType type) {
@@ -21,8 +20,7 @@ public class EmailValidator extends Validator<AppUser> {
                 validationErrors.add("'email' field has wrong format");
             }
             if (email.length() > MAX_LENGTH) {
-                validationErrors.add("'email' is longer than " +
-                        MAX_LENGTH + " characters");
+                validationErrors.add("'email' is longer than " + MAX_LENGTH + " characters");
             }
         }
 

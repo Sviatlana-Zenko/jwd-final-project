@@ -9,10 +9,7 @@ public class ToUserSearchParamsCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext req) {
-        ResponseContext resp = new ResponseContextImpl(ResponseType.FORWARD,
-                "/WEB-INF/jsp/parameter-to-find-user.jsp");
-
-        return resp;
+        return new ResponseContextImpl(ResponseType.FORWARD, "/WEB-INF/jsp/parameter-to-find-user.jsp");
     }
 
 }

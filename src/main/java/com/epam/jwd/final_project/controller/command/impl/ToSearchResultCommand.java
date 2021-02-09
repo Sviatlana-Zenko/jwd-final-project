@@ -3,63 +3,38 @@ package com.epam.jwd.final_project.controller.command.impl;
 import com.epam.jwd.final_project.controller.command.Command;
 import com.epam.jwd.final_project.controller.command.RequestContext;
 import com.epam.jwd.final_project.controller.command.ResponseContext;
-import com.epam.jwd.final_project.controller.command.impl.ResponseContextImpl;
+import com.epam.jwd.final_project.controller.command.ResponseContext.ResponseType;
 import com.epam.jwd.final_project.domain.CinemaProduct;
 import com.epam.jwd.final_project.exception.DatabaseInteractionException;
-import com.epam.jwd.final_project.pool.ConnectionPool;
 import com.epam.jwd.final_project.service.impl.CinemaProductServiceImpl;
-
-import java.util.ArrayList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.List;
 
 public class ToSearchResultCommand implements Command {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ToSearchResultCommand.class);
+
     @Override
     public ResponseContext execute(RequestContext req) {
-        ResponseContext resp = new ResponseContextImpl(ResponseContext.ResponseType.FORWARD);
-        String search = req.getParameter("search");
-        System.out.println("search === " + search);
-        List<CinemaProduct> products = null;
+        ResponseContext resp = new ResponseContextImpl(ResponseType.FORWARD);
+        String search = (String) req.getSession().getAttribute("search");
+        List<CinemaProduct> products;
+
         try {
             products = CinemaProductServiceImpl.INSTANCE.getProductsBySearchRequest(search);
+            if (products != null && !products.isEmpty()) {
+                req.setAttributes("products", products);
+                ((ResponseContextImpl) resp).setPage("/WEB-INF/jsp/search-result.jsp");
+            } else {
+                ((ResponseContextImpl) resp).setPage("/WEB-INF/jsp/empty-search-result.jsp");
+            }
         } catch (DatabaseInteractionException e) {
-            e.printStackTrace();
-        }
-
-        if (products.size() > 0) {
-            int numberOfPages = calculateNumberOfPages(products);
-            int pageNumber = req.getParameter("page") == null ? 1 : Integer.valueOf(req.getParameter("page"));
-            List<CinemaProduct> productsForOnePage = getProductsForOnePage(products, pageNumber);
-
-            req.setAttributes("pages", numberOfPages);
-            req.setAttributes("products", productsForOnePage);
-            ((ResponseContextImpl) resp).setPage("/WEB-INF/jsp/search-result.jsp");
-        } else {
-            ((ResponseContextImpl) resp).setPage("/WEB-INF/jsp/empty-search-result.jsp");
+            LOGGER.error(e.getMessage());
+            ((ResponseContextImpl) resp).setPage("/WEB-INF/jsp/database-error.jsp");
         }
 
         return resp;
-    }
-
-    private int calculateNumberOfPages(List<CinemaProduct> products) {
-        int numberOfProducts = products.size();
-        int numberOfPages = numberOfProducts % 10 > 0 ? (numberOfProducts / 10) + 1 : numberOfProducts / 10;
-
-        return numberOfPages;
-    }
-
-    private List<CinemaProduct> getProductsForOnePage(List<CinemaProduct> products, int pageNumber) {
-        int firstIndex = pageNumber * 10 - 10;
-        int lastIndex = firstIndex + 9;
-        List<CinemaProduct> productsForOnePage = new ArrayList<>();
-
-        for (int i = 0; i < products.size(); i++) {
-            if (i >= firstIndex && i <= lastIndex) {
-                productsForOnePage.add(products.get(i));
-            }
-        }
-
-        return productsForOnePage;
     }
 
 }

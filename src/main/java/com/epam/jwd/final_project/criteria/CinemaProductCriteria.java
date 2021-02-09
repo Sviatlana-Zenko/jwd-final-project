@@ -1,7 +1,6 @@
 package com.epam.jwd.final_project.criteria;
 
 import com.epam.jwd.final_project.domain.*;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -94,7 +93,8 @@ public class CinemaProductCriteria extends Criteria<CinemaProduct> {
             this.configure();
         }
 
-        protected void configure() {}
+        protected void configure() {
+        }
 
         public CinemaProductCriteriaBuilder id(Long id) {
             this.id = id;

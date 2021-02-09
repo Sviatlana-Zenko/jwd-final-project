@@ -10,19 +10,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import static  org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class QuoteDaoImplTest {
 
     private Connection connection = ConnectionPool.INSTANCE.testConnection;
-    private Quote quote = new Quote(14L, "Plastics.", "The Graduate",
+    private Quote quote = new Quote("Plastics.", "The Graduate",
             "https://drive.google.com/uc?export=download&id=1O3ZMjXqI_haVs6Z_jZdSn4EMyWf_IpfX");
-    private QuoteCriteria criteria = new QuoteCriteria.QuoteCriteriaBuilder() {{
+    private QuoteCriteria criteriaToUpdate = new QuoteCriteria.QuoteCriteriaBuilder() {{
                 productTitle("The Sixth Sense");
                 quoteText("I see dead people.");
                 posterUrl("https://drive.google.com/uc?export=download&id=1ehz8aEbt4n69gWAnE3JUmP49LB7qrB2U");
             }}.build();
-    private Quote updatedQuote = new Quote(14L, "I see dead people.", "The Sixth Sense",
+    private Quote updatedQuote = new Quote("I see dead people.", "The Sixth Sense",
             "https://drive.google.com/uc?export=download&id=1ehz8aEbt4n69gWAnE3JUmP49LB7qrB2U");
 
     @Test
@@ -39,17 +39,24 @@ public class QuoteDaoImplTest {
     }
 
     @Test
-    public void findByIdTest() throws DatabaseInteractionException {
-        assertEquals(quote, QuoteDaoImpl.getInstance().findById(quote.getId(), connection).get());
+    public void findByIdTest() throws DatabaseInteractionException, SQLException {
+        Long idToFind = getLastId();
+        assertEquals(idToFind, QuoteDaoImpl.getInstance()
+                .findById(idToFind, connection).get().getId());
     }
 
     @Test
-    public void updateByCriteriaTest() throws DatabaseInteractionException {
-        assertEquals(updatedQuote, QuoteDaoImpl.getInstance().updateByCriteria(quote, criteria, connection));
+    public void updateByCriteriaTest() throws DatabaseInteractionException, SQLException {
+        Quote beforeUpdate = QuoteDaoImpl.getInstance().findById(getLastId(), connection).get();
+        Quote afterUpdate = QuoteDaoImpl.getInstance()
+                .updateByCriteria(beforeUpdate, criteriaToUpdate, connection);
+
+        assertEquals(updatedQuote, afterUpdate);
     }
 
     @Test
-    public void deleteTest() throws DatabaseInteractionException {
+    public void deleteTest() throws DatabaseInteractionException, SQLException {
+        quote.setId(getLastId());
         assertTrue(QuoteDaoImpl.getInstance().delete(quote, connection));
     }
 
@@ -64,6 +71,19 @@ public class QuoteDaoImplTest {
         }
 
         return number;
+    }
+
+    private Long getLastId() throws SQLException {
+        Long lastId = null;
+        final String sql = "SELECT id FROM quote ORDER BY id DESC LIMIT 1";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        ResultSet set = statement.executeQuery();
+
+        while (set.next()) {
+            lastId = set.getLong("id");
+        }
+
+        return lastId;
     }
 
 }

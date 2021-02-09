@@ -2,79 +2,127 @@ package com.epam.jwd.final_project.util;
 
 import com.epam.jwd.final_project.criteria.AppUserCriteria;
 import com.epam.jwd.final_project.criteria.QuoteCriteria;
-import com.epam.jwd.final_project.domain.*;
+import com.epam.jwd.final_project.domain.AppUser;
+import com.epam.jwd.final_project.domain.Quote;
+import com.epam.jwd.final_project.domain.Role;
+import com.epam.jwd.final_project.domain.Status;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Final class that provides static methods for building SQL
+ * queries for application elements updating.
+ */
 public final class SqlUpdateBuilderUtil {
 
     private SqlUpdateBuilderUtil() {
     }
 
+    /**
+     * Builds and returns the SQL query for updating Quote based on
+     * QuoteCriteria not-null fields.
+     *
+     * @param quoteCriteria object that contains info about
+     *                      how {@link Quote} should be updated
+     * @param quote object to update
+     * @return the SQL update query
+     */
     public static String buildSqlQuoteUpdate(QuoteCriteria quoteCriteria, Quote quote) {
-        Map<String, Object> criteriaValues = createQuoteCriteriaValuesMap(quoteCriteria);
-        Map<String, String> quoteFieldNames = createQuoteFieldsMap();
+        Map<String,Object> criteriaValues = createQuoteCriteriaValuesMap(quoteCriteria);
+        Map<String,String> quoteFieldNames = createQuoteFieldsMap();
         StringBuilder sqlBuilder = new StringBuilder("UPDATE quote SET ");
 
-        for (Map.Entry<String,Object> entry : criteriaValues.entrySet()) {
-            Object obj = entry.getValue();
-            if (obj != null) {
-                sqlBuilder.append(quoteFieldNames.get(entry.getKey()) + "='" + obj + "', ");
-            }
-        }
-
+        addFieldValuesToUpdate(sqlBuilder, criteriaValues, quoteFieldNames);
+        deleteLastComma(sqlBuilder);
         sqlBuilder.append("WHERE id=" + quote.getId());
-        int lastCommaIndex = sqlBuilder.lastIndexOf(",");
-        if (lastCommaIndex != -1) {
-            sqlBuilder.deleteCharAt(sqlBuilder.lastIndexOf(","));
-        }
 
         return sqlBuilder.toString();
     }
 
+    /**
+     * Builds and returns the SQL query for updating AppUser based on
+     * AppUserCriteria not-null fields.
+     *
+     * @param userCriteria object that contains info about
+     *                     how {@link AppUser} should be updated
+     * @param user object to update
+     * @return the SQL update query
+     */
     public static String buildSqlUserUpdate(AppUserCriteria userCriteria, AppUser user) {
-        Map<String, Object> criteriaValues = createUserCriteriaValuesMap(userCriteria);
-        Map<String, String> userFieldNames = createUserFieldsMap();
-        StringBuilder builder = new StringBuilder("UPDATE app_user SET ");
+        Map<String,Object> criteriaValues = createUserCriteriaValuesMap(userCriteria);
+        Map<String,String> userFieldNames = createUserFieldsMap();
+        StringBuilder sqlBuilder = new StringBuilder("UPDATE app_user SET ");
 
+        addFieldValuesToUpdate(sqlBuilder, criteriaValues, userFieldNames);
+        deleteLastComma(sqlBuilder);
+        sqlBuilder.append("WHERE id=" + user.getId());
+
+        return sqlBuilder.toString();
+    }
+
+    /**
+     * Iterate over the HashMap object that contains criteria fields
+     * values for updating. If the field value is not null, then
+     * the field and its value are adding to the SQL query for updating.
+     *
+     * @param sqlBuilder {@link StringBuilder} object that contains the SQL query for updating
+     * @param criteriaValues {@link HashMap} object that contains criteria fields
+     * @param fieldNames {@link HashMap} object that contains database table fields names
+     */
+    private static void addFieldValuesToUpdate(StringBuilder sqlBuilder, Map<String,Object> criteriaValues,
+                                               Map<String,String> fieldNames) {
         for (Map.Entry<String,Object> entry : criteriaValues.entrySet()) {
             Object obj = entry.getValue();
             if (obj != null) {
                 String objClass = obj.getClass().getSimpleName();
                 if (objClass.equals(String.class.getSimpleName())) {
                     if (obj.toString().length() > 0) {
-                        builder.append(userFieldNames.get(entry.getKey()) + "='" + obj + "', ");
+                        sqlBuilder.append(fieldNames.get(entry.getKey()) + "='" + obj + "', ");
                     }
                 } else if (objClass.equals(LocalDate.class.getSimpleName())) {
-                    builder.append(userFieldNames.get(entry.getKey()) + "='" + obj + "', ");
+                    sqlBuilder.append(fieldNames.get(entry.getKey()) + "='" + obj + "', ");
                 } else if (objClass.equals(Role.class.getSimpleName())) {
-                    builder.append(userFieldNames.get(entry.getKey()) + "=" + ((Role) obj).getId() + ", ");
+                    sqlBuilder.append(fieldNames.get(entry.getKey()) + "=" + ((Role) obj).getId() + ", ");
                 } else if (objClass.equals(Status.class.getSimpleName())) {
-                    builder.append(userFieldNames.get(entry.getKey()) + "=" + ((Status) obj).getId() + ", ");
+                    sqlBuilder.append(fieldNames.get(entry.getKey()) + "=" + ((Status) obj).getId() + ", ");
                 } else if (objClass.equals(Long.class.getSimpleName())) {
-                    builder.append(userFieldNames.get(entry.getKey()) + "=" + obj + ", ");
+                    sqlBuilder.append(fieldNames.get(entry.getKey()) + "=" + obj + ", ");
                 } else {
                     if (obj.equals(true)) {
-                        builder.append(userFieldNames.get(entry.getKey()) + "=" + 1 + ", ");
+                        sqlBuilder.append(fieldNames.get(entry.getKey()) + "=" + 1 + ", ");
                     } else {
-                        builder.append(userFieldNames.get(entry.getKey()) + "=" + 0 + ", ");
+                        sqlBuilder.append(fieldNames.get(entry.getKey()) + "=" + 0 + ", ");
                     }
                 }
             }
         }
-
-        builder.append("WHERE id=" + user.getId());
-        int lastCommaIndex = builder.lastIndexOf(",");
-        if (lastCommaIndex != -1) {
-            builder.deleteCharAt(builder.lastIndexOf(","));
-        }
-
-        return builder.toString();
     }
 
-    private static Map<String, Object> createQuoteCriteriaValuesMap(QuoteCriteria criteria) {
-        Map<String, Object> criteriaValues = new HashMap<>();
+    /**
+     * Searches for the last comma in a StringBuilder object and removes it.
+     * If there are no commas, then the object remains unchanged.
+     *
+     * @param sqlBuilder {@link StringBuilder} object in which we need
+     *                                     to find and delete the last comma
+     */
+    private static void deleteLastComma(StringBuilder sqlBuilder) {
+        int lastCommaIndex = sqlBuilder.lastIndexOf(",");
+        if (lastCommaIndex != -1) {
+            sqlBuilder.deleteCharAt(sqlBuilder.lastIndexOf(","));
+        }
+    }
+
+    /**
+     * Returns a Map in which the keys are names of the QuoteCriteria fields
+     * and the values are values of the QuoteCriteria fields respectively.
+     *
+     * @param criteria {@link QuoteCriteria} object that contains info about
+     *                 how {@link Quote} should be updated
+     * @return a Map of "field name - field value" mappings
+     */
+    private static Map<String,Object> createQuoteCriteriaValuesMap(QuoteCriteria criteria) {
+        Map<String,Object> criteriaValues = new HashMap<>();
         criteriaValues.put("id", criteria.getId());
         criteriaValues.put("quoteText", criteria.getQuoteText());
         criteriaValues.put("productTitle", criteria.getProductTitle());
@@ -83,8 +131,14 @@ public final class SqlUpdateBuilderUtil {
         return criteriaValues;
     }
 
-    private static Map<String, String> createQuoteFieldsMap() {
-        Map<String, String> fieldNames = new HashMap<>();
+    /**
+     * Returns a Map in which the keys are names of the QuoteCriteria fields
+     * and the values are names of the database table fields respectively.
+     *
+     * @return a Map of "object field name - database table field name" mappings
+     */
+    private static Map<String,String> createQuoteFieldsMap() {
+        Map<String,String> fieldNames = new HashMap<>();
         fieldNames.put("id", "id");
         fieldNames.put("quoteText", "quote_text");
         fieldNames.put("productTitle", "product_title");
@@ -93,8 +147,16 @@ public final class SqlUpdateBuilderUtil {
         return fieldNames;
     }
 
-    private static Map<String, Object> createUserCriteriaValuesMap(AppUserCriteria criteria) {
-        Map<String, Object> criteriaValues = new HashMap<>();
+    /**
+     * Returns a Map in which the keys are names of the AppUserCriteria fields
+     * and the values are values of the AppUserCriteria fields respectively.
+     *
+     * @param criteria {@link AppUserCriteria} object that contains info about
+     *                 how {@link AppUser} should be updated
+     * @return a Map of "field name - field value" mappings
+     */
+    private static Map<String,Object> createUserCriteriaValuesMap(AppUserCriteria criteria) {
+        Map<String,Object> criteriaValues = new HashMap<>();
         criteriaValues.put("id", criteria.getId());
         criteriaValues.put("firstName", criteria.getFirstName());
         criteriaValues.put("lastName", criteria.getLastName());
@@ -111,8 +173,14 @@ public final class SqlUpdateBuilderUtil {
         return criteriaValues;
     }
 
-    private static Map<String, String> createUserFieldsMap() {
-        Map<String, String> fieldNames = new HashMap<>();
+    /**
+     * Returns a Map in which the keys are names of the AppUserCriteria fields
+     * and the values are names of the database table fields respectively.
+     *
+     * @return a Map of "object field name - database table field name" mappings
+     */
+    private static Map<String,String> createUserFieldsMap() {
+        Map<String,String> fieldNames = new HashMap<>();
         fieldNames.put("id", "id");
         fieldNames.put("firstName", "first_name");
         fieldNames.put("lastName", "last_name");
@@ -125,4 +193,3 @@ public final class SqlUpdateBuilderUtil {
     }
 
 }
-

@@ -15,12 +15,10 @@ public class ChangeBlockStatusCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext req) {
-        ResponseContext resp = new ResponseContextImpl(ResponseType.FORWARD,
-                "/WEB-INF/jsp/users.jsp");
-
+        ResponseContext resp = new ResponseContextImpl(ResponseType.FORWARD);
         String id = req.getParameter("id");
         String ban = req.getParameter("status");
-        Boolean isBanned = ban.equals("block") ? true : false;
+        Boolean isBanned = ban.equals("block");
 
         try {
             AppUserServiceImpl.getInstance().updateBan(Long.valueOf(id), isBanned);
@@ -32,4 +30,5 @@ public class ChangeBlockStatusCommand implements Command {
 
         return resp;
     }
+
 }

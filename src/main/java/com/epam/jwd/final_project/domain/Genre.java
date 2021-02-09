@@ -57,8 +57,6 @@ public enum Genre implements AppEntity {
                     .filter(genrePredicate)
                     .findFirst()
                     .get();
-        } else {
-            // log + throwing error
         }
 
         return genreById;
@@ -68,8 +66,6 @@ public enum Genre implements AppEntity {
         List<String> genres = Arrays.asList(Genre.values()).stream()
                 .map(genre -> genre.getName())
                 .collect(Collectors.toList());
-
-        System.out.println(genres);
 
         return genres;
     }

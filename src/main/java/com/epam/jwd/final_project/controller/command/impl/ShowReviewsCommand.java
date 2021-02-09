@@ -6,20 +6,23 @@ import com.epam.jwd.final_project.controller.command.ResponseContext;
 import com.epam.jwd.final_project.controller.command.ResponseContext.ResponseType;
 import com.epam.jwd.final_project.exception.DatabaseInteractionException;
 import com.epam.jwd.final_project.service.impl.ReviewServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ShowReviewsCommand implements Command {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ShowReviewsCommand.class);
+
     @Override
     public ResponseContext execute(RequestContext req) {
-        ResponseContext resp = new ResponseContextImpl(ResponseType.FORWARD,
-                "/WEB-INF/jsp/reviews.jsp");
-
-        Long id = Long.valueOf(req.getParameter("id"));
+        ResponseContext resp = new ResponseContextImpl(ResponseType.FORWARD, "/WEB-INF/jsp/reviews.jsp");
+        Long productId = Long.valueOf(req.getParameter("id"));
 
         try {
-            req.setAttributes("reviews", ReviewServiceImpl.INSTANCE.findAllForConcreteProduct(id));
+            req.setAttributes("reviews", ReviewServiceImpl.INSTANCE.findAllForConcreteProduct(productId));
         } catch (DatabaseInteractionException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            ((ResponseContextImpl) resp).setPage("/WEB-INF/jsp/database-error.jsp");
         }
 
         return resp;

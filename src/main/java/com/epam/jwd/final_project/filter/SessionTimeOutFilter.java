@@ -25,7 +25,8 @@ public class SessionTimeOutFilter extends HttpFilter {
             throws IOException, ServletException {
         if (req.getSession().getAttribute("user") != null) {
             long begin = (Long) req.getSession().getAttribute("start");
-            long end = begin + 3600000;
+            long timeOut = 3600000L;
+            long end = begin + timeOut;
             LocalDateTime date = LocalDateTime.ofInstant(Instant.ofEpochMilli(end), ZoneId.systemDefault());
 
             if (LocalDateTime.now().isAfter(date)) {

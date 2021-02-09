@@ -1,10 +1,8 @@
 package com.epam.jwd.final_project.dao.impl;
 
-import com.epam.jwd.final_project.criteria.Criteria;
 import com.epam.jwd.final_project.criteria.QuoteCriteria;
-import com.epam.jwd.final_project.dao.EntityDao;
+import com.epam.jwd.final_project.dao.AppEntityDao;
 import com.epam.jwd.final_project.dao.ReleaseResources;
-import com.epam.jwd.final_project.domain.AppEntity;
 import com.epam.jwd.final_project.domain.Quote;
 import com.epam.jwd.final_project.exception.DatabaseInteractionException;
 import com.epam.jwd.final_project.util.SqlUpdateBuilderUtil;
@@ -16,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class QuoteDaoImpl implements EntityDao<Quote, QuoteCriteria>, ReleaseResources {
+public class QuoteDaoImpl implements AppEntityDao<Quote, QuoteCriteria>, ReleaseResources {
 
     private static QuoteDaoImpl INSTANCE;
 
@@ -29,41 +27,38 @@ public class QuoteDaoImpl implements EntityDao<Quote, QuoteCriteria>, ReleaseRes
 
     /**
      * A constant that is the SQL statement to be sent to the database
-     * to insert {@link Quote} into specified inside this statement table.
+     * to insert Quote into specified inside this statement table.
      * Contains three '?' IN parameters.
      */
     private static final String SQL_INSERT_INTO_QUOTE =
             "INSERT INTO quote(quote_text, product_title, poster_url) VALUE (?, ?, ?)";
-
     /**
      * A constant that is the SQL statement to be sent to the database
-     * to select all {@link Quote} objects from the database.
+     * to select all Quote objects from the database.
      */
     private static final String SQL_SELECT_QUOTES = "SELECT * FROM quote";
-
     /**
      * A constant that is the SQL statement to be sent to the database
-     * to select {@link Quote} a specific id number.
+     * to select Quote a specific id number.
      */
     private static final String SQL_SELECT_QUOTE_BY_ID = "SELECT * FROM quote WHERE id=?";
-
     /**
      * A constant that is the SQL statement to be sent to the database
-     * to remove the specific {@link Quote}.
+     * to remove the specific Quote.
      */
     private static final String SQL_DELETE_QUOTE = "DELETE FROM quote WHERE id=?";
-    
+
     /**
-     * Overrides {@link EntityDao#create(AppEntity, Connection)} method.
-     * Inserts the specified {@link Quote} into the specified database table.
+     * Overrides AppEntityDao.create(AppEntity, Connection) method.
+     * Inserts the specified Quote into the specified database table.
+     *
      * @param quote the Quote to add to the database
-     * @param connection a {@link java.sql.Connection} to the database URL
-     * @return true if this Quote was added to the database, else false
+     * @param connection a Connection to the database URL
+     * @return true if this Quote was added to the database
      * @throws DatabaseInteractionException if an SQLException occurs
      */
     @Override
     public boolean create(Quote quote, Connection connection) throws DatabaseInteractionException {
-        boolean wasCreated = false;
         PreparedStatement statement = null;
 
         try {
@@ -72,22 +67,21 @@ public class QuoteDaoImpl implements EntityDao<Quote, QuoteCriteria>, ReleaseRes
             statement.setString(2, quote.getProductTitle());
             statement.setString(3, quote.getPosterUrl());
             statement.execute();
-            wasCreated = true;
+            return true;
         } catch (SQLException e) {
             throw new DatabaseInteractionException(e);
         } finally {
             closeStatement(statement);
             closeConnection(connection);
         }
-
-        return wasCreated;
     }
 
     /**
-     * Overrides {@link EntityDao#findAll(Connection)} method.
-     * Returns all {@link Quote} objects, which are present in the database.
-     * @param connection a {@link java.sql.Connection} to the database URL
-     * @return {@link java.util.List} of Quote objects retrieved from the database
+     * Overrides AppEntityDao.findAll(Connection) method.
+     * Returns all Quote objects, which are present in the database.
+     *
+     * @param connection a Connection to the database URL
+     * @return List of Quote objects retrieved from the database
      * @throws DatabaseInteractionException if an SQLException occurs
      */
     @Override
@@ -115,11 +109,12 @@ public class QuoteDaoImpl implements EntityDao<Quote, QuoteCriteria>, ReleaseRes
     }
 
     /**
-     * Overrides {@link EntityDao#findById(Long, Connection)} method.
-     * Returns an {@link java.util.Optional} describing {@link Quote} with a specific
+     * Overrides AppEntityDao.findById(Long, Connection) method.
+     * Returns an Optional describing Quote with a specific
      * id number, or an empty Optional if there is no such Quote.
+     *
      * @param id id of the Quote to find
-     * @param connection a {@link java.sql.Connection} to the database URL
+     * @param connection a Connection to the database URL
      * @return an Optional describing this Quote, or an empty Optional
      * @throws DatabaseInteractionException if an SQLException occurs
      */
@@ -149,40 +144,39 @@ public class QuoteDaoImpl implements EntityDao<Quote, QuoteCriteria>, ReleaseRes
     }
 
     /**
-     * Overrides {@link EntityDao#delete(AppEntity, Connection)} method.
-     * Removes the specified {@link Quote} from the database.
+     * Overrides AppEntityDao.delete(AppEntity, Connection) method.
+     * Removes the specified Quote from the database.
+     *
      * @param quote the Quote to remove
-     * @param connection a {@link java.sql.Connection} to the database URL
-     * @return true if Quote was removed, else false
+     * @param connection a Connection to the database URL
+     * @return true if Quote was removed
      * @throws DatabaseInteractionException if an SQLException occurs
      */
     @Override
     public boolean delete(Quote quote, Connection connection) throws DatabaseInteractionException {
-        boolean wasDeleted = false;
         PreparedStatement statement = null;
 
         try {
             statement = connection.prepareStatement(SQL_DELETE_QUOTE);
             statement.setLong(1, quote.getId());
             statement.execute();
-            wasDeleted = true;
+            return true;
         } catch (SQLException e) {
             throw new DatabaseInteractionException(e);
         } finally {
             closeStatement(statement);
             closeConnection(connection);
         }
-
-        return wasDeleted;
     }
 
     /**
-     * Overrides {@link EntityDao#updateByCriteria(AppEntity, Criteria, Connection)} method.
-     * Updates {@link Quote} according to the given {@link QuoteCriteria}.
+     * Overrides AppEntityDao.updateByCriteria(AppEntity, Criteria, Connection) method.
+     * Updates Quote according to the given QuoteCriteria.
+     *
      * @param quote the Quote to update
      * @param quoteCriteria the {@link QuoteCriteria} object that contains
      *                      information about how Quote should be updated
-     * @param connection    a {@link java.sql.Connection} to the database URL
+     * @param connection    a Connection to the database URL
      * @return updated Quote
      * @throws DatabaseInteractionException if an SQLException occurs
      */

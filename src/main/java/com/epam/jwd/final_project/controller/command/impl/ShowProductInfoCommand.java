@@ -9,7 +9,6 @@ import com.epam.jwd.final_project.exception.DatabaseInteractionException;
 import com.epam.jwd.final_project.service.impl.CinemaProductServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.Optional;
 
 public class ShowProductInfoCommand implements Command {

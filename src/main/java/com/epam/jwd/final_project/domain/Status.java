@@ -27,10 +27,6 @@ public enum Status implements AppEntity  {
         return name().replace("_", " ");
     }
 
-    public static Status resolveStatusByName(String name) {
-        return Status.valueOf(name.replace(" ", "-"));
-    }
-
     public static Status resolveStatusById(Long id) {
         Status statusById = null;
         List<Status> statuses = Arrays.asList(Status.values());
@@ -41,8 +37,6 @@ public enum Status implements AppEntity  {
                     .filter(statusPredicate)
                     .findFirst()
                     .get();
-        } else {
-            // log + throwing error
         }
 
         return statusById;

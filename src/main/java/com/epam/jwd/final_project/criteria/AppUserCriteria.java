@@ -2,9 +2,6 @@ package com.epam.jwd.final_project.criteria;
 
 import com.epam.jwd.final_project.domain.AppUser;
 import com.epam.jwd.final_project.domain.Genre;
-import com.epam.jwd.final_project.domain.Role;
-import com.epam.jwd.final_project.domain.Status;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,14 +13,11 @@ public class AppUserCriteria extends Criteria<AppUser> {
     private LocalDate dateOfBirth;
     private String email;
     private String password;
-//    private Role role;
-//    private Status status;
-//    private Boolean isBanned;
     private List<Genre> favouriteGenres;
 
-    public AppUserCriteria(Long id, String firstName, String lastName, String nickname,
-                           LocalDate dateOfBirth, String email, String password, /*Role role,
-                           Status status, Boolean isBanned,*/ List<Genre> favouriteGenres) {
+    public AppUserCriteria(Long id, String firstName, String lastName,
+                           String nickname, LocalDate dateOfBirth, String email,
+                           String password, List<Genre> favouriteGenres) {
         super(id);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -31,9 +25,6 @@ public class AppUserCriteria extends Criteria<AppUser> {
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.password = password;
-//        this.role = role;
-//        this.status = status;
-//        this.isBanned = isBanned;
         this.favouriteGenres = favouriteGenres;
     }
 
@@ -61,18 +52,6 @@ public class AppUserCriteria extends Criteria<AppUser> {
         return password;
     }
 
-//    public Role getRole() {
-//        return role;
-//    }
-//
-//    public Status getStatus() {
-//        return status;
-//    }
-//
-//    public Boolean getBanned() {
-//        return isBanned;
-//    }
-
     public List<Genre> getFavouriteGenres() {
         return favouriteGenres;
     }
@@ -84,9 +63,6 @@ public class AppUserCriteria extends Criteria<AppUser> {
         private LocalDate dateOfBirth;
         private String email;
         private String password;
-//        private Role role;
-//        private Status status;
-//        private Boolean isBanned;
         private List<Genre> favouriteGenres;
 
         public void firstName(String firstName) {
@@ -113,42 +89,14 @@ public class AppUserCriteria extends Criteria<AppUser> {
             this.password = password;
         }
 
-//        public void role(Role role) {
-//            this.role = role;
-//        }
-//
-//        public void status(Status status) {
-//            this.status = status;
-//        }
-//
-//        public void isBanned(Boolean isBanned) {
-//            this.isBanned = isBanned;
-//        }
-
         public void favouriteGenres(List<Genre> favouriteGenres) {
             this.favouriteGenres = favouriteGenres;
         }
 
-
         public AppUserCriteria build() {
             return new AppUserCriteria(id, firstName, lastName, nickname, dateOfBirth,
-                                       email, password, /*role, status, isBanned,*/ favouriteGenres);
+                                       email, password, favouriteGenres);
         }
     }
 
-    @Override
-    public String toString() {
-        return "AppUserCriteria{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-//                ", role=" + role +
-//                ", status=" + status +
-//                ", isBanned=" + isBanned +
-                ", favouriteGenres=" + favouriteGenres +
-                "} " + super.toString();
-    }
 }
