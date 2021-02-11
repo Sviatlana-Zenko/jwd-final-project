@@ -1,16 +1,16 @@
 package com.epam.jwd.final_project.domain;
 
-public class ApplicationProperties {
+public final class ApplicationProperties {
 
-    private String dbUrl;
-    private String testDbUrl;
-    private String dbUserName;
-    private String dbUserPassword;
-    private Integer defaultPoolSize;
-    private Integer maxPoolSize;
-    private String dateFormat;
-    private String appEmail;
-    private String emailPassword;
+    private final String dbUrl;
+    private final String testDbUrl;
+    private final String dbUserName;
+    private final String dbUserPassword;
+    private final Integer defaultPoolSize;
+    private final Integer maxPoolSize;
+    private final String dateFormat;
+    private final String appEmail;
+    private final String emailPassword;
 
     public ApplicationProperties(String dbUrl, String testDbUrl, String dbUserName,
                                  String dbUserPassword, Integer defaultPoolSize,
